@@ -1,2 +1,2 @@
 # dotNet5783_5885_2584
-.NET tasks Shira Polak &amp; Rachel Fabian
+.NET project Shira Polak &amp; Rachel Fabian
