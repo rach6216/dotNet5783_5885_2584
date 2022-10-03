@@ -10,7 +10,7 @@ namespace Stage0
     {
         static partial void Welcome5885()
         {
-            Console.WriteLine("5885 is here!!!");
+            Console.WriteLine("5885 is here!!!!");
         }
     }
 }
