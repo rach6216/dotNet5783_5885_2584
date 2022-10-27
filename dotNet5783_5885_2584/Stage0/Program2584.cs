@@ -11,7 +11,7 @@
 
         private static void Welcome2584()
         {
-            Console.WriteLine("Enter your name: ");
+            Console.WriteLine("Enter your nameק: ");
             string userName = Console.ReadLine();
             Console.WriteLine("{0}, welcome to my first console application", userName);
         }
