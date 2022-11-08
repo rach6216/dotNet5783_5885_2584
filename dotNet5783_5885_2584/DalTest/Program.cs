@@ -190,32 +190,111 @@ internal class Program
     }
     internal static void _orderItemsChoosen()
     {
-        Console.WriteLine("Enter 1 to create new product");
+        CRUDOp orderItemChoices;
+        do
+        {
+            Console.WriteLine("Enter 1 to create new product");
         Console.WriteLine("Enter 2 to get info about product by ID");
         Console.WriteLine("Enter 3 to get all the products info");
         Console.WriteLine("Enter 4 to delete a product");
         Console.WriteLine("Enter 5 to update a product");
+        Console.WriteLine("Enter 6 to get an order item by order id and product id");
+        Console.WriteLine("Enter 7 to get all the items in an order");
         Console.WriteLine("Enter 0 to exit");
-        CRUDOp productChoices;
-        Enum.TryParse(Console.ReadLine(), out productChoices);
-        while (productChoices != CRUDOp.Exit)
-        {
-            switch (productChoices)
+        
+        Enum.TryParse(Console.ReadLine(), out orderItemChoices);
+
+        
+            switch (orderItemChoices)
             {
                 case CRUDOp.Create:
-                   
-
-
+                    Console.WriteLine("Enter order id: ");
+                    int orderID = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter product id");
+                    int productID = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter price of item");
+                    double price = double.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter amount :");
+                    int amount = int.Parse(Console.ReadLine());
+                    Console.WriteLine("order item #" + _dalOrderItem.Create(new OrderItem(productID, orderID, price, amount)) + "created");
                     break;
                 case CRUDOp.Delete:
-
+                    Console.WriteLine("Enter orderItem ID for delete");
+                    int id = int.Parse(Console.ReadLine());
+                    try
+                    {
+                        _dalOrderItem.Delete(id);
+                    }
+                    catch (Exception exp)
+                    {
+                        Console.WriteLine(exp);
+                    }
                     break;
                 case CRUDOp.Read:
-
-                    break;
-                case CRUDOp.Update:
+                    Console.WriteLine("Enter Order-Item ID");
+                    id = int.Parse(Console.ReadLine());
+                    try
+                    {
+                        Console.WriteLine(_dalOrderItem.Read(id));
+                    }
+                    catch (Exception exp)
+                    {
+                        Console.WriteLine(exp);
+                    }
                     break;
                 case CRUDOp.ReadAll:
+                    foreach (OrderItem oi in _dalOrderItem.Read())
+                    {
+                        Console.WriteLine(oi);
+                    }
+                    break;
+                case CRUDOp.ReadByProductAndOrder:
+                    Console.WriteLine("Enter order id");
+                    orderID = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter product id");
+                    productID = int.Parse(Console.ReadLine());
+                    Console.WriteLine(_dalOrderItem.Read(orderID, productID));
+                    break;
+                case CRUDOp.ReadAllByOrder:
+                    Console.WriteLine("Enter order id");
+                    orderID = int.Parse(Console.ReadLine());
+                    foreach (OrderItem oi in _dalOrderItem.ReadByOrder(orderID))
+                    {
+                        Console.WriteLine(oi);
+                    }
+                    break;
+
+                case CRUDOp.Update:
+                    Console.WriteLine("Enter order-item ID to update");
+                    id = int.Parse(Console.ReadLine());
+                    OrderItem tempOrderItem = _dalOrderItem.Read(id);
+                    try
+                    {
+                        Console.WriteLine(tempOrderItem);
+                    }
+                    catch (Exception exp)
+                    {
+                        Console.WriteLine(exp);
+                    }
+
+                    Console.WriteLine("Enter order id name");
+                    string input = Console.ReadLine();
+                    if (input != "")
+                        tempOrderItem.OrderID = int.Parse(input);
+                    Console.WriteLine("Enter product id price");
+                    input = Console.ReadLine();
+                    if (input != "")
+                        tempOrderItem.ProductID = int.Parse(input);
+
+                    Console.WriteLine("Enter price of item");
+                    input = Console.ReadLine();
+                    if (input != "")
+                        tempOrderItem.Price = double.Parse(input);
+                    Console.WriteLine("Enter amount of item");
+                    input = Console.ReadLine();
+                    if (input != "")
+                        tempOrderItem.Amount = int.Parse(input);
+                    _dalOrderItem.Update(tempOrderItem);
                     break;
 
                 default:
@@ -223,6 +302,6 @@ internal class Program
                     break;
 
             }
-        }
+        } while (orderItemChoices != CRUDOp.Exit);
     }
 }
