@@ -272,17 +272,15 @@ internal class Program
         do
         {
             Console.WriteLine("Enter 1 to create new product");
-        Console.WriteLine("Enter 2 to get info about product by ID");
-        Console.WriteLine("Enter 3 to get all the products info");
-        Console.WriteLine("Enter 4 to update a product");
-        Console.WriteLine("Enter 5 to delete a product");
-        Console.WriteLine("Enter 4 to delete a product");
-        Console.WriteLine("Enter 5 to update a product");
-        Console.WriteLine("Enter 6 to get an order item by order id and product id");
-        Console.WriteLine("Enter 7 to get all the items in an order");
-        Console.WriteLine("Enter 0 to exit");
+            Console.WriteLine("Enter 2 to get info about product by ID");
+            Console.WriteLine("Enter 3 to get all the products info");
+            Console.WriteLine("Enter 4 to update a product");
+            Console.WriteLine("Enter 5 to delete a product");
+            Console.WriteLine("Enter 6 to get an order item by order id and product id");
+            Console.WriteLine("Enter 7 to get all the items in an order");
+            Console.WriteLine("Enter 0 to exit");
         
-        Enum.TryParse(Console.ReadLine(), out orderItemChoices);
+            Enum.TryParse(Console.ReadLine(), out orderItemChoices);
 
         
             switch (orderItemChoices)
