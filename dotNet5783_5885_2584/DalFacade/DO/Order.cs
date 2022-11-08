@@ -6,6 +6,7 @@ namespace DO;
 /// </summary>
 public struct Order
 {
+    private DateTime dMinValue=DateTime.MinValue;
     /// <summary>
     /// order id
     /// </summary>
