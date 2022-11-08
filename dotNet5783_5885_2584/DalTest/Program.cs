@@ -164,7 +164,7 @@ internal class Program
         {
             Console.WriteLine("Enter 1 to create new order");
             Console.WriteLine("Enter 2 to get info about your order by ID");
-            Console.WriteLine("Enter 3 to get all the your orders info");
+            Console.WriteLine("Enter 3 to get all your orders info");
             Console.WriteLine("Enter 4 to update a order");
             Console.WriteLine("Enter 5 to delete a order");
             Console.WriteLine("Enter 0 to exit");
