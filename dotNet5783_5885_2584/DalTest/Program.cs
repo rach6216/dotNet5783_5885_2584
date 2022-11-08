@@ -83,7 +83,7 @@ internal class Program
                     }
                     catch (Exception exp)
                     {
-                        Console.WriteLine(exp);
+                        Console.WriteLine(exp.Message);
                     }
 
                     break;
@@ -102,7 +102,7 @@ internal class Program
                     }
                     catch (Exception exp)
                     {
-                        Console.WriteLine(exp);
+                        Console.WriteLine(exp.Message);
                     }
                     break;
                 case CRUDOp.Update:
@@ -115,7 +115,7 @@ internal class Program
                     }
                     catch (Exception exp)
                     {
-                        Console.WriteLine(exp);
+                        Console.WriteLine(exp.Message);
                     }
 
                     Console.WriteLine("Enter product name");
@@ -227,7 +227,7 @@ internal class Program
                     }
                     catch (Exception exp)
                     {
-                        Console.WriteLine(exp);
+                        Console.WriteLine(exp.Message);
                     }
                     break;
                 case CRUDOp.Read:
@@ -239,7 +239,7 @@ internal class Program
                     }
                     catch (Exception exp)
                     {
-                        Console.WriteLine(exp);
+                        Console.WriteLine(exp.Message);
                     }
                     break;
                 case CRUDOp.ReadAll:
@@ -274,7 +274,7 @@ internal class Program
                     }
                     catch (Exception exp)
                     {
-                        Console.WriteLine(exp);
+                        Console.WriteLine(exp.Message);
                     }
 
                     Console.WriteLine("Enter order id name");
