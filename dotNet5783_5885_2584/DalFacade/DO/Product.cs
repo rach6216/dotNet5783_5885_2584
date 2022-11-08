@@ -32,7 +32,7 @@ public struct Product
     /// <returns>string with the description</returns>
     public override string ToString() => $@"
         Product ID: {ID}: {Name}, 
-        category: {Category}
+        category: {Category.ToString()}
     	Price: {Price}
     	Amount in stock: {InStock}
 ";

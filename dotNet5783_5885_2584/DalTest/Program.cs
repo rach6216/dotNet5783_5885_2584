@@ -45,15 +45,18 @@ internal class Program
 
     internal static void _productChoosen()
     {
-        Console.WriteLine("Enter 1 to create new product");
-        Console.WriteLine("Enter 2 to get info about product by ID");
-        Console.WriteLine("Enter 3 to get all the products info");
-        Console.WriteLine("Enter 4 to delete a product");
-        Console.WriteLine("Enter 5 to update a product");
-        Console.WriteLine("Enter 0 to exit");
         CRUDOp productChoices;
-        Enum.TryParse(Console.ReadLine(), out productChoices);
-       
+        do
+        {
+            Console.WriteLine("Enter 1 to create new product");
+            Console.WriteLine("Enter 2 to get info about product by ID");
+            Console.WriteLine("Enter 3 to get all the products info");
+            Console.WriteLine("Enter 4 to delete a product");
+            Console.WriteLine("Enter 5 to update a product");
+            Console.WriteLine("Enter 0 to exit");
+
+            Enum.TryParse(Console.ReadLine(), out productChoices);
+
             switch (productChoices)
             {
                 case CRUDOp.Create:
@@ -67,21 +70,22 @@ internal class Program
                     Enum.TryParse(Console.ReadLine(), out category);
                     Console.WriteLine("Enter amount in stock");
                     int instack = int.Parse(Console.ReadLine());
-                    _dalProduct.Create(new Product(name,price,category,instack));
+                    Console.WriteLine("product #"+_dalProduct.Create(new Product(name, price, category, instack))+"created");
+                   
                     break;
-                
+
                 case CRUDOp.Read:
                     Console.WriteLine("Enter product ID");
-                    int id=int.Parse(Console.ReadLine());
+                    int id = int.Parse(Console.ReadLine());
                     try
                     {
-                       Console.WriteLine(_dalProduct.Read(id));
+                        Console.WriteLine(_dalProduct.Read(id));
                     }
-                    catch(Exception exp)
+                    catch (Exception exp)
                     {
                         Console.WriteLine(exp);
                     }
-                    
+
                     break;
                 case CRUDOp.ReadAll:
                     foreach (Product p in _dalProduct.Read())
@@ -91,11 +95,12 @@ internal class Program
                     break;
                 case CRUDOp.Delete:
                     Console.WriteLine("Enter product ID for delete");
-                    id=int.Parse(Console.ReadLine());
+                    id = int.Parse(Console.ReadLine());
                     try
                     {
                         _dalProduct.Delete(id);
-                    }catch(Exception exp)
+                    }
+                    catch (Exception exp)
                     {
                         Console.WriteLine(exp);
                     }
@@ -112,10 +117,10 @@ internal class Program
                     {
                         Console.WriteLine(exp);
                     }
-                    
+
                     Console.WriteLine("Enter product name");
-                   string input = Console.ReadLine();
-                    if (input!="")
+                    string input = Console.ReadLine();
+                    if (input != "")
                         tempProduct.Name = input;
                     Console.WriteLine("Enter product price");
                     input = Console.ReadLine();
@@ -130,11 +135,11 @@ internal class Program
                         Enum.TryParse(input, out c);
                         tempProduct.Category = c;
                     }
-                       
+
                     Console.WriteLine("Enter amount in stock");
                     input = Console.ReadLine();
                     if (input != "")
-                        tempProduct.InStock =int.Parse(input);
+                        tempProduct.InStock = int.Parse(input);
                     _dalProduct.Update(tempProduct);
                     break;
 
@@ -143,8 +148,10 @@ internal class Program
                     Console.WriteLine("No such option please enter correct choice");
                     break;
 
-            
-        }
+
+            }
+        }while(productChoices!=CRUDOp.Exit);
+        
     }
     internal static void _ordersChoosen()
     {

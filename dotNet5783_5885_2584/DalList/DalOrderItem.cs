@@ -63,11 +63,8 @@ public struct DalOrderItem
     {
         int i = 0;
         while (_orderItems[i].ID != id) { i++; }
-        while (i < Config._orderItemIndex - 1)
-        {
-            _orderItems[i] = _orderItems[i + 1];
-        }
-        Config._orderItemIndex--;
+        _orderItems[i] = _orderItems[--Config._orderItemIndex];
+       
     }
 
 }

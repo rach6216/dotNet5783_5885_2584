@@ -41,10 +41,7 @@ public struct DalOrder
     {
         int i = 0;
         while (_orders[i].ID != id) { i++; }
-        while (i < Config._orderIndex - 1)
-        {
-            _orders[i] = _orders[i + 1];
-        }
-        Config._orderIndex--;
+        _orders[i] = _orders[--Config._orderIndex];
+
     }
 }

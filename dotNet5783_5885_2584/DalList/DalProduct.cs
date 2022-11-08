@@ -41,11 +41,7 @@ public struct DalProduct
     {
         int i = 0;
         while (_products[i].ID != id) { i++; }
-        while (i < Config._productIndex - 1)
-        {
-            _products[i] = _products[i + 1];
-        }
-        Config._productIndex--;
+            _products[i] = _products[--Config._productIndex];
     }
 
 }
