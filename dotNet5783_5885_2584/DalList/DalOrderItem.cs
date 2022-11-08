@@ -23,7 +23,7 @@ public struct DalOrderItem
     }
     public OrderItem[] Read()
     {
-       
+        Console.WriteLine("reading don't disturb");
         OrderItem[] items = new OrderItem[Config._orderItemIndex];
         for (int i = 0; i < Config._orderItemIndex; i++)
         {
