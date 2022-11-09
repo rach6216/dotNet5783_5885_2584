@@ -51,8 +51,8 @@ internal class Program
             Console.WriteLine("Enter 1 to create new product");
             Console.WriteLine("Enter 2 to get info about product by ID");
             Console.WriteLine("Enter 3 to get all the products info");
-            Console.WriteLine("Enter 4 to delete a product");
-            Console.WriteLine("Enter 5 to update a product");
+            Console.WriteLine("Enter 4 to update a product");
+            Console.WriteLine("Enter 5 to delete a product");
             Console.WriteLine("Enter 0 to exit");
 
             Enum.TryParse(Console.ReadLine(), out productChoices);
@@ -69,8 +69,8 @@ internal class Program
                     Category category;
                     Enum.TryParse(Console.ReadLine(), out category);
                     Console.WriteLine("Enter amount in stock");
-                    int instack = int.Parse(Console.ReadLine());
-                    Console.WriteLine("product #"+_dalProduct.Create(new Product(name, price, category, instack))+"created");
+                    int instock = int.Parse(Console.ReadLine());
+                    Console.WriteLine("product #"+_dalProduct.Create(new Product(name, price, category, instock))+"created");
                    
                     break;
 
@@ -154,55 +154,129 @@ internal class Program
         
     }
     internal static void _ordersChoosen()
-    {
-        Console.WriteLine("Enter 1 to create new product");
-        Console.WriteLine("Enter 2 to get info about product by ID");
-        Console.WriteLine("Enter 3 to get all the products info");
-        Console.WriteLine("Enter 4 to delete a product");
-        Console.WriteLine("Enter 5 to update a product");
-        Console.WriteLine("Enter 0 to exit");
-        CRUDOp productChoices;
-        Enum.TryParse(Console.ReadLine(), out productChoices);
-        while (productChoices != CRUDOp.Exit)
+    { 
+        CRUDOp orderChoices;
+        do 
         {
-            switch (productChoices)
+            Console.WriteLine("Enter 1 to create new order");
+            Console.WriteLine("Enter 2 to get info about your order by ID");
+            Console.WriteLine("Enter 3 to get all your orders info");
+            Console.WriteLine("Enter 4 to update a order");
+            Console.WriteLine("Enter 5 to delete a order");
+            Console.WriteLine("Enter 0 to exit");
+            Enum.TryParse(Console.ReadLine(), out orderChoices);
+            switch (orderChoices)
             {
                 case CRUDOp.Create:
-            
+                    Console.WriteLine("create");
+                    Console.WriteLine("Enter name");
+                    string cName = Console.ReadLine();
+                    Console.WriteLine("Enter email");
+                    string cEmail = Console.ReadLine();
+                    Console.WriteLine("Enter address");
+                    string cAddress = Console.ReadLine();
+
+                    //the ship and delivery date will update in the order ctor
+                    Console.WriteLine("order #" + _dalOrder.Create(new Order(cName, cEmail, cAddress, DateTime.Now, DateTime.Now, DateTime.Now)) + " created");
+              
                     break;
+
                 case CRUDOp.Delete:
+                    Console.WriteLine("delete");
+                    Console.WriteLine("Enter order ID for delete");
+                    int id = int.Parse(Console.ReadLine());
+                    //add condition that check if the order can be deleted
+                    try
+                    {
+                        _dalOrder.Delete(id);
+                    }
+                    catch (Exception exp)
+                    {
+                        Console.WriteLine(exp);
+                    }
 
                     break;
+
                 case CRUDOp.Read:
+                    Console.WriteLine("read");
+                    Console.WriteLine("Enter order ID");
+                    id = int.Parse(Console.ReadLine());
+                    try
+                    {
+                        Console.WriteLine(_dalOrder.Read(id));
+                    }
+                    catch (Exception exp)
+                    {
+                        Console.WriteLine(exp);
+                    }
 
                     break;
+
                 case CRUDOp.Update:
+                    Console.WriteLine("update");
+                    Console.WriteLine("Enter order ID to update");
+                    //add condition that check if the order can updating
+                    id = int.Parse(Console.ReadLine());
+                    Order tempOrder = _dalOrder.Read(id);
+                    try
+                    {
+                        Console.WriteLine(tempOrder);
+                    }
+                    catch (Exception exp)
+                    {
+                        Console.WriteLine(exp);
+                    }
+                    Console.WriteLine("Enter name");
+                    string inp= Console.ReadLine();
+                    if (inp != "")
+                        tempOrder.CustomerName = inp;
+                    Console.WriteLine("Enter email");
+                    inp = Console.ReadLine();
+                    if (inp != "")
+                        tempOrder.CustomerEmail = inp;
+                    Console.WriteLine("Enter adress");
+                    inp = Console.ReadLine();
+                    if (inp != "")
+                        tempOrder.CustomerAddress = inp;
+                    _dalOrder.Update(tempOrder);
+                   
                     break;
+
                 case CRUDOp.ReadAll:
+                    //In the future, the user will be saved automatically and we will not have to ask for details
+                    Console.WriteLine("Enter name");
+                    cName = Console.ReadLine();
+                    foreach (Order o in _dalOrder.Read())
+                    {
+                       if (o.CustomerName == cName)
+                          Console.WriteLine(o);
+                    }
+
                     break;
 
                 default:
                     Console.WriteLine("No such option please enter correct choice");
+                   
                     break;
 
-            }
-        }
+            } 
+        } while (orderChoices != CRUDOp.Exit);
     }
     internal static void _orderItemsChoosen()
     {
         CRUDOp orderItemChoices;
         do
         {
-            Console.WriteLine("Enter 1 to create new order-item");
-        Console.WriteLine("Enter 2 to get info about order-item by ID");
-        Console.WriteLine("Enter 3 to get all the order-items info");
-        Console.WriteLine("Enter 4 to delete an order-item");
-        Console.WriteLine("Enter 5 to update an order-item");
-        Console.WriteLine("Enter 6 to get an order item by order id and product id");
-        Console.WriteLine("Enter 7 to get all the items in an order");
-        Console.WriteLine("Enter 0 to exit");
+            Console.WriteLine("Enter 1 to create new product");
+            Console.WriteLine("Enter 2 to get info about product by ID");
+            Console.WriteLine("Enter 3 to get all the products info");
+            Console.WriteLine("Enter 4 to update a product");
+            Console.WriteLine("Enter 5 to delete a product");
+            Console.WriteLine("Enter 6 to get an order item by order id and product id");
+            Console.WriteLine("Enter 7 to get all the items in an order");
+            Console.WriteLine("Enter 0 to exit");
         
-        Enum.TryParse(Console.ReadLine(), out orderItemChoices);
+            Enum.TryParse(Console.ReadLine(), out orderItemChoices);
 
         
             switch (orderItemChoices)
