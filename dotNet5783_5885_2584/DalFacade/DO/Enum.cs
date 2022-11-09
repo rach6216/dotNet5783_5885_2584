@@ -12,7 +12,7 @@ public struct Enums
     };
     public enum CRUDOp
     {
-       Exit, Create,Read,ReadAll, Update, Delete, ReadByProductAndOrder, ReadAllByOrder 
+       Exit, Create,Read,ReadAll,  Delete, Update, ReadByProductAndOrder, ReadAllByOrder 
     }
 }
 

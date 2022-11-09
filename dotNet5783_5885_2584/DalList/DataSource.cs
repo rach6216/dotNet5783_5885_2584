@@ -23,6 +23,7 @@ internal static class DataSource
     }
     static private void addOrderItem(OrderItem newOrderItem)
     {
+        newOrderItem.ID = Config.OrderItemID;
         _orderItems[Config._orderItemIndex++]=newOrderItem;
     }
     static private void s_Initialize()
