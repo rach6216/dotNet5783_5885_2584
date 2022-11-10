@@ -6,7 +6,7 @@ using System.Net;
 using System.Xml.Linq;
 using System;
 
-internal class Program
+internal class Program  
 {
     private static DalOrder _dalOrder = new DalOrder();
     internal static DalProduct _dalProduct = new DalProduct();
