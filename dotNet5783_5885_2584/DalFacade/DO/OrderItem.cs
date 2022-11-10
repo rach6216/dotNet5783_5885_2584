@@ -33,13 +33,13 @@ public struct OrderItem
     /// <param name="myPrice">price of order</param>
     /// <param name="myAmount"> amount of products in order</param>
     /// <param name="myID" default="000000">id of the order item</param>
-    public OrderItem(int myPID,int myOID,double myPrice,int myAmount,int myID=000000)
+    public OrderItem(int myPID, int myOID, double myPrice, int myAmount, int myID = 000000)
     {
-        ID= myPID;
-        ProductID= myPID;
-        OrderID= myOID;
-        Price= myPrice;
-        Amount= myAmount;
+        ID = myPID;
+        ProductID = myPID;
+        OrderID = myOID;
+        Price = myPrice;
+        Amount = myAmount;
     }
     /// <summary>
     /// description of the order+item object
