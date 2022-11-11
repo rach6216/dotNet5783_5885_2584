@@ -1,4 +1,6 @@
 ﻿
+using System.CodeDom.Compiler;
+
 namespace DO;
 
 /// <summary>
@@ -44,21 +46,46 @@ public struct Order
     /// <param name="shipD">shipping date</param>
     /// <param name="deliveryD">delivery date</param>
     /// <param name="myOID" default="000000">order id</param>
-    public Order(string cName, string cEmail, string cAddress, DateTime orderD, int myOID = 000000)
+
+
+    public Order(string cName, string cEmail, string cAddress, DateTime orderD, int id = 0)
     {
-        ID = myOID;
+        ID = id;
         CustomerName = cName;
         CustomerEmail = cEmail;
         CustomerAddress = cAddress;
         OrderDate = orderD;
+        ShipDate = DateTime.MinValue;
+        DeliveryDate = DateTime.MinValue;
         Random trnd = new Random();
-        if (orderD == DateTime.MinValue)
-        {
-            OrderDate = new DateTime(trnd.Next(1, DateTime.Now.Year), trnd.Next(1, 12), trnd.Next(1, 30));
-
-        }
-        ShipDate = OrderDate + new TimeSpan(trnd.Next(10), trnd.Next(24), trnd.Next(60), trnd.Next(60), trnd.Next(1000));
-        DeliveryDate = ShipDate + new TimeSpan(trnd.Next(15), trnd.Next(24), trnd.Next(60), trnd.Next(60), trnd.Next(1000));
+        OrderDate = orderD;
+    }
+    public Order(string cName, string cEmail, string cAddress, DateTime orderD, DateTime shipD, int id = 0)
+    {
+        ID = id;
+        CustomerName = cName;
+        CustomerEmail = cEmail;
+        CustomerAddress = cAddress;
+        OrderDate = orderD;
+        ShipDate = DateTime.MinValue;
+        DeliveryDate = DateTime.MinValue;
+        Random trnd = new Random();
+        OrderDate = orderD;
+        ShipDate = shipD;
+    }
+    public Order(string cName, string cEmail, string cAddress, DateTime orderD, DateTime shipD, DateTime deliveryD, int id=0)
+    {
+        ID = id;
+        CustomerName = cName;
+        CustomerEmail = cEmail;
+        CustomerAddress = cAddress;
+        OrderDate = orderD;
+        ShipDate = DateTime.MinValue;
+        DeliveryDate = DateTime.MinValue;
+        Random trnd = new Random();
+        OrderDate = orderD;
+        ShipDate = shipD;
+        DeliveryDate = deliveryD;
     }
 
     /// <summary>

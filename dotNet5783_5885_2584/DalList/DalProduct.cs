@@ -31,7 +31,7 @@ public struct DalProduct
             }
         } while (tID == 0);
         p.ID = tID;
-        s_products[Config.s_productIndex] = p;
+        s_products[Config.s_productIndex++] = p;
         return p.ID;
     }
     /// <summary>

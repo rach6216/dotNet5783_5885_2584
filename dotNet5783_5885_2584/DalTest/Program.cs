@@ -2,6 +2,9 @@
 using DO;
 using Dal;
 using static DO.Enums;
+using System.Diagnostics;
+using System.Xml.Linq;
+
 internal class Program
 {
     private static DalOrder s_dalOrder = new DalOrder();
@@ -10,6 +13,10 @@ internal class Program
 
     private static void Main(string[] args)
     {
+        //for initilaize
+        int tempID= s_dalProduct.Create(new Product("", 0, Enums.Category.Family, 0));
+        s_dalProduct.Delete(tempID);
+
         Entity entityChoice;
         do
         {
@@ -65,12 +72,13 @@ internal class Program
                     Console.WriteLine("Enter product price");
                     double price = Double.Parse(Console.ReadLine());
                     Console.WriteLine("Enter product category");
-                    //show the categories
+                    Console.WriteLine("our categories:");
+                    Console.WriteLine("Family, Race, Sport, SUV, Tiny, Motorcycle, VIP, Big");
                     Category category;
                     Enum.TryParse(Console.ReadLine(), out category);
                     Console.WriteLine("Enter amount in stock");
                     int instock = int.Parse(Console.ReadLine());
-                    Console.WriteLine("product #" + s_dalProduct.Create(new Product(name, price, category, instock)) + "created");
+                    Console.WriteLine("product #" + s_dalProduct.Create(new Product(name, price, category, instock)) + " created");
                     break;
 
                 case CRUDOp.Read:
@@ -176,7 +184,6 @@ internal class Program
 
                     //the ship and delivery date will update in the order ctor
                     Console.WriteLine("order #" + s_dalOrder.Create(new Order(cName, cEmail, cAddress, DateTime.Now)) + " created");
-
                     break;
 
                 case CRUDOp.Delete:
@@ -189,7 +196,7 @@ internal class Program
                     }
                     catch (Exception exp)
                     {
-                        Console.WriteLine(exp);
+                        Console.WriteLine(exp.Message);
                     }
 
                     break;
@@ -203,7 +210,7 @@ internal class Program
                     }
                     catch (Exception exp)
                     {
-                        Console.WriteLine(exp);
+                        Console.WriteLine(exp.Message);
                     }
 
                     break;
@@ -219,7 +226,7 @@ internal class Program
                     }
                     catch (Exception exp)
                     {
-                        Console.WriteLine(exp);
+                        Console.WriteLine(exp.Message);
                     }
                     Console.WriteLine("Enter name");
                     string inp = Console.ReadLine();

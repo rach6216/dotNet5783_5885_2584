@@ -1,5 +1,8 @@
 ﻿namespace Dal;
 using DO;
+using System.Net.Mail;
+using System.Runtime.CompilerServices;
+using static DO.Enums;
 
 /// <summary>
 /// static structure for storing the data
@@ -54,7 +57,7 @@ internal static class DataSource
             }
         } while (tID == 0);
         newProduct.ID = tID;
-        s_products[Config.s_productIndex] = newProduct;
+        s_products[Config.s_productIndex++] = newProduct;
         //newProduct.ID = Config.ProductID;
         //s_products[Config.s_productIndex++] = newProduct;
     }
@@ -72,20 +75,60 @@ internal static class DataSource
     /// </summary>
     static private void s_Initialize()
     {
-        Product[] tProduct = new Product[10];
-        Order[] tOrder = new Order[20];
+
+        (string,int,Category,int)[] tp = {
+        ("Chevrolet Spark",81700,Category.Family,8),
+       ("Tesla 2017 Model S",250000,Category.VIP,4),
+        ("Skoda Tsi Ambition Oktavia",104600,Category.Family,1),
+        ("Ford Mustang GT",80500,Category.Sport,0),
+       ("Chevrolet Camero LT",95650,Category.Sport,6),
+        ("Ligier JS 53 EVO 2",178000,Category.Race,2),
+        ("Smart Fortwo 60kW EQ Premium",15000,Category.Tiny,10),
+        ("Chrysler Pacifica Touring L",91000,Category.Big,9),
+        ("Mercedes-AMG G63 AMG 4x4²",600000,Category.SUV,3),
+        ("Yamaha TRACER 9 ",75985,Category.Motorcycle,15)
+        };
         OrderItem[] tOrderItem = new OrderItem[40];
-        for (int i = 0; i < 10; i++)
+        (string, string, string)[] userDetails = {("Shira","sh3123373@gcom","zeev chaklay"),
+        ("Rachel","rf3123373@gcom","bergman 5"),
+        ("Rivka","rhano@gcom","Ramot"),
+        ("Danz","dzilbers@gmail.com","hunollolo"),
+        ("yeudisf","yeudisf@gcom","wherever")
+        };
+        foreach ((string, int, Category, int) item in tp)
         {
-            addProduct(tProduct[i]);
+            addProduct(new Product(item.Item1,item.Item2,item.Item3,item.Item4));
+        }
+        for (int i = 0; i < 9; i++)
+        {
+            (string, string, string) user=userDetails[rnd.Next(userDetails.Length)];
+            DateTime od = new DateTime(rnd.Next(1, DateTime.Now.Year), rnd.Next(1, DateTime.Now.Month), rnd.Next(1, DateTime.Now.Day));
+            DateTime sd = od + new TimeSpan(rnd.Next(10), rnd.Next(24), rnd.Next(60), rnd.Next(60));
+            DateTime dd = sd + new TimeSpan(rnd.Next(10), rnd.Next(24), rnd.Next(60));
+            addOrder(new Order(user.Item1,user.Item2,user.Item3, od,sd ,dd,Config.OrderID));
+        }
+        for (int i = 0; i <7; i++)
+        {
+            (string, string, string) user = userDetails[rnd.Next(userDetails.Length)];
+            DateTime od = new DateTime(rnd.Next(1, DateTime.Now.Year), rnd.Next(1, DateTime.Now.Month), rnd.Next(1, DateTime.Now.Day));
+            DateTime sd = od + new TimeSpan(rnd.Next(10), rnd.Next(24), rnd.Next(60), rnd.Next(60));
+            addOrder(new Order(user.Item1, user.Item2, user.Item3, od, sd, Config.OrderID));
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            (string, string, string) user = userDetails[rnd.Next(userDetails.Length)];
+            DateTime od = new DateTime(rnd.Next(1, DateTime.Now.Year), rnd.Next(1, DateTime.Now.Month), rnd.Next(1, DateTime.Now.Day));
+          
+            addOrder(new Order(user.Item1, user.Item2, user.Item3, od, Config.OrderID));
         }
         for (int i = 0; i < 20; i++)
         {
-            addOrder(tOrder[i]);
-        }
-        for (int i = 0; i < 40; i++)
-        {
-            addOrderItem(tOrderItem[i]);
+            int j = rnd.Next(1, 4);
+            for (int j2 = 0; j2 < j; j2++)
+            {
+                Product product = s_products[rnd.Next(s_products.Length)];
+                addOrderItem(new OrderItem(product.ID, s_orders[i].ID, product.Price, rnd.Next(1, 10)));
+            }
         }
     }
     /// <summary>

@@ -49,8 +49,8 @@ public struct OrderItem
     {
         return $@"
         Id: {ID}
-        order id: {ProductID}
-        product id: {OrderID}
+        product id: {ProductID}
+        order id: {OrderID}
         price: {Price}
         amount: {Amount}
 ";

@@ -44,7 +44,7 @@ public struct DalOrder
         {
             orders[i] = s_orders[i];
         }
-        return s_orders;
+        return orders;
     }
     /// <summary>
     /// update a specific order
