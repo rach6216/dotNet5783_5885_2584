@@ -5,10 +5,25 @@ using static Enums;
 /// </summary>
 public struct Product
 {
+    /// <summary>
+    /// unique product Id
+    /// </summary>
     public int ID { get; set; }
+    /// <summary>
+    /// product name
+    /// </summary>
     public string Name { get; set; }
+    /// <summary>
+    /// product price
+    /// </summary>
     public double Price { get; set; }
-    public Category Category { get; set; } 
+    /// <summary>
+    /// product category(enum)
+    /// </summary>
+    public Category Category { get; set; }
+    /// <summary>
+    /// number of products in the stock
+    /// </summary>
     public int InStock { get; set; }
     /// <summary>
     /// ctor for products
@@ -18,10 +33,10 @@ public struct Product
     /// <param name="myPrice">product price</param>
     /// <param name="myCategory">product category(enum)</param>
     /// <param name="myInstock" >number of products in the stock</param>
-    public Product(string myName,double myPrice,Category myCategory,int myInstock, int myID=000000)
+    public Product(string myName, double myPrice, Category myCategory, int myInstock, int myID = 000000)
     {
         ID = myID;
-        Name = myName;  
+        Name = myName;
         Price = myPrice;
         Category = myCategory;
         InStock = myInstock;
