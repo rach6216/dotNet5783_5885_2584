@@ -1,7 +1,5 @@
 ﻿namespace Dal;
 using DO;
-using System.Net.Mail;
-using System.Runtime.CompilerServices;
 using static DO.Enums;
 
 /// <summary>
@@ -35,6 +33,7 @@ internal static class DataSource
     /// </summary>
     static private void s_Initialize()
     {
+        //products details
         (string, int, Category, int)[] productDetails = {
         ("Chevrolet Spark",81700,Category.Family,8),
        ("Tesla 2017 Model S",250000,Category.VIP,4),
@@ -48,6 +47,7 @@ internal static class DataSource
         ("Yamaha TRACER 9 ",75985,Category.Motorcycle,15)
         };
         OrderItem[] orderDetails = new OrderItem[40];
+        //users details
         (string, string, string)[] userDetails = {("Shira","sh3123373@gcom","zeev chaklay"),
         ("Rachel","rf3123373@gcom","bergman 5"),
         ("Rivka","rhano@gcom","Ramot"),
@@ -76,15 +76,13 @@ internal static class DataSource
         }
         for (int i = 0; i < 4; i++)
         {
-            Console.WriteLine("3");
             (string, string, string) user = userDetails[rnd.Next(userDetails.Length)];
             DateTime od = new DateTime(rnd.Next(1, DateTime.Now.Year), rnd.Next(1, DateTime.Now.Month), rnd.Next(1, DateTime.Now.Day));
             addOrder(new Order(user.Item1, user.Item2, user.Item3, od, Config.OrderID));
         }
         int k = 0;
-        for (int i = 0; i < 20&&k<40; i++)
+        for (int i = 0; i < 20 && k<40; i++)
         {
-            Console.WriteLine("4");
             int j = rnd.Next(1, 4);
             for (int j2 = 0; j2 < j&&k<40; j2++)
             {
@@ -129,8 +127,6 @@ internal static class DataSource
         } while (tID == 0);
         newProduct.ID = tID;
         s_products[Config.s_productIndex++] = newProduct;
-        //newProduct.ID = Config.ProductID;
-        //s_products[Config.s_productIndex++] = newProduct;
     }
     /// <summary>
     /// adding order-item to the order-items array

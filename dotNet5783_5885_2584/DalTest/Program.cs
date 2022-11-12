@@ -15,8 +15,6 @@ internal class Program
         //temp create and delete for initilaize
         int tempID = s_dalProduct.Create(new Product("", 0, Enums.Category.Family, 0));
         s_dalProduct.Delete(tempID);
-        
-
 
         Entity entityChoice;
         do
@@ -337,6 +335,8 @@ internal class Program
                     orderID = int.Parse(Console.ReadLine());
                     foreach (OrderItem oi in s_dalOrderItem.ReadByOrder(orderID))
                     {
+                        if (oi.ID == 0)
+                            break;
                         Console.WriteLine(oi);
                     }
                     break;
@@ -354,11 +354,11 @@ internal class Program
                         Console.WriteLine(exp.Message);
                     }
 
-                    Console.WriteLine("Enter order id name");
+                    Console.WriteLine("Enter order id");
                     string input = Console.ReadLine();
                     if (input != "")
                         tempOrderItem.OrderID = int.Parse(input);
-                    Console.WriteLine("Enter product id price");
+                    Console.WriteLine("Enter product id");
                     input = Console.ReadLine();
                     if (input != "")
                         tempOrderItem.ProductID = int.Parse(input);
