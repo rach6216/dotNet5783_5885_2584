@@ -5,6 +5,7 @@ using static Enums;
 /// </summary>
 public struct Product
 {
+    #region Fields and Props for products
     /// <summary>
     /// unique product Id
     /// </summary>
@@ -33,6 +34,9 @@ public struct Product
     /// <param name="myPrice">product price</param>
     /// <param name="myCategory">product category(enum)</param>
     /// <param name="myInstock" >number of products in the stock</param>
+    #endregion
+
+    #region Constructor for products
     public Product(string myName, double myPrice, Category myCategory, int myInstock, int myID = 000000)
     {
         ID = myID;
@@ -41,6 +45,9 @@ public struct Product
         Category = myCategory;
         InStock = myInstock;
     }
+    #endregion
+
+    #region To string
     /// <summary>
     /// description of the product object
     /// </summary>
@@ -51,5 +58,7 @@ public struct Product
     	Price: {Price}
     	Amount in stock: {InStock}
 ";
+
+    #endregion
 
 }

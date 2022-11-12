@@ -2,8 +2,7 @@
 using DO;
 using Dal;
 using static DO.Enums;
-using System.Diagnostics;
-using System.Xml.Linq;
+
 
 internal class Program
 {
@@ -16,6 +15,8 @@ internal class Program
         //temp create and delete for initilaize
         int tempID = s_dalProduct.Create(new Product("", 0, Enums.Category.Family, 0));
         s_dalProduct.Delete(tempID);
+        
+
 
         Entity entityChoice;
         do
@@ -259,7 +260,6 @@ internal class Program
                     break;
                 default:
                     Console.WriteLine("No such option please enter correct choice");
-
                     break;
 
             }
