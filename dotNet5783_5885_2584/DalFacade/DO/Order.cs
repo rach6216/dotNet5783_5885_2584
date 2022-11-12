@@ -8,6 +8,7 @@ namespace DO;
 /// </summary>
 public struct Order
 {
+    #region Fields and auto properties
     /// <summary>
     /// order id
     /// </summary>
@@ -47,7 +48,17 @@ public struct Order
     /// <param name="deliveryD">delivery date</param>
     /// <param name="myOID" default="000000">order id</param>
 
+    #endregion
 
+    #region Order constructors
+    /// <summary>
+    /// Order constructor 1
+    /// </summary>
+    /// <param name="cName">customer name</param>
+    /// <param name="cEmail">cuatomer email</param>
+    /// <param name="cAddress">customer address</param>
+    /// <param name="orderD">order Date</param>
+    /// <param name="id">optional order id</param>
     public Order(string cName, string cEmail, string cAddress, DateTime orderD, int id = 0)
     {
         ID = id;
@@ -60,6 +71,15 @@ public struct Order
         Random trnd = new Random();
         OrderDate = orderD;
     }
+    /// <summary>
+    /// Order constructor 2
+    /// </summary>
+    /// <param name="cName">customer name</param>
+    /// <param name="cEmail">cuatomer email</param>
+    /// <param name="cAddress">customer address</param>
+    /// <param name="orderD">order Date</param>
+    /// <param name="shipD">ship date</param>
+    /// <param name="id">optional order id</param>
     public Order(string cName, string cEmail, string cAddress, DateTime orderD, DateTime shipD, int id = 0)
     {
         ID = id;
@@ -73,7 +93,17 @@ public struct Order
         OrderDate = orderD;
         ShipDate = shipD;
     }
-    public Order(string cName, string cEmail, string cAddress, DateTime orderD, DateTime shipD, DateTime deliveryD, int id=0)
+    /// <summary>
+    /// order constructor 3
+    /// </summary>
+    /// <param name="cName">customer name</param>
+    /// <param name="cEmail">cuatomer email</param>
+    /// <param name="cAddress">customer address</param>
+    /// <param name="orderD">order Date</param>
+    /// <param name="shipD">ship date</param>
+    /// <param name="deliveryD">delivery date</param>
+    /// <param name="id">optional order id</param>
+    public Order(string cName, string cEmail, string cAddress, DateTime orderD, DateTime shipD, DateTime deliveryD, int id = 0)
     {
         ID = id;
         CustomerName = cName;
@@ -87,7 +117,9 @@ public struct Order
         ShipDate = shipD;
         DeliveryDate = deliveryD;
     }
+    #endregion
 
+    #region To string
     /// <summary>
     /// description of the order object
     /// </summary>
@@ -101,5 +133,7 @@ public struct Order
     ship date: {ShipDate}
     delivery date: {DeliveryDate}
 ";
+    #endregion
+
 
 }

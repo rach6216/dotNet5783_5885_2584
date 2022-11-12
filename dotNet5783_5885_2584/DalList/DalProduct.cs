@@ -7,6 +7,7 @@ namespace Dal;
 /// </summary>
 public struct DalProduct
 {
+    #region Create
     /// <summary>
     /// generate id and insert new product to the array
     /// </summary>
@@ -34,6 +35,9 @@ public struct DalProduct
         s_products[Config.s_productIndex++] = p;
         return p.ID;
     }
+    #endregion
+
+    #region Read
     /// <summary>
     /// get product by id
     /// </summary>
@@ -62,6 +66,9 @@ public struct DalProduct
         }
         return p;
     }
+    #endregion
+
+    #region Update
     /// <summary>
     /// update specific product by id
     /// </summary>
@@ -74,6 +81,9 @@ public struct DalProduct
                 s_products[i] = p;
         }
     }
+    #endregion
+
+    #region Delete
     /// <summary>
     /// delete product by id
     /// </summary>
@@ -84,5 +94,6 @@ public struct DalProduct
         while (s_products[i].ID != id) { i++; }
         s_products[i] = s_products[--Config.s_productIndex];
     }
+    #endregion
 
 }

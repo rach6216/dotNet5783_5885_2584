@@ -5,6 +5,7 @@
 /// </summary>
 public struct OrderItem
 {
+    #region Fields& properties  of order-item
     /// <summary>
     /// id of the order item
     /// </summary>
@@ -25,6 +26,9 @@ public struct OrderItem
     /// amount of products in order
     /// </summary>
     public int Amount { get; set; }
+    #endregion
+
+    #region Constructor for order-item
     /// <summary>
     /// ctor for orderItems
     /// </summary>
@@ -41,6 +45,9 @@ public struct OrderItem
         Price = myPrice;
         Amount = myAmount;
     }
+    #endregion
+
+    #region To string
     /// <summary>
     /// description of the order+item object
     /// </summary>
@@ -55,4 +62,6 @@ public struct OrderItem
         amount: {Amount}
 ";
     }
+    #endregion
+
 }

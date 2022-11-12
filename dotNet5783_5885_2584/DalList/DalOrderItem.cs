@@ -8,6 +8,7 @@ namespace Dal;
 /// </summary>
 public struct DalOrderItem
 {
+    #region Create 
     /// <summary>
     /// generate id for the order-item and put it in the order-items array
     /// </summary>
@@ -19,6 +20,9 @@ public struct DalOrderItem
         s_orderItems[Config.s_orderItemIndex++] = oi;
         return oi.ID;
     }
+    #endregion
+
+    #region Read
     /// <summary>
     /// get order-item by id
     /// </summary>
@@ -34,6 +38,7 @@ public struct DalOrderItem
         }
         throw new Exception("Order item is not found");
     }
+
     /// <summary>
     /// get all the order-items
     /// </summary>
@@ -48,6 +53,8 @@ public struct DalOrderItem
         }
         return items;
     }
+
+
     /// <summary>
     /// get order item by two id's:order & product
     /// </summary>
@@ -80,6 +87,9 @@ public struct DalOrderItem
         }
         return items;
     }
+    #endregion
+
+    #region Update 
     /// <summary>
     /// update details of order-item
     /// </summary>
@@ -92,6 +102,9 @@ public struct DalOrderItem
                 s_orderItems[i] = oi;
         }
     }
+    #endregion
+
+    #region Delete
     /// <summary>
     /// delete order-item 
     /// </summary>
@@ -103,5 +116,6 @@ public struct DalOrderItem
         s_orderItems[i] = s_orderItems[--Config.s_orderItemIndex];
 
     }
+    #endregion
 
 }

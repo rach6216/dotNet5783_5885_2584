@@ -2,8 +2,7 @@
 using DO;
 using Dal;
 using static DO.Enums;
-using System.Diagnostics;
-using System.Xml.Linq;
+
 
 internal class Program
 {
@@ -16,6 +15,8 @@ internal class Program
         //for initilaize
         int tempID= s_dalProduct.Create(new Product("", 0, Enums.Category.Family, 0));
         s_dalProduct.Delete(tempID);
+        
+
 
         Entity entityChoice;
         do
@@ -149,8 +150,8 @@ internal class Program
                         tempProduct.InStock = int.Parse(input);
                     s_dalProduct.Update(tempProduct);
                     break;
-
-
+                case CRUDOp.Exit:
+                    break;
                 default:
                     Console.WriteLine("No such option please enter correct choice");
                     break;
@@ -255,10 +256,10 @@ internal class Program
                     }
 
                     break;
-
+                case CRUDOp.Exit:
+                    break;
                 default:
                     Console.WriteLine("No such option please enter correct choice");
-
                     break;
 
             }
@@ -372,7 +373,8 @@ internal class Program
                         tempOrderItem.Amount = int.Parse(input);
                     s_dalOrderItem.Update(tempOrderItem);
                     break;
-
+                case CRUDOp.Exit:
+                    break;
                 default:
                     Console.WriteLine("No such option please enter correct choice");
                     break;
