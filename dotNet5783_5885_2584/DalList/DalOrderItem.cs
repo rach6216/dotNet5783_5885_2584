@@ -40,7 +40,7 @@ public struct DalOrderItem
     /// <returns>array with all the order-items</returns>
     public OrderItem[] Read()
     {
-        Console.WriteLine("reading don't disturb");
+        //Console.WriteLine("reading don't disturb");
         OrderItem[] items = new OrderItem[Config.s_orderItemIndex];
         for (int i = 0; i < Config.s_orderItemIndex; i++)
         {

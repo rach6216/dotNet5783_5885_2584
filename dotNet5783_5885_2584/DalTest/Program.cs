@@ -13,8 +13,8 @@ internal class Program
 
     private static void Main(string[] args)
     {
-        //for initilaize
-        int tempID= s_dalProduct.Create(new Product("", 0, Enums.Category.Family, 0));
+        //temp create and delete for initilaize
+        int tempID = s_dalProduct.Create(new Product("", 0, Enums.Category.Family, 0));
         s_dalProduct.Delete(tempID);
 
         Entity entityChoice;
@@ -149,8 +149,8 @@ internal class Program
                         tempProduct.InStock = int.Parse(input);
                     s_dalProduct.Update(tempProduct);
                     break;
-
-
+                case CRUDOp.Exit:
+                    break;
                 default:
                     Console.WriteLine("No such option please enter correct choice");
                     break;
@@ -255,7 +255,8 @@ internal class Program
                     }
 
                     break;
-
+                case CRUDOp.Exit:
+                    break;
                 default:
                     Console.WriteLine("No such option please enter correct choice");
 
@@ -372,7 +373,8 @@ internal class Program
                         tempOrderItem.Amount = int.Parse(input);
                     s_dalOrderItem.Update(tempOrderItem);
                     break;
-
+                case CRUDOp.Exit:
+                    break;
                 default:
                     Console.WriteLine("No such option please enter correct choice");
                     break;
