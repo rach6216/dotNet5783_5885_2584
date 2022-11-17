@@ -9,7 +9,7 @@ using static DO.Enums;
 /// </summary>
 internal static class DataSource
 {
-    #region Fields in Data source (arrays of data)
+    #region Fields in Data source (Lists of data)
     /// <summary>
     /// random var for random actions
     /// </summary>
@@ -17,9 +17,9 @@ internal static class DataSource
     /// <summary>
     /// static arrays for storing orders,products and order-items
     /// </summary>
-    static internal Order[] s_orders = new Order[100];
-    static internal Product[] s_products = new Product[50];
-    static internal OrderItem[] s_orderItems = new OrderItem[200];
+    static internal List<Order> s_orders=new();
+    static internal List<Product> s_products=new();
+    static internal List<OrderItem> s_orderItems = new();
     #endregion
 
     #region Static ctor and init fuction
@@ -81,10 +81,10 @@ internal static class DataSource
             addOrder(new Order(user.Item1, user.Item2, user.Item3, od, Config.OrderID));
         }
         int k = 0;
-        for (int i = 0; i < 20&&k<40; i++)
+        for (int i = 0; i < 20 && k < 40; i++)
         {
             int j = rnd.Next(1, 4);
-            for (int j2 = 0; j2 < j&&k<40; j2++)
+            for (int j2 = 0; j2 < j && k < 40; j2++)
             {
                 k++;
                 Product product = s_products[rnd.Next(10)];
@@ -101,7 +101,7 @@ internal static class DataSource
     /// <param name="newOrder">order to add</param>
     static private void addOrder(Order newOrder)
     {
-        s_orders[Config.s_orderIndex++] = newOrder;
+        s_orders.Add(newOrder);
     }
     /// <summary>
     /// adding product to the products array,generating new random id
@@ -116,19 +116,10 @@ internal static class DataSource
         do
         {
             tID = r.Next(10000000, 99999999);
-            foreach (Product item in s_products)
-            {
-                if (item.ID == tID)
-                {
-                    tID = 0;
-                    break;
-                }
-            }
+            s_products.ForEach(x => { if (x.ID == tID) tID = 0; });
         } while (tID == 0);
         newProduct.ID = tID;
-        s_products[Config.s_productIndex++] = newProduct;
-        //newProduct.ID = Config.ProductID;
-        //s_products[Config.s_productIndex++] = newProduct;
+        s_products.Add(newProduct);
     }
     /// <summary>
     /// adding order-item to the order-items array
@@ -137,7 +128,7 @@ internal static class DataSource
     static private void addOrderItem(OrderItem newOrderItem)
     {
         newOrderItem.ID = Config.OrderItemID;
-        s_orderItems[Config.s_orderItemIndex++] = newOrderItem;
+        s_orderItems.Add(newOrderItem);
     }
     #endregion
 
@@ -147,18 +138,6 @@ internal static class DataSource
     /// </summary>
     static internal class Config
     {
-        /// <summary>
-        /// next places in the orders array
-        /// </summary>
-        static internal int s_orderIndex = 0;
-        /// <summary>
-        /// next places in the products array
-        /// </summary>
-        static internal int s_productIndex = 0;
-        /// <summary>
-        /// next places in the order-items array
-        /// </summary>
-        static internal int s_orderItemIndex = 0;
         /// <summary>
         /// next order-item id
         /// </summary>
@@ -170,12 +149,6 @@ internal static class DataSource
         /// <summary>
         /// next product id
         /// </summary>
-        //static private int s_productID = 100000;
-
-        //public static int ProductID
-        //{
-        //    get { return s_productID++; }
-        //}
         public static int OrderItemID
         {
             get { return s_orderItemID++; }

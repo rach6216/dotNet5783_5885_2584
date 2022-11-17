@@ -1,11 +1,12 @@
 ﻿using DO;
+using DalApi;
 using static Dal.DataSource;
 
 namespace Dal;
 /// <summary>
 /// structure for actions on products array
 /// </summary>
-public struct DalProduct
+internal struct DalProduct : IProduct
 {
     #region Create
     /// <summary>
@@ -22,17 +23,10 @@ public struct DalProduct
         do
         {
             tID = r.Next(10000000, 99999999);
-            foreach (Product item in Read())
-            {
-                if (item.ID == tID)
-                {
-                    tID = 0;
-                    break;
-                }
-            }
+            s_products.ForEach(x => { if (x.ID == tID) tID = 0; });
         } while (tID == 0);
         p.ID = tID;
-        s_products[Config.s_productIndex++] = p;
+        s_products.Add(p);
         return p.ID;
     }
     #endregion
@@ -46,25 +40,19 @@ public struct DalProduct
     /// <exception cref="Exception">when product is not exist throw exeption: "Product is not found</exception>
     public Product Read(int id)
     {
-        for (int i = 0; i < Config.s_productIndex; i++)
-        {
-            if (s_products[i].ID == id)
-                return s_products[i];
-        }
+        Product p = s_products.Find(x => x.ID == id);
+        if (p.ID != 0)
+            return p;
         throw new Exception("Product is not found");
     }
     /// <summary>
     /// get all the products
     /// </summary>
     /// <returns>array of the products</returns>
-    public Product[] Read()
+    public IEnumerable<Product> Read()
     {
-        Product[] p = new Product[Config.s_productIndex];
-        for (int i = 0; i < Config.s_productIndex; i++)
-        {
-            p[i] = s_products[i];
-        }
-        return p;
+        List<Product> products = s_products;
+        return products;
     }
     #endregion
 
@@ -75,11 +63,15 @@ public struct DalProduct
     /// <param name="p">product to update</param>
     public void Update(Product p)
     {
-        for (int i = 0; i < Config.s_productIndex; i++)
+        for(int i = 0; i < s_products.Count; i++)
         {
             if (s_products[i].ID == p.ID)
+            {
                 s_products[i] = p;
+                return;
+            }
         }
+        throw new ExceptionEntityNotFound("the product to update is not found");
     }
     #endregion
 
@@ -90,9 +82,11 @@ public struct DalProduct
     /// <param name="id">id of product to delete</param>
     public void Delete(int id)
     {
-        int i = 0;
-        while (s_products[i].ID != id) { i++; }
-        s_products[i] = s_products[--Config.s_productIndex];
+       bool flag=  s_products.Remove(Read(id));
+        if (!flag)
+        {
+            throw new ExceptionEntityNotFound("Order for delete is not found");
+        }
     }
     #endregion
 

@@ -6,15 +6,13 @@ using static DO.Enums;
 
 internal class Program
 {
-    private static DalOrder s_dalOrder = new DalOrder();
-    private static DalProduct s_dalProduct = new DalProduct();
-    private static DalOrderItem s_dalOrderItem = new DalOrderItem();
+    static DalList DalList = new DalList();
 
     private static void Main(string[] args)
     {
         //for initilaize
-        int tempID= s_dalProduct.Create(new Product("", 0, Enums.Category.Family, 0));
-        s_dalProduct.Delete(tempID);
+        int tempID= DalList.Product.Create(new Product("", 0, Enums.Category.Family, 0));
+        DalList.Product.Delete(tempID);
         
 
 
@@ -79,7 +77,7 @@ internal class Program
                     Enum.TryParse(Console.ReadLine(), out category);
                     Console.WriteLine("Enter amount in stock");
                     int instock = int.Parse(Console.ReadLine());
-                    Console.WriteLine("product #" + s_dalProduct.Create(new Product(name, price, category, instock)) + " created");
+                    Console.WriteLine("product #" + DalList.Product.Create(new Product(name, price, category, instock)) + " created");
                     break;
 
                 case CRUDOp.Read:
@@ -87,7 +85,7 @@ internal class Program
                     int id = int.Parse(Console.ReadLine());
                     try
                     {
-                        Console.WriteLine(s_dalProduct.Read(id));
+                        Console.WriteLine(DalList.Product.Read(id));
                     }
                     catch (Exception exp)
                     {
@@ -96,7 +94,7 @@ internal class Program
 
                     break;
                 case CRUDOp.ReadAll:
-                    foreach (Product p in s_dalProduct.Read())
+                    foreach (Product p in DalList.Product.Read())
                     {
                         Console.WriteLine(p);
                     }
@@ -106,7 +104,7 @@ internal class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        s_dalProduct.Delete(id);
+                        DalList.Product.Delete(id);
                     }
                     catch (Exception exp)
                     {
@@ -116,7 +114,7 @@ internal class Program
                 case CRUDOp.Update:
                     Console.WriteLine("Enter product ID to update");
                     id = int.Parse(Console.ReadLine());
-                    Product tempProduct = s_dalProduct.Read(id);
+                    Product tempProduct = DalList.Product.Read(id);
                     try
                     {
                         Console.WriteLine(tempProduct);
@@ -148,7 +146,7 @@ internal class Program
                     input = Console.ReadLine();
                     if (input != "")
                         tempProduct.InStock = int.Parse(input);
-                    s_dalProduct.Update(tempProduct);
+                    DalList.Product.Update(tempProduct);
                     break;
                 case CRUDOp.Exit:
                     break;
@@ -184,7 +182,7 @@ internal class Program
                     string cAddress = Console.ReadLine();
 
                     //the ship and delivery date will update in the order ctor
-                    Console.WriteLine("order #" + s_dalOrder.Create(new Order(cName, cEmail, cAddress, DateTime.Now)) + " created");
+                    Console.WriteLine("order #" + DalList.Order.Create(new Order(cName, cEmail, cAddress, DateTime.Now)) + " created");
                     break;
 
                 case CRUDOp.Delete:
@@ -193,7 +191,7 @@ internal class Program
                     //add condition that check if the order can be deleted
                     try
                     {
-                        s_dalOrder.Delete(id);
+                        DalList.Order.Delete(id);
                     }
                     catch (Exception exp)
                     {
@@ -207,7 +205,7 @@ internal class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        Console.WriteLine(s_dalOrder.Read(id));
+                        Console.WriteLine(DalList.Order.Read(id));
                     }
                     catch (Exception exp)
                     {
@@ -220,7 +218,7 @@ internal class Program
                     Console.WriteLine("Enter order ID to update");
                     //add condition that check if the order can updating
                     id = int.Parse(Console.ReadLine());
-                    Order tempOrder = s_dalOrder.Read(id);
+                    Order tempOrder = DalList.Order.Read(id);
                     try
                     {
                         Console.WriteLine(tempOrder);
@@ -241,7 +239,7 @@ internal class Program
                     inp = Console.ReadLine();
                     if (inp != "")
                         tempOrder.CustomerAddress = inp;
-                    s_dalOrder.Update(tempOrder);
+                    DalList.Order.Update(tempOrder);
 
                     break;
 
@@ -249,7 +247,7 @@ internal class Program
                     //In the future, the user will be saved automatically and we will not have to ask for details
                     //Console.WriteLine("Enter id");
                     //cName = Console.ReadLine();
-                    foreach (Order o in s_dalOrder.Read())
+                    foreach (Order o in DalList.Order.Read())
                     {
                         //if (o.CustomerName == cName)
                         Console.WriteLine(o);
@@ -293,14 +291,14 @@ internal class Program
                     double price = double.Parse(Console.ReadLine());
                     Console.WriteLine("Enter amount :");
                     int amount = int.Parse(Console.ReadLine());
-                    Console.WriteLine("order item #" + s_dalOrderItem.Create(new OrderItem(productID, orderID, price, amount)) + "created");
+                    Console.WriteLine("order item #" + DalList.OrderItem.Create(new OrderItem(productID, orderID, price, amount)) + "created");
                     break;
                 case CRUDOp.Delete:
                     Console.WriteLine("Enter orderItem ID for delete");
                     int id = int.Parse(Console.ReadLine());
                     try
                     {
-                        s_dalOrderItem.Delete(id);
+                        DalList.OrderItem.Delete(id);
                     }
                     catch (Exception exp)
                     {
@@ -312,7 +310,7 @@ internal class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        Console.WriteLine(s_dalOrderItem.Read(id));
+                        Console.WriteLine(DalList.OrderItem.Read(id));
                     }
                     catch (Exception exp)
                     {
@@ -320,7 +318,7 @@ internal class Program
                     }
                     break;
                 case CRUDOp.ReadAll:
-                    foreach (OrderItem oi in s_dalOrderItem.Read())
+                    foreach (OrderItem oi in DalList.OrderItem.Read())
                     {
                         Console.WriteLine(oi);
                     }
@@ -330,12 +328,12 @@ internal class Program
                     orderID = int.Parse(Console.ReadLine());
                     Console.WriteLine("Enter product id");
                     productID = int.Parse(Console.ReadLine());
-                    Console.WriteLine(s_dalOrderItem.Read(orderID, productID));
+                    Console.WriteLine(DalList.OrderItem.Read(orderID, productID));
                     break;
                 case CRUDOp.ReadAllByOrder:
                     Console.WriteLine("Enter order id");
                     orderID = int.Parse(Console.ReadLine());
-                    foreach (OrderItem oi in s_dalOrderItem.ReadByOrder(orderID))
+                    foreach (OrderItem oi in DalList.OrderItem.ReadByOrder(orderID))
                     {
                         Console.WriteLine(oi);
                     }
@@ -344,7 +342,7 @@ internal class Program
                 case CRUDOp.Update:
                     Console.WriteLine("Enter order-item ID to update");
                     id = int.Parse(Console.ReadLine());
-                    OrderItem tempOrderItem = s_dalOrderItem.Read(id);
+                    OrderItem tempOrderItem = DalList.OrderItem.Read(id);
                     try
                     {
                         Console.WriteLine(tempOrderItem);
@@ -371,7 +369,7 @@ internal class Program
                     input = Console.ReadLine();
                     if (input != "")
                         tempOrderItem.Amount = int.Parse(input);
-                    s_dalOrderItem.Update(tempOrderItem);
+                    DalList.OrderItem.Update(tempOrderItem);
                     break;
                 case CRUDOp.Exit:
                     break;

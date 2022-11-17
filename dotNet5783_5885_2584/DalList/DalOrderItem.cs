@@ -1,4 +1,4 @@
-﻿
+﻿using DalApi;
 using DO;
 using static Dal.DataSource;
 
@@ -6,7 +6,7 @@ namespace Dal;
 /// <summary>
 /// structure for octions on order-items 
 /// </summary>
-public struct DalOrderItem
+internal struct DalOrderItem:IOrderItem
 {
     #region Create 
     /// <summary>
@@ -17,7 +17,7 @@ public struct DalOrderItem
     public int Create(OrderItem oi)
     {
         oi.ID = Config.OrderItemID;
-        s_orderItems[Config.s_orderItemIndex++] = oi;
+        s_orderItems.Add(oi);
         return oi.ID;
     }
     #endregion
@@ -31,11 +31,9 @@ public struct DalOrderItem
     /// <exception cref="Exception">if there are no order-item with the id throw string: "Order item is not found"</exception>
     public OrderItem Read(int id)
     {
-        for (int i = 0; i < Config.s_orderItemIndex; i++)
-        {
-            if (s_orderItems[i].ID == id)
-                return s_orderItems[i];
-        }
+       OrderItem oi= s_orderItems.Find(x=>x.ID==id);
+       if(oi.ID!=0)
+            return oi;
         throw new Exception("Order item is not found");
     }
 
@@ -43,15 +41,10 @@ public struct DalOrderItem
     /// get all the order-items
     /// </summary>
     /// <returns>array with all the order-items</returns>
-    public OrderItem[] Read()
+    public IEnumerable<OrderItem> Read()
     {
-        Console.WriteLine("reading don't disturb");
-        OrderItem[] items = new OrderItem[Config.s_orderItemIndex];
-        for (int i = 0; i < Config.s_orderItemIndex; i++)
-        {
-            items[i] = s_orderItems[i];
-        }
-        return items;
+        List<OrderItem> list = s_orderItems;
+        return list;
     }
 
 
@@ -64,11 +57,9 @@ public struct DalOrderItem
     /// <exception cref="Exception">when there are no such order-item throw string: Order item is not found </exception>
     public OrderItem Read(int oID, int pID)
     {
-        for (int i = 0; i < Config.s_orderItemIndex; i++)
-        {
-            if (s_orderItems[i].OrderID == oID && s_orderItems[i].ProductID == pID)
-                return s_orderItems[i];
-        }
+        OrderItem oi = s_orderItems.Find(x => x.OrderID == oID&&x.ProductID==pID);
+        if (oi.ID != 0)
+            return oi;
         throw new Exception("Order item is not found");
     }
     /// <summary>
@@ -76,16 +67,15 @@ public struct DalOrderItem
     /// </summary>
     /// <param name="oID">order id</param>
     /// <returns>array with order-items</returns>
-    public OrderItem[] ReadByOrder(int oID)
+    public IEnumerable<OrderItem> ReadByOrder(int oID)
     {
-        int j = 0;
-        OrderItem[] items = new OrderItem[Config.s_orderItemIndex];
-        for (int i = 0; i < Config.s_orderItemIndex; i++)
+        List<OrderItem> list = new();
+        for (int i = 0; i < s_orderItems.Count; i++)
         {
             if (s_orderItems[i].OrderID == oID)
-                items[j++] = s_orderItems[i];
+                list.Add(s_orderItems[i]);
         }
-        return items;
+        return list;
     }
     #endregion
 
@@ -96,7 +86,7 @@ public struct DalOrderItem
     /// <param name="oi">order-item id to update</param>
     public void Update(OrderItem oi)
     {
-        for (int i = 0; i < Config.s_orderItemIndex; i++)
+        for (int i = 0; i < s_orderItems.Count; i++)
         {
             if (s_orderItems[i].ID == oi.ID)
                 s_orderItems[i] = oi;
@@ -111,10 +101,9 @@ public struct DalOrderItem
     /// <param name="id">order-item id to delete</param>
     public void Delete(int id)
     {
-        int i = 0;
-        while (s_orderItems[i].ID != id) { i++; }
-        s_orderItems[i] = s_orderItems[--Config.s_orderItemIndex];
-
+      bool flag= s_orderItems.Remove(Read(id));
+        if (!flag)
+            throw new ExceptionEntityNotFound("the order-item to delete is not found");
     }
     #endregion
 

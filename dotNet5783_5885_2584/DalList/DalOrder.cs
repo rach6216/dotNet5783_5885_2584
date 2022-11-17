@@ -1,11 +1,12 @@
-﻿using DO;
+﻿using DalApi;
+using DO;
 using static Dal.DataSource;
 
 namespace Dal;
 /// <summary>
 /// structure for actions on orders entities
 /// </summary>
-public struct DalOrder
+internal struct DalOrder:IOrder
 {
     #region Create
     /// <summary>
@@ -16,7 +17,7 @@ public struct DalOrder
     public int Create(Order o)
     {
         o.ID = Config.OrderID;
-        s_orders[Config.s_orderIndex++] = o;
+        s_orders.Add(o);
         return o.ID;
     }
     #endregion
@@ -30,26 +31,20 @@ public struct DalOrder
     /// <exception cref="Exception">if the order doesn't exist throw string: "Order is not found" </exception>
     public Order Read(int id)
     {
-        for (int i = 0; i < Config.s_orderIndex; i++)
-        {
-            if (s_orders[i].ID == id)
-                return s_orders[i];
-        }
-        throw new Exception("Order is not found");
+        Order o=s_orders.Find(x => x.ID == id);
+        if (o.ID != 0)
+            return o;
+        throw new ExceptionEntityNotFound("Order is not found");
     }
 
     /// <summary>
     /// get all the orders
     /// </summary>
     /// <returns>array with all the orders</returns>
-    public Order[] Read()
+    public IEnumerable<Order> Read()
     {
-        Order[] orders = new Order[Config.s_orderIndex];
-        for (int i = 0; i < Config.s_orderIndex; i++)
-        {
-            orders[i] = s_orders[i];
-        }
-        return orders;
+        List<Order> ol=s_orders;       
+        return ol;
     }
     #endregion
 
@@ -60,11 +55,15 @@ public struct DalOrder
     /// <param name="o">order to update</param>
     public void Update(Order o)
     {
-        for (int i = 0; i < Config.s_orderIndex; i++)
+        for (int i = 0; i < s_orders.Count; i++)
         {
             if (s_orders[i].ID == o.ID)
+            {
                 s_orders[i] = o;
+                return;
+            } 
         }
+        throw new ExceptionEntityNotFound("the order entity not found");
     }
     #endregion
 
@@ -75,11 +74,11 @@ public struct DalOrder
     /// <param name="id">id of order to delete</param>
     public void Delete(int id)
     {
-        int i = 0;
-        while (s_orders[i].ID != id) { i++; }
-        s_orders[i] = s_orders[--Config.s_orderIndex];
-
+       bool flag= s_orders.Remove(Read(id));
+        if (!flag)
+        {
+            throw new ExceptionEntityNotFound("Order for delete is not found");
+        }
     }
     #endregion
-
 }
