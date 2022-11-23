@@ -1,12 +1,12 @@
-﻿
-namespace DalApi;
+﻿namespace DO;
 
 /// <summary>
 /// Exception if the id not exist
 /// </summary>
-public class ExceptionEntityNotFound:Exception
+public class ExceptionEntityNotFound : Exception
 {
-    public ExceptionEntityNotFound():base(){
+    public ExceptionEntityNotFound() : base()
+    {
     }
     public ExceptionEntityNotFound(string msg) : base(msg)
     {
