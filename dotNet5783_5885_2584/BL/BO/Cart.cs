@@ -21,9 +21,9 @@ public class Cart
     /// <summary>
     /// items in the cart
     /// </summary>
-    List<OrderItem> Items { get; set; }
+    public List<ProductItem> Items { get; set; }
     /// <summary>
-    /// the total price of the items in cart
+    /// the total price of the order
     /// </summary>
     public double TotalPrice { get; set; }
 }

@@ -1,4 +1,7 @@
-﻿namespace BlTest
+﻿using DO;
+using static DO.Enums;
+
+namespace BlTest
 {
     internal class Program
     {

@@ -22,9 +22,9 @@ public class ProductItem
     /// </summary>
     public Category Category { get; set; }
     /// <summary>
-    /// number of products in the stock
+    /// if the product in stock
     /// </summary>
-    public int InStock { get; set; }
+    public bool InStock { get; set; }
     /// <summary>
     /// the amount of the product in the order
     /// </summary>

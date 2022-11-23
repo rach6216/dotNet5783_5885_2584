@@ -11,7 +11,7 @@ public interface IProduct
     /// method that get all products
     /// </summary>
     /// <returns>list of all products</returns>
-    public IEnumerable<ProductForList> ReadAll();
+    public List<ProductForList> ReadAll();
     /// <summary>
     /// method that get product by id for manager screen
     /// </summary>
