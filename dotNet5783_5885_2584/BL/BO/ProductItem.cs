@@ -29,4 +29,17 @@ public class ProductItem
     /// the amount of the product in the order
     /// </summary>
     public int Amount { get; set; }
+
+    /// <summary>
+    /// description of the product object
+    /// </summary>
+    /// <returns>string with the description</returns>
+    public override string ToString() => $@"
+        Product ID: {ID}: {Name}, 
+        category: {Category.ToString()}
+    	Price: {Price}
+    	Amount in stock: {InStock}
+    	Amount: {Amount}
+
+        ";
 }

@@ -1,6 +1,6 @@
 ﻿namespace BO;
 
-public struct Product
+public class Product
 {
     /// <summary>
     /// unique product Id

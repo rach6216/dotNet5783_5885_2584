@@ -1,5 +1,5 @@
 ﻿namespace DO;
-using static Enums;
+
 /// <summary>
 /// structure for the store products
 /// </summary>

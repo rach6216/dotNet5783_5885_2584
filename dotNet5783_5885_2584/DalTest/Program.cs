@@ -1,7 +1,6 @@
 ﻿namespace DalTest;
 using DO;
 using Dal;
-using static DO.Enums;
 
 
 internal class Program
@@ -10,12 +9,6 @@ internal class Program
 
     private static void Main(string[] args)
     {
-        //for initilaize
-        int tempID= DalList.Product.Create(new Product());
-        DalList.Product.Delete(tempID);
-        
-
-
         Entity entityChoice;
         do
         {

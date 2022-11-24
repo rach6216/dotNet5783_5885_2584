@@ -28,7 +28,7 @@ public interface IProduct
     /// method that add product for manager screen
     /// </summary>
     /// <param name="product"></param>
-    public BO.Product AddProduct(Product product);
+    public int AddProduct(Product product);
     /// <summary>
     /// method that add product for manager screen
     /// </summary>

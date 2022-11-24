@@ -21,4 +21,15 @@ public class ProductForList
     /// product category(enum)
     /// </summary>
     public Category Category { get; set; }
+
+    /// <summary>
+    /// description of the product object
+    /// </summary>
+    /// <returns>string with the description</returns>
+    public override string ToString() => $@"
+        Product ID: {ID},
+        Product name: {Name}, 
+        category: {Category.ToString()}
+    	Price: {Price}
+        ";
 }

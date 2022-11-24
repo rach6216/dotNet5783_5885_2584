@@ -1,7 +1,7 @@
 ﻿namespace DO;
 
-public struct Enums
-{
+
+
     /// <summary>
     /// categories for the store
     /// </summary>
@@ -23,5 +23,5 @@ public struct Enums
     {
         Exit, Create, Read, ReadAll,  Update, Delete, ReadByProductAndOrder, ReadAllByOrder
     }
-}
+
 

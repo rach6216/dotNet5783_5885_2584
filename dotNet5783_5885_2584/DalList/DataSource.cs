@@ -2,7 +2,7 @@
 using DO;
 using System.Net.Mail;
 using System.Runtime.CompilerServices;
-using static DO.Enums;
+
 
 /// <summary>
 /// static structure for storing the data
