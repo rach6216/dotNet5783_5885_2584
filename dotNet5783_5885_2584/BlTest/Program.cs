@@ -239,7 +239,7 @@ internal class Program
 
     private static void _cartsChoosen()
     {
-        CrudProduct productChoices;
+        CrudCart cartChoices;
         do
         {
             Console.WriteLine("Enter 1 to create new product");
@@ -250,7 +250,54 @@ internal class Program
             Console.WriteLine("Enter 6 to get product for catalog");
             Console.WriteLine("Enter 0 to exit");
 
-            Enum.TryParse(Console.ReadLine(), out productChoices);
+            Enum.TryParse(Console.ReadLine(), out cartChoices);
+            switch (cartChoices)
+            {
+                case CrudCart.Exit:
+                    break;
+                case CrudCart.Read:
+                    Console.WriteLine("enter order id");
+                    int id = int.Parse(Console.ReadLine());
+                    try
+                    {
+                        BO.Order order = _bl.Order.Read(id);
+                        Console.WriteLine(order);
+                        {
+                            Console.WriteLine(order);
+                        }
+                    }
+                    catch (BO.ExceptionEntityNotFound exp)
+                    {
+                        Console.WriteLine(exp.Message);
+                    }
+                    break;
+                case CrudOrder.ReadAll:
+                    foreach (var item in _bl.Order.ReadAll())
+                    {
+                        Console.WriteLine(item);
+                    }
+                    break;
+                case CrudOrder.UpdateOrder:
+
+                    break;
+                case CrudOrder.ShipOrder:
+                    Console.WriteLine("Enter shipping order id");
+                    id = int.Parse(Console.ReadLine());
+                    _bl.Order.ShipOrder(id);
+                    break;
+                case CrudOrder.DeliveryOrder:
+                    Console.WriteLine("Enter delivering order id");
+                    id = int.Parse(Console.ReadLine());
+                    _bl.Order.DeliveryOrder(id);
+                    break;
+                case CrudOrder.OrderTracking:
+                    Console.WriteLine("Enter order id for tracking");
+                    id = int.Parse(Console.ReadLine());
+                    _bl.Order.OrderTracking(id);
+                    break;
+                default:
+                    break;
+            }
         } while (productChoices != CrudProduct.Exit);
 
     }
