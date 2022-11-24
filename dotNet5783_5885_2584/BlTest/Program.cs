@@ -2,13 +2,13 @@
 using BlApi;
 using BlImplementation;
 using BO;
-using Dal;
+
 
 namespace BlTest;
 
 internal class Program
 {
-    static IBl BL = new Bl();
+    static private IBl _bl = new Bl();
     static void Main(string[] args)
     {
         Entity entityChoice;
@@ -67,12 +67,12 @@ internal class Program
                     double price = 0;
                     try
                     {
-                         price = Double.Parse(Console.ReadLine());
+                        price = Double.Parse(Console.ReadLine());
                     }
                     catch (Exception exp)
                     {
                         Console.WriteLine(exp.Message);
-                         price = Double.Parse(Console.ReadLine());
+                        price = Double.Parse(Console.ReadLine());
                     }
                     Console.WriteLine("Enter product category");
                     Console.WriteLine("our categories:");
@@ -81,7 +81,7 @@ internal class Program
                     Enum.TryParse(Console.ReadLine(), out category);
                     Console.WriteLine("Enter amount in stock");
                     int instock = int.Parse(Console.ReadLine());
-                    Console.WriteLine("product #" + BL.Product.AddProduct(new Product() { Category = category, InStock = instock, Name = name, Price = price }) + " created");
+                    Console.WriteLine("product #" + _bl.Product.AddProduct(new Product() { Category = category, InStock = instock, Name = name, Price = price }) + " created");
                     break;
 
                 case CrudProduct.Read:
@@ -89,7 +89,7 @@ internal class Program
                     int id = int.Parse(Console.ReadLine());
                     try
                     {
-                        Console.WriteLine(BL.Product.Read(id));
+                        Console.WriteLine(_bl.Product.Read(id));
                     }
                     catch (Exception exp)
                     {
@@ -97,7 +97,7 @@ internal class Program
                     }
                     break;
                 case CrudProduct.ReadAll:
-                    foreach (var p in BL.Product.ReadAll())
+                    foreach (var p in _bl.Product.ReadAll())
                     {
                         Console.WriteLine(p);
                     }
@@ -107,7 +107,7 @@ internal class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        BL.Product.DelProduct(id);
+                        _bl.Product.DelProduct(id);
                     }
                     catch (Exception exp)
                     {
@@ -117,7 +117,7 @@ internal class Program
                 case CrudProduct.Update:
                     Console.WriteLine("Enter product ID to update");
                     id = int.Parse(Console.ReadLine());
-                    Product tempProduct = BL.Product.Read(id);
+                    Product tempProduct = _bl.Product.Read(id);
                     Console.WriteLine(tempProduct);
                     Console.WriteLine("Enter product name");
                     string input = Console.ReadLine();
@@ -150,24 +150,24 @@ internal class Program
                         tempProduct.InStock = int.Parse(input);
                     try
                     {
-                        BL.Product.UpdateProduct(tempProduct);
-                    }catch(ExceptionEntityNotFound exp)
+                        _bl.Product.UpdateProduct(tempProduct);
+                    }
+                    catch (ExceptionEntityNotFound exp)
                     {
                         Console.WriteLine(exp.Message);
                     }
                     break;
                 case CrudProduct.ReadByIDAndCart:
-                    Cart cart=new Cart();
+                    Cart cart = new Cart();
                     Console.WriteLine("Enter product id");
-                     id = int.Parse(Console.ReadLine());
-                    Console.WriteLine(BL.Product.Read(id, cart)); 
+                    id = int.Parse(Console.ReadLine());
+                    Console.WriteLine(_bl.Product.Read(id, cart));
                     break;
                 case CrudProduct.Exit:
                     break;
                 default:
                     Console.WriteLine("No such option please enter correct choice");
                     break;
-
 
             }
         } while (productChoices != CrudProduct.Exit);
@@ -176,11 +176,82 @@ internal class Program
 
     private static void _ordersChoosen()
     {
+        CrudOrder orderChoices;
+        do
+        {
+            Console.WriteLine("Enter 1 to get order info by id");
+            Console.WriteLine("Enter 2 to get all the orders info");
+            Console.WriteLine("Enter 3 to update an order");
+            Console.WriteLine("Enter 4 to ship order");
+            Console.WriteLine("Enter 5 to deliver order");
+            Console.WriteLine("Enter 6 for order tracking");
+            Console.WriteLine("Enter 0 to exit");
+            Enum.TryParse(Console.ReadLine(), out orderChoices);
+            switch (orderChoices)
+            {
+                case CrudOrder.Exit:
+                    break;
+                case CrudOrder.Read:
+                    Console.WriteLine("enter order id");
+                    int id = int.Parse(Console.ReadLine());
+                    try
+                    {
+                        BO.Order order = _bl.Order.Read(id);
+                        Console.WriteLine(order);
+                        {
+                            Console.WriteLine(order);
+                        }
+                    }catch(BO.ExceptionEntityNotFound exp)
+                    {
+                        Console.WriteLine(exp.Message);
+                    }
+                    break;
+                case CrudOrder.ReadAll:
+                    foreach (var item in _bl.Order.ReadAll())
+                    {
+                        Console.WriteLine(item);
+                    }
+                    break;
+                case CrudOrder.UpdateOrder:
+
+                    break;
+                case CrudOrder.ShipOrder:
+                    Console.WriteLine("Enter shipping order id");
+                    id=int.Parse(Console.ReadLine());
+                    _bl.Order.ShipOrder(id);
+                    break;
+                case CrudOrder.DeliveryOrder:
+                    Console.WriteLine("Enter delivering order id");
+                    id = int.Parse(Console.ReadLine());
+                    _bl.Order.DeliveryOrder(id);
+                    break;
+                case CrudOrder.OrderTracking:
+                    Console.WriteLine("Enter order id for tracking");
+                    id = int.Parse(Console.ReadLine());
+                    _bl.Order.OrderTracking(id);
+                    break;
+                default:
+                    break;
+            }
+        } while (orderChoices != CrudOrder.Exit);
 
     }
 
     private static void _cartsChoosen()
     {
+        CrudProduct productChoices;
+        do
+        {
+            Console.WriteLine("Enter 1 to create new product");
+            Console.WriteLine("Enter 2 to get info about product by ID");
+            Console.WriteLine("Enter 3 to get all the products info");
+            Console.WriteLine("Enter 4 to update a product");
+            Console.WriteLine("Enter 5 to delete a product");
+            Console.WriteLine("Enter 6 to get product for catalog");
+            Console.WriteLine("Enter 0 to exit");
+
+            Enum.TryParse(Console.ReadLine(), out productChoices);
+        } while (productChoices != CrudProduct.Exit);
 
     }
 }

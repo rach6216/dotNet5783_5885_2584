@@ -1,4 +1,6 @@
 ﻿
+using System.Xml.Linq;
+
 namespace BO;
 
 public class OrderItem
@@ -27,5 +29,16 @@ public class OrderItem
     /// the total price of the order
     /// </summary>
     public double TotalPrice { get; set; }
+
+    public override string ToString() => $@"
+        ID: {ID},
+        Product ID: {ProductID}, 
+        Product name: {ProductName}, 
+    	Price: {Price},
+    	Amount: {Amount},
+        Total price: {TotalPrice}
+
+";
+
 
 }

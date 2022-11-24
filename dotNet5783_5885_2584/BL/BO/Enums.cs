@@ -35,3 +35,8 @@ public enum CrudProduct
 {
     Exit,Create, Read, ReadAll, Update, Delete, ReadByIDAndCart
 }
+
+public enum CrudOrder
+{
+    Exit, Read, ReadAll, UpdateOrder, ShipOrder, DeliveryOrder, OrderTracking
+}

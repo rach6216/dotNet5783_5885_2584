@@ -1,4 +1,7 @@
 ﻿
+using System.Diagnostics;
+using System.Xml.Linq;
+
 namespace BO;
 
 public class OrderForList
@@ -23,4 +26,14 @@ public class OrderForList
     /// the total price of the order
     /// </summary>
     public double TotalPrice { get; set; }
+
+    public override string ToString() => $@"
+        order ID: {ID}: 
+        Customer name: {CustomerName}, 
+        order Status: {Status}
+    	Amount : {Amount}
+        TotalPrice: {TotalPrice}
+
+";
+
 }

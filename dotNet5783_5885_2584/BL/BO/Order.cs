@@ -1,5 +1,8 @@
 ﻿
 
+using System.Diagnostics;
+using System.Xml.Linq;
+
 namespace BO;
 
 public class Order
@@ -44,5 +47,27 @@ public class Order
     /// the total price of the order
     /// </summary>
     public double TotalPrice { get; set; }
+
+    public override string ToString()
+    {
+        string orderItem = "";
+        foreach (var item in Items)
+        {
+            orderItem += item;
+        }
+       return $@"
+        Product ID: {ID}: 
+        Customer name: {CustomerName}, 
+        Customer name: {CustomerEmail},
+        Customer Address: {CustomerAddress},
+        status: {Status},
+        OrderDate: {OrderDate},
+        ShipDate: {ShipDate},
+        DeliveryDate: {DeliveryDate},
+        Items: {orderItem},
+        TotalPrice: {TotalPrice}
+
+";
+    }
 
 }
