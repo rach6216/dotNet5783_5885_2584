@@ -1,6 +1,5 @@
 ﻿
 using BO;
-
 namespace BlApi;
 
 public interface IOrder
@@ -34,4 +33,11 @@ public interface IOrder
     /// <param name="id">order id</param>
     /// <returns>orderTracking that reflect the track of the order</returns>
     public OrderTracking OrderTracking(int id); 
+    
+    /// <summary>
+    /// update order by id
+    /// </summary>
+    /// <param name="id">order id </param>
+    /// <returns>the updated logic order</returns>
+    public BO.Order  UpdateOrder(int orderID,BO.OrderItem orderItem);
 }

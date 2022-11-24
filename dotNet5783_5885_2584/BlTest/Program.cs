@@ -1,13 +1,10 @@
-﻿using DO;
-using static DO.Enums;
+﻿
+namespace BlTest;
 
-namespace BlTest
+internal class Program
 {
-    internal class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello, World!");
-        }
+        Console.WriteLine("Hello, World!");
     }
 }

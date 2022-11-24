@@ -16,16 +16,18 @@ internal struct DalProduct : IProduct
     /// <returns>the id of the product</returns>
     public int Create(Product p)
     {
-        // p.ID = Config.ProductID;
-        Random r = new Random();
-        int tID;
-        //generate random id
-        do
+       if(p.ID == 0)
         {
-            tID = r.Next(10000000, 99999999);
-            s_products.ForEach(x => { if (x.ID == tID) tID = 0; });
-        } while (tID == 0);
-        p.ID = tID;
+            Random r = new Random();
+            int tID;
+            //generate random id
+            do
+            {
+                tID = r.Next(10000000, 99999999);
+                s_products.ForEach(x => { if (x.ID == tID) tID = 0; });
+            } while (tID == 0);
+            p.ID = tID;
+        }
         s_products.Add(p);
         return p.ID;
     }

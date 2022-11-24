@@ -47,7 +47,7 @@ public struct Product
     }
     #endregion
 
-    #region To string
+
     /// <summary>
     /// description of the product object
     /// </summary>
@@ -57,8 +57,6 @@ public struct Product
         category: {Category.ToString()}
     	Price: {Price}
     	Amount in stock: {InStock}
-";
-
-    #endregion
+        ";
 
 }

@@ -57,7 +57,7 @@ internal static class DataSource
 
         foreach ((string, int, Category, int) item in productDetails)
         {
-            addProduct(new Product(item.Item1, item.Item2, item.Item3, item.Item4));
+            addProduct(new Product(){Name=item.Item1, Price=item.Item2, Category=item.Item3, InStock=item.Item4});
         }
         for (int i = 0; i < 9; i++)
         {

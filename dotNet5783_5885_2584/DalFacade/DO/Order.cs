@@ -112,7 +112,6 @@ public struct Order
         OrderDate = orderD;
         ShipDate = DateTime.MinValue;
         DeliveryDate = DateTime.MinValue;
-        Random trnd = new Random();
         OrderDate = orderD;
         ShipDate = shipD;
         DeliveryDate = deliveryD;

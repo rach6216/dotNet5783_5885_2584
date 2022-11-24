@@ -1,7 +1,5 @@
 ﻿
 
-using DO;
-
 namespace BO;
 
 public class Order
@@ -41,7 +39,7 @@ public class Order
     /// <summary>
     /// list of items in the order
     /// </summary>
-    List<OrderItem> Items { get; set; }
+    public List<BO.OrderItem> Items { get; set; }
     /// <summary>
     /// the total price of the order
     /// </summary>

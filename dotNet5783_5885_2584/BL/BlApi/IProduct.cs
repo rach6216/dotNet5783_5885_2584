@@ -1,6 +1,5 @@
 ﻿
 using BO;
-
 namespace BlApi;
 /// <summary>
 /// interface of product
@@ -11,25 +10,25 @@ public interface IProduct
     /// method that get all products
     /// </summary>
     /// <returns>list of all products</returns>
-    public List<ProductForList> ReadAll();
+    public IEnumerable<BO.ProductForList> ReadAll();
     /// <summary>
     /// method that get product by id for manager screen
     /// </summary>
     /// <param name="id">product id</param>
     /// <returns>product by id</returns>
-    public Product Read(int id);
+    public BO.Product Read(int id);
     /// <summary>
     /// method that get product by id for client screen
     /// </summary>
     /// <param name="id">product id</param>
     /// <param name="cart"></param>
     /// <returns>prduct item or exception if product not exiest</returns>
-    public Product Read(int id, Cart cart);
+    public BO.ProductItem Read(int id, Cart cart);
     /// <summary>
     /// method that add product for manager screen
     /// </summary>
     /// <param name="product"></param>
-    public void AddProduct(Product product);
+    public BO.Product AddProduct(Product product);
     /// <summary>
     /// method that add product for manager screen
     /// </summary>

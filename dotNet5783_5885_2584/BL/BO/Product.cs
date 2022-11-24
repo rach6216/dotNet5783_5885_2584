@@ -1,7 +1,6 @@
-﻿using DO;
-namespace BO;
+﻿namespace BO;
 
-public class Product
+public struct Product
 {
     /// <summary>
     /// unique product Id
@@ -23,4 +22,17 @@ public class Product
     /// number of products in the stock
     /// </summary>
     public int InStock { get; set; }
+    #region To string
+    /// <summary>
+    /// description of the product object
+    /// </summary>
+    /// <returns>string with the description</returns>
+    public override string ToString() => $@"
+        Product ID: {ID}: {Name}, 
+        category: {Category.ToString()}
+    	Price: {Price}
+    	Amount in stock: {InStock}
+";
+
+    #endregion
 }

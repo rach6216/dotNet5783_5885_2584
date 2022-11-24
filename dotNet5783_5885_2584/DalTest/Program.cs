@@ -11,7 +11,7 @@ internal class Program
     private static void Main(string[] args)
     {
         //for initilaize
-        int tempID= DalList.Product.Create(new Product("", 0, Enums.Category.Family, 0));
+        int tempID= DalList.Product.Create(new Product());
         DalList.Product.Delete(tempID);
         
 
@@ -77,7 +77,7 @@ internal class Program
                     Enum.TryParse(Console.ReadLine(), out category);
                     Console.WriteLine("Enter amount in stock");
                     int instock = int.Parse(Console.ReadLine());
-                    Console.WriteLine("product #" + DalList.Product.Create(new Product(name, price, category, instock)) + " created");
+                    Console.WriteLine("product #" + DalList.Product.Create(new Product(){Name=name, Price=price, Category=category, InStock=instock}) + " created");
                     break;
 
                 case CRUDOp.Read:

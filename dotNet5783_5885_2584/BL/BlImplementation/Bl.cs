@@ -1,12 +1,14 @@
 ﻿
 using BlApi;
-using DalApi;
+
 
 namespace BlImplementation;
 
-sealed public class Bl/*: IBl*/
+sealed public class Bl : IBl
 {
-    //public IProduct Product => new Do.Product();
-    //public ICart Cart { get; }
-    //public IOrder Order { get; }
+    public ICart Cart => new Cart();
+
+    public IProduct Product => new Product();
+
+    public IOrder Order => new Order();
 }
