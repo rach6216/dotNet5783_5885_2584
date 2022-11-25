@@ -40,3 +40,8 @@ public enum CrudOrder
 {
     Exit, Read, ReadAll, UpdateOrder, ShipOrder, DeliveryOrder, OrderTracking
 }
+
+public enum CrudCurt
+{
+    Exit,Create, UpdateProductAmount,ConfirmOrder
+}
