@@ -1,8 +1,7 @@
 ﻿
 using BlApi;
 using BO;
-using DO;
-using System.Net.NetworkInformation;
+
 
 namespace BlImplementation;
 

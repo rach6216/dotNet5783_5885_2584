@@ -24,7 +24,7 @@ internal class Cart : ICart
         }
         catch (DO.ExceptionEntityNotFound exp)
         {
-            throw new BO.ExceptionInvalidInput();
+            throw new BO.ExceptionInvalidInput("can't get product,it doesn't exist",exp);
         }
         int oiIndex = cart.Items.FindIndex(x => x.ProductID == id);
         if (cart.Items[oiIndex] != null)

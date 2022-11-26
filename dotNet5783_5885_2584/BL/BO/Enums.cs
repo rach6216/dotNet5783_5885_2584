@@ -41,7 +41,7 @@ public enum CrudOrder
     Exit, Read, ReadAll, UpdateOrder, ShipOrder, DeliveryOrder, OrderTracking
 }
 
-public enum CrudCurt
+public enum CrudCart
 {
     Exit,Create, UpdateProductAmount,ConfirmOrder
 }
