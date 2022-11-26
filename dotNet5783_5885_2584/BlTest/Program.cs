@@ -215,10 +215,12 @@ internal class Program
                     break;
                 case CrudOrder.Read:
                     Console.WriteLine("enter order id");
+
                     int id = int.Parse(Console.ReadLine());
+                    BO.Order order=new BO.Order();
                     try
                     {
-                        BO.Order order = _bl.Order.Read(id);
+                        order = _bl.Order.Read(id);
                         Console.WriteLine(order);
                         {
                             Console.WriteLine(order);
@@ -235,14 +237,39 @@ internal class Program
                     }
                     break;
                 case CrudOrder.UpdateOrder:
-                   
-                    break;
-                case CrudOrder.ShipOrder:
-                    Console.WriteLine("Enter shipping order id");
-                    id=int.Parse(Console.ReadLine());
+                    Console.WriteLine("enter order id");
+                    id = int.Parse(Console.ReadLine());
+                     order = _bl.Order.Read(id);
+                    Console.WriteLine(order);
+                    Console.WriteLine("enter order-item id");
+                    int orderItemID=int.Parse(Console.ReadLine());
+                    OrderItem orderItem = new OrderItem();
+                    foreach (var item in order.Items)
+                    {
+                        if (item.ID == orderItemID)
+                        {
+                           orderItem= item;
+                            break;
+                        }
+                    }
+                    Console.WriteLine(orderItem);
+                    Console.WriteLine("Enter product id");
+                    int productid=int.Parse(Console.ReadLine());
+                    if (productid != 0)
+                    {
+                        orderItem.ProductID = productid;
+                        BO.Product p = _bl.Product.Read(productid);
+                        orderItem.ProductName=p.Name;
+                        orderItem.Price=p.Price;
+                    }
+                    Console.WriteLine("Enter amount of item");
+                    int amount=int.Parse(Console.ReadLine());
+                    if(amount>0)
+                        orderItem.Amount=amount;
+                    orderItem.TotalPrice=orderItem.Price*orderItem.Price;
                     try
                     {
-                        _bl.Order.ShipOrder(id);
+                        order = _bl.Order.UpdateOrder(id, orderItem);
                     }
                     catch(ExceptionEntityNotFound exp)
                     {

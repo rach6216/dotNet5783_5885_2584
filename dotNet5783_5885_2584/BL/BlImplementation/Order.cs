@@ -188,9 +188,15 @@ internal class Order : IOrder
         }
     }
 
+    /// <summary>
+    /// update order item in order according to the
+    /// </summary>
+    /// <param name="orderID"></param>
+    /// <param name="orderItem"></param>
+    /// <returns></returns>
+    /// <exception cref="BO.ExceptionEntityNotFound"></exception>
     public BO.Order UpdateOrder(int orderID, BO.OrderItem orderItem)
     {
-
         try {
             DO.OrderItem doOrderItem = _dal.OrderItem.Read(orderItem.ID);
             BO.Order order = Read(orderID);
@@ -225,8 +231,10 @@ internal class Order : IOrder
         {
             throw new BO.ExceptionEntityNotFound("can't update order, order doesn't exist");
         }
+        
            
     }
+
 
     private (int, double) _totalPrice(int oID)
     {
