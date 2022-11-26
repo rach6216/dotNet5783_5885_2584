@@ -215,19 +215,37 @@ internal class Program
                 case CrudOrder.UpdateOrder:
                     Console.WriteLine("enter order id");
                     id = int.Parse(Console.ReadLine());
+                    BO.Order order = _bl.Order.Read(id);
+                    Console.WriteLine(order);
                     Console.WriteLine("enter order-item id");
-                    OrderItem itemC=new OrderItem();
-                    foreach (var item in _bl.Order.ReadAll())
+                    int orderItemID=int.Parse(Console.ReadLine());
+                    OrderItem orderItem = new OrderItem();
+                    foreach (var item in order.Items)
                     {
-                        if (item.ID == id)
+                        if (item.ID == orderItemID)
                         {
-                            //itemC = item;
+                           orderItem= item;
                             break;
                         }
                     }
+                    Console.WriteLine(orderItem);
+                    Console.WriteLine("Enter product id");
+                    int productid=int.Parse(Console.ReadLine());
+                    if (productid != 0)
+                    {
+                        orderItem.ProductID = productid;
+                        BO.Product p = _bl.Product.Read(productid);
+                        orderItem.ProductName=p.Name;
+                        orderItem.Price=p.Price;
+                    }
+                    Console.WriteLine("Enter amount of item");
+                    int amount=int.Parse(Console.ReadLine());
+                    if(amount>0)
+                        orderItem.Amount=amount;
+                    orderItem.TotalPrice=orderItem.Price*orderItem.Price;
                     try
                     {
-                        BO.Order order = _bl.Order.UpdateOrder(id, itemC);
+                        order = _bl.Order.UpdateOrder(id, orderItem);
                     }
                     catch (BO.ExceptionEntityNotFound exp)
                     {
