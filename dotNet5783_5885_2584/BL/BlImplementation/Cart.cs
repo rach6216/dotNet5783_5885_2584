@@ -98,8 +98,8 @@ internal class Cart : ICart
     {
         if (cart == null)
             cart = new BO.Cart();
-        if (cart.Items == null)
-            cart.Items = new List<BO.OrderItem>() { };
+        if (cart.Items == null || cart.Items.Count() == 0)
+            throw new BO.ExceptionCannotCreateItem("cart is empty, can't confirm order");
         //integrity check
         if (customerAdress == null)
             throw new BO.ExceptionInvalidInput("invalid customer address ");
