@@ -58,7 +58,7 @@ public class Order
        return $@"
         Product ID: {ID}: 
         Customer name: {CustomerName}, 
-        Customer name: {CustomerEmail},
+        Customer Email: {CustomerEmail},
         Customer Address: {CustomerAddress},
         status: {Status},
         OrderDate: {OrderDate},

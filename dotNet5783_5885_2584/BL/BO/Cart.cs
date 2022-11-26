@@ -26,4 +26,23 @@ public class Cart
     /// the total price of the order
     /// </summary>
     public double TotalPrice { get; set; }
+
+    public override string ToString()
+    {
+        string orderItem = "";
+        foreach (var item in Items)
+        {
+            orderItem += item;
+        }
+        return $@"
+        Customer name: {CustomerName}, 
+        Customer Email: {CustomerEmail},
+        Customer Address: {CustomerAddress},
+        Items: 
+        {orderItem},
+
+        Total price of cart: {TotalPrice}
+
+";
+    }
 }
