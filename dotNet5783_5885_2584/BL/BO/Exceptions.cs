@@ -1,5 +1,4 @@
 ﻿
-
 namespace BO;
 
 public class ExceptionInvalidInput : Exception
@@ -13,6 +12,14 @@ public class ExceptionInvalidInput : Exception
     public ExceptionInvalidInput(string msg,Exception exp):base(msg,exp)
     {
     }
+    public override string ToString()
+    {
+
+        return $@"
+        ERROR - ExceptionInvalidInput:
+        {Message}
+        ";
+    }
 }
 public class ExceptionDeleteEntityDependence : Exception
 {
@@ -24,6 +31,14 @@ public class ExceptionDeleteEntityDependence : Exception
     }
     public ExceptionDeleteEntityDependence(string msg, Exception exp) : base(msg, exp)
     {
+    }
+    public override string ToString()
+    {
+
+        return $@"
+        ERROR - ExceptionDeleteEntityDependence:
+        {Message}
+        ";
     }
 }
 
@@ -38,6 +53,14 @@ public class ExceptionProductOutOfStock : Exception
     public ExceptionProductOutOfStock(string msg, Exception exp) : base(msg, exp)
     {
     }
+    public override string ToString()
+    {
+
+        return $@"
+        ERROR - ExceptionProductOutOfStock:
+        {Message}
+        ";
+    }
 }
 
 public class ExceptionEntityNotFound : Exception
@@ -50,5 +73,14 @@ public class ExceptionEntityNotFound : Exception
     }
     public ExceptionEntityNotFound(string msg, Exception exp) : base(msg, exp)
     {
+    }
+    public override string ToString()
+    {
+        string iException = (InnerException != null) ? "Inner exception:" + InnerException : "";
+        return $@"
+        ERROR - ExceptionEntityNotFound:
+        {Message}
+        {iException}
+        ";
     }
 }
