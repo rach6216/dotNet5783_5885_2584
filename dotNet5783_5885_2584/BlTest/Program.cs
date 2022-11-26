@@ -238,6 +238,7 @@ internal class Program
                     }
                     break;
                 case CrudOrder.UpdateOrder:
+                    string input = "";
                     Console.WriteLine("enter order id");
                     id = int.Parse(Console.ReadLine());
                     try

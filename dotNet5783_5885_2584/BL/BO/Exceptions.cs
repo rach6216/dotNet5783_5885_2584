@@ -84,3 +84,16 @@ public class ExceptionEntityNotFound : Exception
         ";
     }
 }
+
+public class ExceptionCannotCreateItem : Exception
+{
+    public ExceptionCannotCreateItem(string msg) : base(msg)
+    {
+    }
+    public ExceptionCannotCreateItem() : base()
+    {
+    }
+    public ExceptionCannotCreateItem(string msg, Exception exp) : base(msg, exp)
+    {
+    }
+}
