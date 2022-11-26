@@ -16,6 +16,10 @@ internal class Cart : ICart
     /// <returns>the update cart with the new product</returns>
     public BO.Cart AddProduct(BO.Cart cart, int id)
     {
+        if(cart==null)
+            cart=new BO.Cart();
+        if(cart.Items==null)
+            cart.Items=new List<BO.OrderItem>(){};
         DO.Product product;
         try
         {
@@ -23,10 +27,10 @@ internal class Cart : ICart
         }
         catch (DO.ExceptionEntityNotFound exp)
         {
-            throw new BO.ExceptionInvalidInput();
+            throw new BO.ExceptionInvalidInput("can't get product,it doesn't exist",exp);
         }
         int oiIndex = cart.Items.FindIndex(x => x.ProductID == id);
-        if (cart.Items[oiIndex] != null)
+        if (oiIndex != -1)
         {
             if (product.InStock > 0)
             {
