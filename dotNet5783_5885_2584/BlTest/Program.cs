@@ -215,12 +215,15 @@ internal class Program
                     }
                     break;
                 case CrudOrder.UpdateOrder:
+                    string input = "";
                     Console.WriteLine("enter order id");
-                    id = int.Parse(Console.ReadLine());
+                    input = Console.ReadLine();
+                    id = input != null ? int.Parse(input) : 0;
                      order = _bl.Order.Read(id);
                     Console.WriteLine(order);
                     Console.WriteLine("enter order-item id");
-                    int orderItemID=int.Parse(Console.ReadLine());
+                    input= Console.ReadLine();
+                    int orderItemID=input!=null?int.Parse(input):0;
                     OrderItem orderItem = new OrderItem();
                     foreach (var item in order.Items)
                     {
@@ -232,7 +235,8 @@ internal class Program
                     }
                     Console.WriteLine(orderItem);
                     Console.WriteLine("Enter product id");
-                    int productid=int.Parse(Console.ReadLine());
+                    input=Console.ReadLine();
+                    int productid=input!=null?int.Parse(input):0;
                     if (productid != 0)
                     {
                         orderItem.ProductID = productid;
@@ -241,8 +245,9 @@ internal class Program
                         orderItem.Price=p.Price;
                     }
                     Console.WriteLine("Enter amount of item");
-                    int amount=int.Parse(Console.ReadLine());
-                    if(amount>0)
+                    input=Console.ReadLine();
+                    int amount= input != null ? int.Parse(input) : 0;
+                    if (amount>0)
                         orderItem.Amount=amount;
                     orderItem.TotalPrice=orderItem.Price*orderItem.Price;
                     try
