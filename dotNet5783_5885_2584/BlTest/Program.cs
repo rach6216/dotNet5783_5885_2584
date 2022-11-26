@@ -193,10 +193,12 @@ internal class Program
                     break;
                 case CrudOrder.Read:
                     Console.WriteLine("enter order id");
+
                     int id = int.Parse(Console.ReadLine());
+                    BO.Order order=new BO.Order();
                     try
                     {
-                        BO.Order order = _bl.Order.Read(id);
+                        order = _bl.Order.Read(id);
                         Console.WriteLine(order);
                         {
                             Console.WriteLine(order);
@@ -215,7 +217,7 @@ internal class Program
                 case CrudOrder.UpdateOrder:
                     Console.WriteLine("enter order id");
                     id = int.Parse(Console.ReadLine());
-                    BO.Order order = _bl.Order.Read(id);
+                     order = _bl.Order.Read(id);
                     Console.WriteLine(order);
                     Console.WriteLine("enter order-item id");
                     int orderItemID=int.Parse(Console.ReadLine());
