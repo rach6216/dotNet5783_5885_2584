@@ -97,7 +97,7 @@ internal class Cart : ICart
             throw new BO.ExceptionInvalidInput("invalid customer address ");
         if (customerName == null)
             throw new BO.ExceptionInvalidInput("invalid customer name ");
-        if (customerAdress != null || !isValid(customerEmail))
+        if (customerEmail == null || !isValid(customerEmail))
             throw new BO.ExceptionInvalidInput("invalid customer email ");
         //create order
         DO.Order order = new DO.Order(customerName, customerEmail, customerAdress, DateTime.Now);

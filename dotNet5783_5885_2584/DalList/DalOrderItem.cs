@@ -34,7 +34,7 @@ internal struct DalOrderItem:IOrderItem
        OrderItem oi= s_orderItems.Find(x=>x.ID==id);
        if(oi.ID!=0)
             return oi;
-        throw new Exception("Order item is not found");
+        throw new ExceptionEntityNotFound("Order item is not found");
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ internal struct DalOrderItem:IOrderItem
         OrderItem oi = s_orderItems.Find(x => x.OrderID == oID&&x.ProductID==pID);
         if (oi.ID != 0)
             return oi;
-        throw new Exception("Order item is not found");
+        throw new ExceptionEntityNotFound("Order item is not found");
     }
     /// <summary>
     /// get all the order-items of specific order

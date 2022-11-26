@@ -26,7 +26,7 @@ internal class Order : IOrder
         }
         catch (DO.ExceptionEntityNotFound exp)
         {
-            throw new BO.ExceptionEntityNotFound("can't set delivery, order is not exist ", exp);
+            throw new BO.ExceptionEntityNotFound("can't set delivery, order is not exist ");
         }
     }
 
@@ -64,7 +64,7 @@ internal class Order : IOrder
         }
         catch (DO.ExceptionEntityNotFound exp)
         {
-            throw new BO.ExceptionEntityNotFound("can't track order,order doesn't exist", exp);
+            throw new BO.ExceptionEntityNotFound("can't track order,order doesn't exist");
         }
 
     }
@@ -123,7 +123,7 @@ internal class Order : IOrder
             }
             catch (DO.ExceptionEntityNotFound exp)
             {
-                throw new BO.ExceptionEntityNotFound("can't read order-order not found", exp);
+                throw new BO.ExceptionEntityNotFound("can't read order-order not found");
             }
         else
         {
@@ -184,7 +184,7 @@ internal class Order : IOrder
         }
         catch (DO.ExceptionEntityNotFound exp)
         {
-            throw new BO.ExceptionEntityNotFound("can't ship order,order is not exist", exp);
+            throw new BO.ExceptionEntityNotFound("can't ship order,order is not exist");
         }
     }
 
@@ -223,7 +223,7 @@ internal class Order : IOrder
             }
         }catch(DO.ExceptionEntityNotFound exp)
         {
-            throw new BO.ExceptionEntityNotFound("can't update order, order doesn't exist",exp);
+            throw new BO.ExceptionEntityNotFound("can't update order, order doesn't exist");
         }
            
     }
@@ -239,6 +239,5 @@ internal class Order : IOrder
         }
         return (amount, totalPrice);
     }
-
 
 }

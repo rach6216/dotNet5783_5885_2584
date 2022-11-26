@@ -81,7 +81,14 @@ internal class Program
                     Enum.TryParse(Console.ReadLine(), out category);
                     Console.WriteLine("Enter amount in stock");
                     int instock = int.Parse(Console.ReadLine());
-                    Console.WriteLine("product #" + _bl.Product.AddProduct(new Product() { Category = category, InStock = instock, Name = name, Price = price }) + " created");
+                    try
+                    {
+                        Console.WriteLine("product #" + _bl.Product.AddProduct(new Product() { Category = category, InStock = instock, Name = name, Price = price }) + " created");
+                    }
+                    catch(ExceptionInvalidInput exp)
+                    {
+                        Console.WriteLine(exp);
+                    }
                     break;
 
                 case CrudProduct.Read:
@@ -117,7 +124,15 @@ internal class Program
                 case CrudProduct.Update:
                     Console.WriteLine("Enter product ID to update");
                     id = int.Parse(Console.ReadLine());
-                    Product tempProduct = _bl.Product.Read(id);
+                    Product tempProduct=new Product();
+                    try
+                    {
+                        tempProduct = _bl.Product.Read(id);
+                    }
+                    catch(ExceptionEntityNotFound exp)
+                    {
+                        Console.WriteLine(exp);
+                    }
                     Console.WriteLine(tempProduct);
                     Console.WriteLine("Enter product name");
                     string input = Console.ReadLine();
@@ -161,7 +176,14 @@ internal class Program
                     Cart cart = new Cart();
                     Console.WriteLine("Enter product id");
                     id = int.Parse(Console.ReadLine());
-                    Console.WriteLine(_bl.Product.Read(id, cart));
+                    try
+                    {
+                        Console.WriteLine(_bl.Product.Read(id, cart));
+                    }
+                    catch(ExceptionEntityNotFound exp)
+                    {
+                        Console.WriteLine(exp);
+                    }
                     break;
                 case CrudProduct.Exit:
                     break;
@@ -213,41 +235,43 @@ internal class Program
                     }
                     break;
                 case CrudOrder.UpdateOrder:
-                    Console.WriteLine("enter order id");
-                    id = int.Parse(Console.ReadLine());
-                    Console.WriteLine("enter order-item id");
-                    OrderItem itemC=new OrderItem();
-                    foreach (var item in _bl.Order.ReadAll())
-                    {
-                        if (item.ID == id)
-                        {
-                            //itemC = item;
-                            break;
-                        }
-                    }
-                    try
-                    {
-                        BO.Order order = _bl.Order.UpdateOrder(id, itemC);
-                    }
-                    catch (BO.ExceptionEntityNotFound exp)
-                    {
-                        Console.WriteLine(exp.Message);
-                    }
+                   
                     break;
                 case CrudOrder.ShipOrder:
                     Console.WriteLine("Enter shipping order id");
                     id=int.Parse(Console.ReadLine());
-                    _bl.Order.ShipOrder(id);
+                    try
+                    {
+                        _bl.Order.ShipOrder(id);
+                    }
+                    catch(ExceptionEntityNotFound exp)
+                    {
+                        Console.WriteLine(exp);
+                    }
                     break;
                 case CrudOrder.DeliveryOrder:
                     Console.WriteLine("Enter delivering order id");
                     id = int.Parse(Console.ReadLine());
-                    _bl.Order.DeliveryOrder(id);
+                    try
+                    {
+                        _bl.Order.DeliveryOrder(id);
+                    }
+                    catch (ExceptionEntityNotFound exp)
+                    {
+                        Console.WriteLine(exp);
+                    }
                     break;
                 case CrudOrder.OrderTracking:
                     Console.WriteLine("Enter order id for tracking");
                     id = int.Parse(Console.ReadLine());
-                    _bl.Order.OrderTracking(id);
+                    try
+                    {
+                        _bl.Order.OrderTracking(id);
+                    }
+                    catch (ExceptionEntityNotFound exp)
+                    {
+                        Console.WriteLine(exp);
+                    }
                     break;
                 default:
                     break;
@@ -317,6 +341,10 @@ internal class Program
                         Console.WriteLine(cart);
                     }
                     catch (BO.ExceptionEntityNotFound exp)
+                    {
+                        Console.WriteLine(exp.Message);
+                    }
+                    catch (BO.ExceptionInvalidInput exp)
                     {
                         Console.WriteLine(exp.Message);
                     }

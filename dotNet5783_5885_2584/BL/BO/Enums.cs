@@ -31,16 +31,26 @@ public enum CRUDOp
     Exit, Create, Read, ReadAll, Update, Delete, ReadByProductAndOrder, ReadAllByOrder
 }
 
+
+/// <summary>
+/// CRUD options for the product part in the main
+/// </summary>
 public enum CrudProduct
 {
     Exit,Create, Read, ReadAll, Update, Delete, ReadByIDAndCart
 }
 
+/// <summary>
+/// CRUD options for the order part in the main
+/// </summary>
 public enum CrudOrder
 {
     Exit, Read, ReadAll, UpdateOrder, ShipOrder, DeliveryOrder, OrderTracking
 }
 
+/// <summary>
+/// CRUD options for the cart part in the main
+/// </summary>
 public enum CrudCart
 {
     Exit,AddProduct, UpdateProductAmount,ConfirmOrder

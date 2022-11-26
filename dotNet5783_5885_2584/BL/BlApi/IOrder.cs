@@ -39,5 +39,5 @@ public interface IOrder
     /// </summary>
     /// <param name="id">order id </param>
     /// <returns>the updated logic order</returns>
-    public BO.Order  UpdateOrder(int orderID,BO.OrderItem orderItem);
+    public BO.Order UpdateOrder(int orderID,BO.OrderItem orderItem);
 }
