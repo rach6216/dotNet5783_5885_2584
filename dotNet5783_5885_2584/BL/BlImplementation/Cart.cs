@@ -61,6 +61,10 @@ internal class Cart : ICart
     /// <returns>the update cart after the change</returns>
     public BO.Cart UpdatePAmount(BO.Cart cart, int id, int amount)
     {
+        if (cart == null)
+            cart = new BO.Cart();
+        if (cart.Items == null)
+            cart.Items = new List<BO.OrderItem>() { };
         int oiIndex = cart.Items.FindIndex(x => x.ProductID == id);
         if (cart.Items[oiIndex] != null && cart.Items[oiIndex].Amount != amount)
         {
@@ -92,6 +96,10 @@ internal class Cart : ICart
     /// <param name="customerAdress">adress of the customer</param>
     public void ConfirmOrder(BO.Cart cart, string customerName, string customerEmail, string customerAdress)
     {
+        if (cart == null)
+            cart = new BO.Cart();
+        if (cart.Items == null)
+            cart.Items = new List<BO.OrderItem>() { };
         //integrity check
         if (customerAdress == null)
             throw new BO.ExceptionInvalidInput("invalid customer address ");
