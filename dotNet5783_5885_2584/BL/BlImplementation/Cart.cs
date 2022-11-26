@@ -17,7 +17,6 @@ internal class Cart : ICart
     public BO.Cart AddProduct(BO.Cart cart, int id)
     {
         DO.Product product;
-
         try
         {
             product = _dal.Product.Read(id);

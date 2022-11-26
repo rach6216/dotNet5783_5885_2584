@@ -43,5 +43,5 @@ public enum CrudOrder
 
 public enum CrudCart
 {
-    Exit,Create, UpdateProductAmount,ConfirmOrder
+    Exit,AddProduct, UpdateProductAmount,ConfirmOrder
 }

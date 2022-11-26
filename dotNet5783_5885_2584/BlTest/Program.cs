@@ -213,7 +213,26 @@ internal class Program
                     }
                     break;
                 case CrudOrder.UpdateOrder:
-
+                    Console.WriteLine("enter order id");
+                    id = int.Parse(Console.ReadLine());
+                    Console.WriteLine("enter order-item id");
+                    OrderItem itemC=new OrderItem();
+                    foreach (var item in _bl.Order.ReadAll())
+                    {
+                        if (item.ID == id)
+                        {
+                            //itemC = item;
+                            break;
+                        }
+                    }
+                    try
+                    {
+                        BO.Order order = _bl.Order.UpdateOrder(id, itemC);
+                    }
+                    catch (BO.ExceptionEntityNotFound exp)
+                    {
+                        Console.WriteLine(exp.Message);
+                    }
                     break;
                 case CrudOrder.ShipOrder:
                     Console.WriteLine("Enter shipping order id");
@@ -239,15 +258,13 @@ internal class Program
 
     private static void _cartsChoosen()
     {
+        //Exit,Create, UpdateProductAmount,ConfirmOrder
         CrudCart cartChoices;
         do
         {
-            Console.WriteLine("Enter 1 to create new product");
-            Console.WriteLine("Enter 2 to get info about product by ID");
-            Console.WriteLine("Enter 3 to get all the products info");
-            Console.WriteLine("Enter 4 to update a product");
-            Console.WriteLine("Enter 5 to delete a product");
-            Console.WriteLine("Enter 6 to get product for catalog");
+            Console.WriteLine("Enter 1 to add product to cart");
+            Console.WriteLine("Enter 2 to update product amount");
+            Console.WriteLine("Enter 3 to confirm order");
             Console.WriteLine("Enter 0 to exit");
 
             Enum.TryParse(Console.ReadLine(), out cartChoices);
@@ -255,50 +272,59 @@ internal class Program
             {
                 case CrudCart.Exit:
                     break;
-                case CrudCart.Read:
-                    Console.WriteLine("enter order id");
+                case CrudCart.AddProduct:
+                    Console.WriteLine("enter product id");
                     int id = int.Parse(Console.ReadLine());
                     try
                     {
-                        BO.Order order = _bl.Order.Read(id);
-                        Console.WriteLine(order);
-                        {
-                            Console.WriteLine(order);
-                        }
+                        BO.Cart cart=new Cart();
+                        cart = _bl.Cart.AddProduct(cart,id);
+                        Console.WriteLine(cart);
                     }
                     catch (BO.ExceptionEntityNotFound exp)
                     {
                         Console.WriteLine(exp.Message);
                     }
                     break;
-                case CrudOrder.ReadAll:
-                    foreach (var item in _bl.Order.ReadAll())
+                case CrudCart.UpdateProductAmount:
+                    Console.WriteLine("enter product id");
+                    id = int.Parse(Console.ReadLine());
+                    Console.WriteLine("enter amount");
+                    int amount = int.Parse(Console.ReadLine());
+                    try
                     {
-                        Console.WriteLine(item);
+                        BO.Cart cart = new Cart();
+                        cart = _bl.Cart.UpdatePAmount(cart, id, amount);
+                        Console.WriteLine(cart);
+                    }
+                    catch (BO.ExceptionEntityNotFound exp)
+                    {
+                        Console.WriteLine(exp.Message);
                     }
                     break;
-                case CrudOrder.UpdateOrder:
+                case CrudCart.ConfirmOrder:
+                    Console.WriteLine("enter customer name: ");
+                    string name= Console.ReadLine();
+                    Console.WriteLine("enter customer email: ");
+                    string email = Console.ReadLine();
+                    Console.WriteLine("enter customer address: ");
+                    string address = Console.ReadLine();
 
-                    break;
-                case CrudOrder.ShipOrder:
-                    Console.WriteLine("Enter shipping order id");
-                    id = int.Parse(Console.ReadLine());
-                    _bl.Order.ShipOrder(id);
-                    break;
-                case CrudOrder.DeliveryOrder:
-                    Console.WriteLine("Enter delivering order id");
-                    id = int.Parse(Console.ReadLine());
-                    _bl.Order.DeliveryOrder(id);
-                    break;
-                case CrudOrder.OrderTracking:
-                    Console.WriteLine("Enter order id for tracking");
-                    id = int.Parse(Console.ReadLine());
-                    _bl.Order.OrderTracking(id);
+                    try
+                    {
+                        BO.Cart cart =new Cart();
+                        _bl.Cart.ConfirmOrder(cart, name, email,address);
+                        Console.WriteLine(cart);
+                    }
+                    catch (BO.ExceptionEntityNotFound exp)
+                    {
+                        Console.WriteLine(exp.Message);
+                    }
                     break;
                 default:
                     break;
             }
-        } while (productChoices != CrudProduct.Exit);
+        } while (cartChoices != CrudCart.Exit);
 
     }
 }
