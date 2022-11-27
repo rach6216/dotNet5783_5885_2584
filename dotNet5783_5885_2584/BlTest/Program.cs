@@ -174,7 +174,6 @@ internal class Program
                     }
                     break;
                 case CrudProduct.ReadByIDAndCart:
-                    Cart cart = new Cart();
                     Console.WriteLine("Enter product id");
                     id = int.Parse(Console.ReadLine());
                     try
