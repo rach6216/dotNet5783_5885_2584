@@ -56,7 +56,7 @@ public class Order
             orderItem += item;
         }
        return $@"
-        Product ID: {ID}: 
+        Order ID: {ID}: 
         Customer name: {CustomerName}, 
         Customer Email: {CustomerEmail},
         Customer Address: {CustomerAddress},
