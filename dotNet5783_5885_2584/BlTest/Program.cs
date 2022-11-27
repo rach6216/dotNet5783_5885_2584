@@ -377,6 +377,10 @@ internal class Program
                     {
                         Console.WriteLine(exp.Message);
                     }
+                    catch (BO.ExceptionCannotCreateItem exp)
+                    {
+                        Console.WriteLine(exp.Message);
+                    }
                     break;
                 default:
                     break;
