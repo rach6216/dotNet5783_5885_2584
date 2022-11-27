@@ -9,6 +9,7 @@ namespace BlTest;
 internal class Program
 {
     static private IBl _bl = new Bl();
+    static private Cart cart = new Cart();
     static void Main(string[] args)
     {
         Entity entityChoice;
@@ -331,7 +332,6 @@ internal class Program
                     int id = int.Parse(Console.ReadLine());
                     try
                     {
-                        BO.Cart cart = new Cart();
                         cart = _bl.Cart.AddProduct(cart, id);
                         Console.WriteLine(cart);
                     }
@@ -347,7 +347,7 @@ internal class Program
                     int amount = int.Parse(Console.ReadLine());
                     try
                     {
-                        BO.Cart cart = new Cart();
+                        
                         cart = _bl.Cart.UpdatePAmount(cart, id, amount);
                         Console.WriteLine(cart);
                     }
@@ -366,7 +366,6 @@ internal class Program
 
                     try
                     {
-                        BO.Cart cart = new Cart();
                         _bl.Cart.ConfirmOrder(cart, name, email, address);
                         Console.WriteLine(cart);
                     }
