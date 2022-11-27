@@ -69,9 +69,11 @@ internal class Cart : ICart
         if (cart.Items[oiIndex] != null && cart.Items[oiIndex].Amount != amount)
         {
             int oldAmount = cart.Items[oiIndex].Amount;
-            if (oldAmount < amount)
-                for (int i = 0; i < amount - oldAmount; i++)
-                    AddProduct(cart, id);
+            if (0== amount)
+            {
+                cart.TotalPrice -= cart.Items[oiIndex].TotalPrice;
+                cart.Items.RemoveAt(oiIndex);
+            }
             else if (oldAmount > amount)
             {
                 cart.Items[oiIndex].Amount= amount;
@@ -80,8 +82,9 @@ internal class Cart : ICart
             }
             else 
             {
-                cart.TotalPrice -= cart.Items[oiIndex].TotalPrice;
-                cart.Items.RemoveAt(oiIndex);
+                        for (int i = 0; i < amount - oldAmount; i++)
+                            AddProduct(cart, id);
+                       
             }
         }
 
