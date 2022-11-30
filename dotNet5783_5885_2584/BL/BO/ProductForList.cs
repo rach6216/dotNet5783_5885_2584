@@ -12,7 +12,7 @@ public class ProductForList
     /// <summary>
     /// product name
     /// </summary>
-    public string Name { get; set; }
+    public string? Name { get; set; }
     /// <summary>
     /// product price
     /// </summary>
@@ -20,7 +20,7 @@ public class ProductForList
     /// <summary>
     /// product category(enum)
     /// </summary>
-    public Category Category { get; set; }
+    public Category? Category { get; set; }
 
     /// <summary>
     /// description of the product object

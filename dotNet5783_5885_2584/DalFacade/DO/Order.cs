@@ -1,7 +1,4 @@
-﻿
-using System.CodeDom.Compiler;
-
-namespace DO;
+﻿namespace DO;
 
 /// <summary>
 /// structure for orders
@@ -16,37 +13,27 @@ public struct Order
     /// <summary>
     /// name of the customer
     /// </summary>
-    public string CustomerName { get; set; }
+    public string? CustomerName { get; set; }
     /// <summary>
     /// email of the customer
     /// </summary>
-    public string CustomerEmail { get; set; }
+    public string? CustomerEmail { get; set; }
     /// <summary>
     /// address of the customer
     /// </summary>
-    public string CustomerAddress { get; set; }
+    public string? CustomerAddress { get; set; }
     /// <summary>
     /// date of the order
     /// </summary>
-    public DateTime OrderDate { get; set; }
+    public DateTime? OrderDate { get; set; }
     /// <summary>
     /// shipping date
     /// </summary>
-    public DateTime ShipDate { get; set; }
+    public DateTime? ShipDate { get; set; }
     /// <summary>
     /// delivery date
     /// </summary>
-    public DateTime DeliveryDate { get; set; }
-    /// <summary>
-    /// ctor for orders
-    /// </summary>
-    /// <param name="cName">name of the customer</param>
-    /// <param name="cEmail">email of the customer</param>
-    /// <param name="cAddress">address of the customer</param>
-    /// <param name="orderD">date of the order</param>
-    /// <param name="shipD">shipping date</param>
-    /// <param name="deliveryD">delivery date</param>
-    /// <param name="myOID" default="000000">order id</param>
+    public DateTime? DeliveryDate { get; set; }
 
     #endregion
 
@@ -86,8 +73,6 @@ public struct Order
         CustomerName = cName;
         CustomerEmail = cEmail;
         CustomerAddress = cAddress;
-        OrderDate = orderD;
-        ShipDate = DateTime.MinValue;
         DeliveryDate = DateTime.MinValue;
         Random trnd = new Random();
         OrderDate = orderD;
@@ -110,14 +95,13 @@ public struct Order
         CustomerEmail = cEmail;
         CustomerAddress = cAddress;
         OrderDate = orderD;
-        ShipDate = DateTime.MinValue;
-        DeliveryDate = DateTime.MinValue;
+        ShipDate = shipD;
+        DeliveryDate = deliveryD;
         OrderDate = orderD;
         ShipDate = shipD;
         DeliveryDate = deliveryD;
     }
     #endregion
-
     #region To string
     /// <summary>
     /// description of the order object

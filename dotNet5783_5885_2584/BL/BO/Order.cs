@@ -14,35 +14,35 @@ public class Order
     /// <summary>
     /// name of the customer
     /// </summary>
-    public string CustomerName { get; set; }
+    public string? CustomerName { get; set; }
     /// <summary>
     /// email of the customer
     /// </summary>
-    public string CustomerEmail { get; set; }
+    public string? CustomerEmail { get; set; }
     /// <summary>
     /// address of the customer
     /// </summary>
-    public string CustomerAddress { get; set; }
+    public string? CustomerAddress { get; set; }
     /// <summary>
     /// status of the order
     /// </summary>
-    public OrderStatus Status { get; set; }
+    public OrderStatus? Status { get; set; }
     /// <summary>
     /// date of the order
     /// </summary>
-    public DateTime OrderDate { get; set; }
+    public DateTime? OrderDate { get; set; }
     /// <summary>
     /// shipping date
     /// </summary>
-    public DateTime ShipDate { get; set; }
+    public DateTime? ShipDate { get; set; }
     /// <summary>
     /// delivery date
     /// </summary>
-    public DateTime DeliveryDate { get; set; }
+    public DateTime? DeliveryDate { get; set; }
     /// <summary>
     /// list of items in the order
     /// </summary>
-    public List<BO.OrderItem> Items { get; set; }
+    public List<BO.OrderItem?>? Items { get; set; }
     /// <summary>
     /// the total price of the order
     /// </summary>
@@ -56,7 +56,7 @@ public class Order
             orderItem += item;
         }
        return $@"
-        Product ID: {ID}: 
+        Order ID: {ID}: 
         Customer name: {CustomerName}, 
         Customer Email: {CustomerEmail},
         Customer Address: {CustomerAddress},

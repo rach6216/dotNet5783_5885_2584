@@ -2,8 +2,6 @@
 using BlApi;
 using BlImplementation;
 using BO;
-
-
 namespace BlTest;
 
 internal class Program
@@ -174,7 +172,6 @@ internal class Program
                     }
                     break;
                 case CrudProduct.ReadByIDAndCart:
-                    Cart cart = new Cart();
                     Console.WriteLine("Enter product id");
                     id = int.Parse(Console.ReadLine());
                     try
@@ -347,7 +344,7 @@ internal class Program
                     int amount = int.Parse(Console.ReadLine());
                     try
                     {
-                        
+
                         cart = _bl.Cart.UpdatePAmount(cart, id, amount);
                         Console.WriteLine(cart);
                     }
@@ -357,17 +354,23 @@ internal class Program
                     }
                     break;
                 case CrudCart.ConfirmOrder:
+
                     Console.WriteLine("enter customer name: ");
                     string name = Console.ReadLine();
                     Console.WriteLine("enter customer email: ");
                     string email = Console.ReadLine();
                     Console.WriteLine("enter customer address: ");
                     string address = Console.ReadLine();
+                    if (name == null || email == null || address == null)
+                    {
+                        Console.WriteLine("invalid input, please try again");
+                        break;
+                    }
 
                     try
                     {
-                        _bl.Cart.ConfirmOrder(cart, name, email, address);
-                        Console.WriteLine(cart);
+                       Order order= _bl.Cart.ConfirmOrder(cart, name, email, address);
+                        Console.WriteLine(order);
                     }
                     catch (BO.ExceptionEntityNotFound exp)
                     {

@@ -1,6 +1,4 @@
 ﻿using BlApi;
-using BO;
-using DO;
 using System.Net.Mail;
 
 namespace BlImplementation;
@@ -97,7 +95,7 @@ internal class Cart : ICart
     /// <param name="customerName">name of the customer</param>
     /// <param name="customerEmail">email of the customer</param>
     /// <param name="customerAdress">adress of the customer</param>
-    public void ConfirmOrder(BO.Cart cart, string customerName, string customerEmail, string customerAdress)
+    public BO.Order ConfirmOrder(BO.Cart cart, string customerName, string customerEmail, string customerAdress)
     {
         if (cart == null)
             cart = new BO.Cart();
@@ -113,6 +111,9 @@ internal class Cart : ICart
         //create order
         DO.Order order = new DO.Order(customerName, customerEmail, customerAdress, DateTime.Now);
         int orderID = _dal.Order.Create(order);
+        BO.Order order2=new BO.Order() { ID=orderID,CustomerAddress=customerAdress,CustomerEmail=customerEmail
+            ,CustomerName=customerName,Status=0,TotalPrice=0,Items=new List<BO.OrderItem>() { },OrderDate=DateTime.Now
+        };
         string messageOfMissingProducts = "";
         //create order-items
         foreach (BO.OrderItem o in cart.Items)
@@ -126,7 +127,16 @@ internal class Cart : ICart
                 }
                 else if (p.InStock < o.Amount)
                 {
-                    int orderItemID = _dal.OrderItem.Create(new DO.OrderItem(p.ID, orderID, p.Price, p.InStock));
+                    int orderItemID = _dal.OrderItem.Create(new DO.OrderItem(p.ID, orderID, p.Price, o.Amount));
+                    order2.Items.Add(new BO.OrderItem()
+                    {
+                        ProductID = p.ID,
+                        Amount = o.Amount,
+                        ID = orderItemID,
+                        Price = p.Price,
+                        ProductName = p.Name,
+                        TotalPrice = p.Price * o.Amount
+                    });
                     p.InStock = 0;
                     _dal.Product.Update(p);
                     messageOfMissingProducts += " ," + p.Name + " out of stock " + (o.Amount - p.InStock);
@@ -134,9 +144,19 @@ internal class Cart : ICart
                 else
                 {
                     int orderItemID = _dal.OrderItem.Create(new DO.OrderItem(p.ID, orderID, p.Price, o.Amount));
+                    order2.Items.Add(new BO.OrderItem()
+                    {
+                        ProductID = p.ID,
+                        Amount = o.Amount,
+                        ID = orderItemID,
+                        Price = p.Price,
+                        ProductName = p.Name,
+                        TotalPrice = p.Price * o.Amount
+                    });
                     p.InStock -= o.Amount;
                     _dal.Product.Update(p);
                 }
+
             }
             catch (DO.ExceptionEntityNotFound exp)
             {
@@ -147,6 +167,7 @@ internal class Cart : ICart
 
         }
         //if there was some items out of stock
+        return order2;
         if (messageOfMissingProducts != "")
         {
             throw new BO.ExceptionProductOutOfStock("order #" + orderID + "complited, some items is out of stock " + messageOfMissingProducts);
