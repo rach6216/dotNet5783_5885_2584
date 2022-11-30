@@ -1,7 +1,4 @@
-﻿
-using DO;
-
-namespace BO;
+﻿namespace BO;
 
 public class ProductItem
 {
@@ -12,7 +9,7 @@ public class ProductItem
     /// <summary>
     /// product name
     /// </summary>
-    public string Name { get; set; }
+    public string? Name { get; set; }
     /// <summary>
     /// product price
     /// </summary>
@@ -20,7 +17,7 @@ public class ProductItem
     /// <summary>
     /// product category(enum)
     /// </summary>
-    public Category Category { get; set; }
+    public Category? Category { get; set; }
     /// <summary>
     /// if the product in stock
     /// </summary>

@@ -11,9 +11,9 @@ public class OrderTracking
     /// <summary>
     /// status of the order
     /// </summary>
-    public OrderStatus Status { get; set; }
+    public OrderStatus? Status { get; set; }
     /// <summary>
     /// list of pairs that show the order track
     /// </summary>
-    public List<(DateTime d, string s)> Tracking;
+    public List<(DateTime? d, string? s)?>? Tracking;
 }
