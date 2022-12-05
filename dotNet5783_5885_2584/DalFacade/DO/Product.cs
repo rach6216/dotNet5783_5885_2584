@@ -55,7 +55,7 @@ public struct Product
     public override string ToString() => $@"
         Product ID: {ID}: {Name}, 
         category: {Category.ToString()}
-    	Price: {Price}
+        Price: {Price}
     	Amount in stock: {InStock}
         ";
 

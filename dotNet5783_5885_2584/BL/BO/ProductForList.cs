@@ -30,6 +30,6 @@ public class ProductForList
         Product ID: {ID},
         Product name: {Name}, 
         category: {Category.ToString()}
-    	Price: {Price}
+        Price: {Price}
         ";
 }

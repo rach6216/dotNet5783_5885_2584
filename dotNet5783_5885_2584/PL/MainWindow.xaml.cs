@@ -17,6 +17,5 @@ namespace PL
         private void productListButton_Click(object sender, RoutedEventArgs e) => new BoProductListWindow().Show();
 
         private IBl bl = new Bl();
-
     }
 }
