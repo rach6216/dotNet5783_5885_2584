@@ -10,7 +10,7 @@ public interface IProduct
     /// method that get all products
     /// </summary>
     /// <returns>list of all products</returns>
-    public IEnumerable<BO.ProductForList?> ReadAll();
+    public IEnumerable<BO.ProductForList?> ReadAll(Func<DO.Product?, bool>? f = null);
     /// <summary>
     /// method that get product by id for manager screen
     /// </summary>

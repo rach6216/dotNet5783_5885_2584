@@ -93,8 +93,7 @@ internal class Product : IProduct
     /// <exception cref="BO.ExceptionEntityNotFound">if the product doesn't exist</exception>
     public BO.ProductItem Read(int id, BO.Cart cart)
     {
-        if (cart.Items == null)
-            cart.Items = new List<BO.OrderItem?>() { };
+        cart.Items ??= new List<BO.OrderItem?>() { };
         try
         {
             if (id > 0)
@@ -121,16 +120,24 @@ internal class Product : IProduct
     /// create list of product to show
     /// </summary>
     /// <returns>product for list IEnumerable</returns>
-    public IEnumerable<BO.ProductForList> ReadAll()
+    public IEnumerable<BO.ProductForList?> ReadAll(Func<DO.Product?, bool>? f = null)
     {
-        IEnumerable<DO.Product?> doProducts = _dal.Product.ReadAll();
+        IEnumerable<DO.Product?> doProducts;
         List<BO.ProductForList> products = new List<BO.ProductForList>();
+        if (f == null)
+        {
+          doProducts = _dal.Product.ReadAll();
+        }
+        else
+        {
+            doProducts = _dal.Product.ReadAll(x=>f(x));
+
+        }
         foreach (DO.Product p in doProducts)
         {
             products.Add(new BO.ProductForList() { Category = (BO.Category)p.Category, Price = p.Price, ID = p.ID, Name = p.Name });
         }
         return products;
-        throw new NotImplementedException();
     }
     #endregion
 

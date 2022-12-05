@@ -141,16 +141,16 @@ internal class Order : IOrder
     /// build porder for list 
     /// </summary>
     /// <returns>order for list</returns>
-    public IEnumerable<BO.OrderForList> ReadAll()
+    public IEnumerable<BO.OrderForList?> ReadAll()
     {
         IEnumerable<DO.Order?> orders = _dal.Order.ReadAll();
         List<OrderForList> orderForList = new();
         foreach (DO.Order order in orders)
         {
             BO.OrderStatus orderStatus = BO.OrderStatus.OrderIsConfirmed;
-            if (order.DeliveryDate != DateTime.MinValue)
+            if (order.DeliveryDate != null)
                 orderStatus = BO.OrderStatus.OrderIsDelivered;
-            else if (order.ShipDate != DateTime.MinValue)
+            else if (order.ShipDate != null)
                 orderStatus = BO.OrderStatus.OrderIsShiped;
             (int, double) amountAndPrice = TotalPrice(order.ID);
             orderForList.Add(new BO.OrderForList()
@@ -178,7 +178,7 @@ internal class Order : IOrder
         {
             DO.Order doOrder = _dal.Order.Read(x => x.Value.ID == id);
             BO.Order boOrder = Read(doOrder.ID);
-            if (doOrder.ShipDate == DateTime.MinValue)
+            if (doOrder.ShipDate == null)
             {
                 doOrder.ShipDate = DateTime.Now;
                 boOrder.ShipDate = DateTime.Now;
