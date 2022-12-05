@@ -78,7 +78,7 @@ internal class Program
                     int id = int.Parse(Console.ReadLine());
                     try
                     {
-                        Console.WriteLine(DalList.Product.Read(id));
+                        Console.WriteLine(DalList.Product.Read(x=>x.Value.ID==id));
                     }
                     catch (Exception exp)
                     {
@@ -87,7 +87,7 @@ internal class Program
 
                     break;
                 case CRUDOp.ReadAll:
-                    foreach (Product p in DalList.Product.Read())
+                    foreach (Product p in DalList.Product.ReadAll())
                     {
                         Console.WriteLine(p);
                     }
@@ -107,7 +107,7 @@ internal class Program
                 case CRUDOp.Update:
                     Console.WriteLine("Enter product ID to update");
                     id = int.Parse(Console.ReadLine());
-                    Product tempProduct = DalList.Product.Read(id);
+                    Product tempProduct = DalList.Product.Read(x=>x.Value.ID==id);
                     try
                     {
                         Console.WriteLine(tempProduct);
@@ -198,7 +198,7 @@ internal class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        Console.WriteLine(DalList.Order.Read(id));
+                        Console.WriteLine(DalList.Order.Read(x => x.Value.ID == id));
                     }
                     catch (Exception exp)
                     {
@@ -211,7 +211,7 @@ internal class Program
                     Console.WriteLine("Enter order ID to update");
                     //add condition that check if the order can updating
                     id = int.Parse(Console.ReadLine());
-                    Order tempOrder = DalList.Order.Read(id);
+                    Order tempOrder = DalList.Order.Read(x => x.Value.ID == id);
                     try
                     {
                         Console.WriteLine(tempOrder);
@@ -240,7 +240,7 @@ internal class Program
                     //In the future, the user will be saved automatically and we will not have to ask for details
                     //Console.WriteLine("Enter id");
                     //cName = Console.ReadLine();
-                    foreach (Order o in DalList.Order.Read())
+                    foreach (Order o in DalList.Order.ReadAll())
                     {
                         //if (o.CustomerName == cName)
                         Console.WriteLine(o);
@@ -303,7 +303,7 @@ internal class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        Console.WriteLine(DalList.OrderItem.Read(id));
+                        Console.WriteLine(DalList.OrderItem.Read(x => x.Value.ID == id));
                     }
                     catch (Exception exp)
                     {
@@ -311,7 +311,7 @@ internal class Program
                     }
                     break;
                 case CRUDOp.ReadAll:
-                    foreach (OrderItem oi in DalList.OrderItem.Read())
+                    foreach (OrderItem oi in DalList.OrderItem.ReadAll())
                     {
                         Console.WriteLine(oi);
                     }
@@ -321,12 +321,12 @@ internal class Program
                     orderID = int.Parse(Console.ReadLine());
                     Console.WriteLine("Enter product id");
                     productID = int.Parse(Console.ReadLine());
-                    Console.WriteLine(DalList.OrderItem.Read(orderID, productID));
+                    Console.WriteLine(DalList.OrderItem.Read(x=>(x.Value.OrderID==orderID)&&(x.Value.ProductID==productID)));
                     break;
                 case CRUDOp.ReadAllByOrder:
                     Console.WriteLine("Enter order id");
                     orderID = int.Parse(Console.ReadLine());
-                    foreach (OrderItem oi in DalList.OrderItem.ReadByOrder(orderID))
+                    foreach (var oi in DalList.OrderItem.ReadAll(x=>x.Value.OrderID==orderID))
                     {
                         Console.WriteLine(oi);
                     }
@@ -335,7 +335,7 @@ internal class Program
                 case CRUDOp.Update:
                     Console.WriteLine("Enter order-item ID to update");
                     id = int.Parse(Console.ReadLine());
-                    OrderItem tempOrderItem = DalList.OrderItem.Read(id);
+                    OrderItem tempOrderItem = DalList.OrderItem.Read(x => x.Value.ID == id);
                     try
                     {
                         Console.WriteLine(tempOrderItem);

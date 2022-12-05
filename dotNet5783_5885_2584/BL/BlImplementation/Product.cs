@@ -61,7 +61,7 @@ internal class Product : IProduct
         {
             if (id > 0)
             {
-                DO.Product p = _dal.Product.Read(id);
+                DO.Product p = _dal.Product.Read(x=>x.Value.ID==id);
                 BO.Product boP = new BO.Product()
                 {
                     Category = (BO.Category)p.Category,
@@ -94,12 +94,12 @@ internal class Product : IProduct
     public BO.ProductItem Read(int id, BO.Cart cart)
     {
         if (cart.Items == null)
-            cart.Items = new List<BO.OrderItem>() { };
+            cart.Items = new List<BO.OrderItem?>() { };
         try
         {
             if (id > 0)
             {
-                DO.Product p = _dal.Product.Read(id);
+                DO.Product p = _dal.Product.Read(x => x.Value.ID == id);
                 int productIndex = cart.Items.FindIndex(x => x.ProductID == p.ID);
                 int amount = productIndex == -1 ? 0 : cart.Items[productIndex].Amount;
                 BO.ProductItem boProductItem = new BO.ProductItem() { Category = (BO.Category)p.Category, ID = p.ID, InStock = p.InStock > 0, Name = p.Name, Price = p.Price, Amount = amount > 0 ? amount : 0 };
@@ -123,7 +123,7 @@ internal class Product : IProduct
     /// <returns>product for list IEnumerable</returns>
     public IEnumerable<BO.ProductForList> ReadAll()
     {
-        IEnumerable<DO.Product> doProducts = _dal.Product.Read();
+        IEnumerable<DO.Product?> doProducts = _dal.Product.ReadAll();
         List<BO.ProductForList> products = new List<BO.ProductForList>();
         foreach (DO.Product p in doProducts)
         {
@@ -181,10 +181,10 @@ internal class Product : IProduct
     /// <exception cref="BO.ExceptionEntityNotFound">if the product doesn't exist</exception>
     public void DelProduct(int id)
     {
-        IEnumerable<DO.OrderItem> orderItems = _dal.OrderItem.Read();
+        IEnumerable<DO.OrderItem?> orderItems = _dal.OrderItem.ReadAll();
         foreach (var item in orderItems)
         {
-            if (item.ProductID == id)
+            if (item?.ProductID == id)
             {
                 throw new BO.ExceptionDeleteEntityDependence("can't delete product that exist in orders");
             }

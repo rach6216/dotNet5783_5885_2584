@@ -14,23 +14,22 @@ internal class Cart : ICart
     /// <returns>the update cart with the new product</returns>
     public BO.Cart AddProduct(BO.Cart cart, int id)
     {
-        if(cart==null)
-            cart=new BO.Cart();
-        if(cart.Items==null)
-            cart.Items=new List<BO.OrderItem>(){};
+        
+          cart??=  cart = new BO.Cart();
+        cart.Items ??= new List<BO.OrderItem?>() { };
         DO.Product product;
         try
         {
-            product = _dal.Product.Read(id);
+            product = _dal.Product.Read(x => x.Value.ID == id);
         }
         catch (DO.ExceptionEntityNotFound exp)
         {
-            throw new BO.ExceptionInvalidInput("can't get product,it doesn't exist",exp);
+            throw new BO.ExceptionInvalidInput("can't get product,it doesn't exist", exp);
         }
         int oiIndex = cart.Items.FindIndex(x => x.ProductID == id);
         if (oiIndex != -1)
         {
-            if (product.InStock > 0)
+            if (product.InStock > 0 && cart.Items[oiIndex]!=null)
             {
                 cart.Items[oiIndex].Amount += 1;
                 product.InStock -= 1;
@@ -59,30 +58,28 @@ internal class Cart : ICart
     /// <returns>the update cart after the change</returns>
     public BO.Cart UpdatePAmount(BO.Cart cart, int id, int amount)
     {
-        if (cart == null)
-            cart = new BO.Cart();
-        if (cart.Items == null)
-            cart.Items = new List<BO.OrderItem>() { };
+        cart ??= new BO.Cart();
+        cart.Items ??= new List<BO.OrderItem?>() { };
         int oiIndex = cart.Items.FindIndex(x => x.ProductID == id);
         if (cart.Items[oiIndex] != null && cart.Items[oiIndex].Amount != amount)
         {
             int oldAmount = cart.Items[oiIndex].Amount;
-            if (0== amount)
+            if (0 == amount)
             {
                 cart.TotalPrice -= cart.Items[oiIndex].TotalPrice;
                 cart.Items.RemoveAt(oiIndex);
             }
             else if (oldAmount > amount)
             {
-                cart.Items[oiIndex].Amount= amount;
+                cart.Items[oiIndex].Amount = amount;
                 cart.Items[oiIndex].TotalPrice -= (oldAmount - amount) * cart.Items[oiIndex].Price;
                 cart.TotalPrice -= (oldAmount - amount) * cart.Items[oiIndex].Price;
             }
-            else 
+            else
             {
-                        for (int i = 0; i < amount - oldAmount; i++)
-                            AddProduct(cart, id);
-                       
+                for (int i = 0; i < amount - oldAmount; i++)
+                    AddProduct(cart, id);
+
             }
         }
 
@@ -97,91 +94,101 @@ internal class Cart : ICart
     /// <param name="customerAdress">adress of the customer</param>
     public BO.Order ConfirmOrder(BO.Cart cart, string customerName, string customerEmail, string customerAdress)
     {
-        if (cart == null)
-            cart = new BO.Cart();
-        if (cart.Items == null || cart.Items.Count() == 0)
+        cart ??= new BO.Cart();
+        if (cart.Items == null || cart.Items.Count == 0)
             throw new BO.ExceptionCannotCreateItem("cart is empty, can't confirm order");
         //integrity check
         if (customerAdress == null)
             throw new BO.ExceptionInvalidInput("invalid customer address ");
         if (customerName == null)
             throw new BO.ExceptionInvalidInput("invalid customer name ");
-        if (customerEmail == null || !isValid(customerEmail))
+        if (customerEmail == null || !IsValid(customerEmail))
             throw new BO.ExceptionInvalidInput("invalid customer email ");
         //create order
-        DO.Order order = new DO.Order(customerName, customerEmail, customerAdress, DateTime.Now);
+        DO.Order order = new(customerName, customerEmail, customerAdress, DateTime.Now);
         int orderID = _dal.Order.Create(order);
-        BO.Order order2=new BO.Order() { ID=orderID,CustomerAddress=customerAdress,CustomerEmail=customerEmail
-            ,CustomerName=customerName,Status=0,TotalPrice=0,Items=new List<BO.OrderItem>() { },OrderDate=DateTime.Now
+        BO.Order order2 = new()
+        {
+            ID = orderID,
+            CustomerAddress = customerAdress,
+            CustomerEmail = customerEmail
+            ,
+            CustomerName = customerName,
+            Status = 0,
+            TotalPrice = 0,
+            Items = new List<BO.OrderItem?>() { },
+            OrderDate = DateTime.Now
         };
         string messageOfMissingProducts = "";
         //create order-items
-        foreach (BO.OrderItem o in cart.Items)
+        foreach (var o in cart.Items)
         {
-            try
-            {
-                DO.Product p = _dal.Product.Read(o.ProductID);
-                if (p.InStock == 0)
+            if (o != null)
+                try
                 {
-                    messageOfMissingProducts += " ," + p.Name + " is out of stock";
-                }
-                else if (p.InStock < o.Amount)
-                {
-                    int orderItemID = _dal.OrderItem.Create(new DO.OrderItem(p.ID, orderID, p.Price, o.Amount));
-                    order2.Items.Add(new BO.OrderItem()
+                    DO.Product p = _dal.Product.Read(x=>x.Value.ID==o.ProductID);
+                    if (p.InStock == 0)
                     {
-                        ProductID = p.ID,
-                        Amount = o.Amount,
-                        ID = orderItemID,
-                        Price = p.Price,
-                        ProductName = p.Name,
-                        TotalPrice = p.Price * o.Amount
-                    });
-                    p.InStock = 0;
-                    _dal.Product.Update(p);
-                    messageOfMissingProducts += " ," + p.Name + " out of stock " + (o.Amount - p.InStock);
-                }
-                else
-                {
-                    int orderItemID = _dal.OrderItem.Create(new DO.OrderItem(p.ID, orderID, p.Price, o.Amount));
-                    order2.Items.Add(new BO.OrderItem()
+                        messageOfMissingProducts += " ," + p.Name + " is out of stock";
+                    }
+                    else if (p.InStock < o.Amount)
                     {
-                        ProductID = p.ID,
-                        Amount = o.Amount,
-                        ID = orderItemID,
-                        Price = p.Price,
-                        ProductName = p.Name,
-                        TotalPrice = p.Price * o.Amount
-                    });
-                    p.InStock -= o.Amount;
-                    _dal.Product.Update(p);
-                }
+                        int orderItemID = _dal.OrderItem.Create(new DO.OrderItem(p.ID, orderID, p.Price, o.Amount));
+                        order2.Items.Add(new BO.OrderItem()
+                        {
+                            ProductID = p.ID,
+                            Amount = o.Amount,
+                            ID = orderItemID,
+                            Price = p.Price,
+                            ProductName = p.Name,
+                            TotalPrice = p.Price * o.Amount
+                        });
+                        p.InStock = 0;
+                        _dal.Product.Update(p);
+                        messageOfMissingProducts += " ," + p.Name + " out of stock " + (o.Amount - p.InStock);
+                    }
+                    else
+                    {
+                        int orderItemID = _dal.OrderItem.Create(new DO.OrderItem(p.ID, orderID, p.Price, o.Amount));
+                        order2.Items.Add(new BO.OrderItem()
+                        {
+                            ProductID = p.ID,
+                            Amount = o.Amount,
+                            ID = orderItemID,
+                            Price = p.Price,
+                            ProductName = p.Name,
+                            TotalPrice = p.Price * o.Amount
+                        });
+                        p.InStock -= o.Amount;
+                        _dal.Product.Update(p);
+                    }
 
-            }
-            catch (DO.ExceptionEntityNotFound exp)
-            {
-                throw new BO.ExceptionInvalidInput("product of order item is not exist", exp);
-            }
+                }
+                catch (DO.ExceptionEntityNotFound exp)
+                {
+                    throw new BO.ExceptionInvalidInput("product of order item is not exist", exp);
+                }
 
 
 
         }
         //if there was some items out of stock
-        return order2;
+
         if (messageOfMissingProducts != "")
         {
             throw new BO.ExceptionProductOutOfStock("order #" + orderID + "complited, some items is out of stock " + messageOfMissingProducts);
         }
+        return order2;
     }
     /// <summary>
     /// validation of email
     /// </summary>
     /// <param name="email">email address</param>
     /// <returns>valid or not</returns>
-    private bool isValid(string email)
+    private static bool IsValid(string email)
     {
         bool isValid = true;
-        try { MailAddress m = new MailAddress(email); }
+        try { MailAddress m = new(email); }
         catch { isValid = false; }
         return isValid;
     }

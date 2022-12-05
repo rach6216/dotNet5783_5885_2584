@@ -8,7 +8,7 @@ public interface IOrder
     /// get all orders
     /// </summary>
     /// <returns>List of all orders</returns>
-    public IEnumerable<OrderForList> ReadAll();
+    public IEnumerable<OrderForList?> ReadAll();
     /// <summary>
     /// get order details
     /// </summary>
