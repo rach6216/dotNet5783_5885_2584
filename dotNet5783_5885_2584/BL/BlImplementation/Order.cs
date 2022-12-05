@@ -43,7 +43,7 @@ internal class Order : IOrder
         {
             DO.Order doOrder = _dal.Order.Read(id);
             BO.OrderStatus oStatus = 0;
-            List<(DateTime d, string s)> tracking = new List<(DateTime d, string s)>();
+            List<(DateTime? d, string s)> tracking = new List<(DateTime ?d, string s)>();
             if (doOrder.OrderDate != DateTime.MinValue)
             {
                 oStatus = BO.OrderStatus.OrderIsConfirmed;

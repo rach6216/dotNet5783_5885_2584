@@ -15,5 +15,5 @@ public class OrderTracking
     /// <summary>
     /// list of pairs that show the order track
     /// </summary>
-    public List<(DateTime? d, string? s)?>? Tracking;
+    public List<(DateTime? d, string s)> Tracking;
 }

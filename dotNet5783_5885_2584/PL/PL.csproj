@@ -13,7 +13,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="c.jpg" />
+	  <None Remove="car.jpg" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\BL\BL.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="c.jpg" />
+	  <Resource Include="car.jpg" />
 	</ItemGroup>
 
 </Project>
