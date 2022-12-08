@@ -34,5 +34,5 @@ public interface ICrud<T>where T:struct
     /// </summary>
     /// <param name="id">entity id</param>
     /// <returns></returns>
-    public T Read(Func<T?, bool> f);
+    public T Read(Func<T?, bool>? f);
 }

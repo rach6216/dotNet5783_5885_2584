@@ -1,9 +1,19 @@
 ﻿using BlApi;
 using BlImplementation;
+using BO;
 using System;
 using System.Collections.Generic;
 using System.Windows;
-
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace PL.Products;
 
@@ -17,24 +27,29 @@ public partial class BoProductListWindow : Window
     public BoProductListWindow()
     {
         InitializeComponent();
-        List<BO.Category?> l = new List<BO.Category?>() { };
-    
-        //foreach (var category in Enum.GetValues(typeof(BO.Category)))
-        //{
-        //    l.Add((BO.Category?)category);
-        //}
-        //l.Add(null);
-        CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.Category));
-    
+        List<object> l = new () { };
+
+        foreach (var category in Enum.GetValues(typeof(BO.Category)))
+        {
+            l.Add((object)category);
+        }
+        l.Insert(0, "");
+        CategorySelector.ItemsSource = l;
         ProductsListview.ItemsSource = bl.Product.ReadAll();
     }
 
-    private void CategorySelector_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    private void CategorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        BO.Category category = (BO.Category)CategorySelector.SelectedItem;
-        ProductsListview.ItemsSource = bl.Product.ReadAll(category!=null?x=>(BO.Category)x.Value.Category==category:null);
+       
+        var category = CategorySelector.SelectedItem;
+        ProductsListview.ItemsSource = bl.Product.ReadAll(category!=(object)""?x=>(BO.Category?)x!.Value.Category==(BO.Category)category:null);
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)=> new BoProductWindow(bl).Show();
+    private void Button_Click(object sender, RoutedEventArgs e)=> new BoProductWindow().Show();
+
+    private void ProductsListview_doubleClicked(object sender, MouseButtonEventArgs e)
+    {
+        new BoProductWindow((sender as ListView)!.SelectedItem as BO.ProductForList).Show();
+    }
 
 }

@@ -44,11 +44,13 @@ internal struct DalOrderItem:IOrderItem
     /// <param name="f"></param>
     /// <returns></returns>
     /// <exception cref="ExceptionEntityNotFound"></exception>
-    public OrderItem Read(Func<OrderItem?, bool> f)
+    public OrderItem Read(Func<OrderItem?, bool>? f)
     {
+        if(f == null)
+            throw new ExceptionEntityNotFound("Order item is not found");
         OrderItem? oi = s_orderItems.Find(x => f(x));
         if (oi.HasValue&& oi?.ID != 0 )
-            return new OrderItem() { ID = oi.Value.ID, Amount = oi.Value.Amount, OrderID = oi.Value.OrderID, Price = oi.Value.Price, ProductID = oi.Value.ProductID };
+            return new OrderItem() { ID = oi!.Value.ID, Amount = oi.Value.Amount, OrderID = oi.Value.OrderID, Price = oi.Value.Price, ProductID = oi.Value.ProductID };
         throw new ExceptionEntityNotFound("Order item is not found");
     }
     #endregion
@@ -75,7 +77,7 @@ internal struct DalOrderItem:IOrderItem
     /// <param name="id">order-item id to delete</param>
     public void Delete(int id)
     {
-      bool flag= s_orderItems.Remove(Read(x=>x.Value.ID==id));
+      bool flag= s_orderItems.Remove(Read(x=>x?.ID==id));
         if (!flag)
             throw new ExceptionEntityNotFound("the order-item to delete is not found");
     }

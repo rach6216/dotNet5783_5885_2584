@@ -5,9 +5,9 @@ using Dal;
 
 internal class Program
 {
-    static DalList DalList = new DalList();
+    static DalList DalList = new ();
 
-    private static void Main(string[] args)
+    private static void Main()
     {
         Entity entityChoice;
         do
@@ -20,14 +20,14 @@ internal class Program
             switch (entityChoice)
             {
                 case Entity.Products:
-                    _productChoosen();
+                    ProductChoosen();
                     break;
                 case Entity.Orders:
-                    _ordersChoosen();
+                    OrdersChoosen();
                     break;
 
                 case Entity.OrderItems:
-                    _orderItemsChoosen();
+                    OrderItemsChoosen();
                     break;
 
                 case Entity.Exit:
@@ -42,7 +42,7 @@ internal class Program
 
     }
 
-    internal static void _productChoosen()
+    internal static void ProductChoosen()
     {
         CRUDOp productChoices;
         do
@@ -58,19 +58,24 @@ internal class Program
 
             switch (productChoices)
             {
+
                 case CRUDOp.Create:
+                    string? input;
                     Console.WriteLine("Enter product name");
-                    string name = Console.ReadLine();
+                    string? name = Console.ReadLine();
                     Console.WriteLine("Enter product price");
-                    double price = Double.Parse(Console.ReadLine());
+                    double price;
+                    input = Console.ReadLine();
+                    price = Double.Parse(Console.ReadLine());
                     Console.WriteLine("Enter product category");
                     Console.WriteLine("our categories:");
                     Console.WriteLine("Family, Race, Sport, SUV, Tiny, Motorcycle, VIP, Big");
                     Category category;
                     Enum.TryParse(Console.ReadLine(), out category);
                     Console.WriteLine("Enter amount in stock");
-                    int instock = int.Parse(Console.ReadLine());
-                    Console.WriteLine("product #" + DalList.Product.Create(new Product(){Name=name, Price=price, Category=category, InStock=instock}) + " created");
+                    string? am = Console.ReadLine();
+                    int instock = int.Parse(am);
+                    Console.WriteLine("product #" + DalList.Product.Create(new Product() { Name = name, Price = price, Category = category, InStock = instock }) + " created");
                     break;
 
                 case CRUDOp.Read:
@@ -78,7 +83,7 @@ internal class Program
                     int id = int.Parse(Console.ReadLine());
                     try
                     {
-                        Console.WriteLine(DalList.Product.Read(x=>x.Value.ID==id));
+                        Console.WriteLine(DalList.Product.Read(x => x.Value.ID == id));
                     }
                     catch (Exception exp)
                     {
@@ -107,7 +112,7 @@ internal class Program
                 case CRUDOp.Update:
                     Console.WriteLine("Enter product ID to update");
                     id = int.Parse(Console.ReadLine());
-                    Product tempProduct = DalList.Product.Read(x=>x.Value.ID==id);
+                    Product tempProduct = DalList.Product.Read(x => x.Value.ID == id);
                     try
                     {
                         Console.WriteLine(tempProduct);
@@ -118,7 +123,7 @@ internal class Program
                     }
 
                     Console.WriteLine("Enter product name");
-                    string input = Console.ReadLine();
+                    input = Console.ReadLine();
                     if (input != "")
                         tempProduct.Name = input;
                     Console.WriteLine("Enter product price");
@@ -152,7 +157,7 @@ internal class Program
         } while (productChoices != CRUDOp.Exit);
 
     }
-    internal static void _ordersChoosen()
+    internal static void OrdersChoosen()
     {
         CRUDOp orderChoices;
         do
@@ -168,11 +173,11 @@ internal class Program
             {
                 case CRUDOp.Create:
                     Console.WriteLine("Enter name");
-                    string cName = Console.ReadLine();
+                    string? cName = Console.ReadLine();
                     Console.WriteLine("Enter email");
-                    string cEmail = Console.ReadLine();
+                    string? cEmail = Console.ReadLine();
                     Console.WriteLine("Enter address");
-                    string cAddress = Console.ReadLine();
+                    string? cAddress = Console.ReadLine();
 
                     //the ship and delivery date will update in the order ctor
                     Console.WriteLine("order #" + DalList.Order.Create(new Order(cName, cEmail, cAddress, DateTime.Now)) + " created");
@@ -221,7 +226,7 @@ internal class Program
                         Console.WriteLine(exp.Message);
                     }
                     Console.WriteLine("Enter name");
-                    string inp = Console.ReadLine();
+                    string? inp = Console.ReadLine();
                     if (inp != "")
                         tempOrder.CustomerName = inp;
                     Console.WriteLine("Enter email");
@@ -256,7 +261,7 @@ internal class Program
             }
         } while (orderChoices != CRUDOp.Exit);
     }
-    internal static void _orderItemsChoosen()
+    internal static void OrderItemsChoosen()
     {
         CRUDOp orderItemChoices;
         do
@@ -311,7 +316,7 @@ internal class Program
                     }
                     break;
                 case CRUDOp.ReadAll:
-                    foreach (OrderItem oi in DalList.OrderItem.ReadAll())
+                    foreach (var oi in DalList.OrderItem.ReadAll())
                     {
                         Console.WriteLine(oi);
                     }
@@ -321,12 +326,12 @@ internal class Program
                     orderID = int.Parse(Console.ReadLine());
                     Console.WriteLine("Enter product id");
                     productID = int.Parse(Console.ReadLine());
-                    Console.WriteLine(DalList.OrderItem.Read(x=>(x.Value.OrderID==orderID)&&(x.Value.ProductID==productID)));
+                    Console.WriteLine(DalList.OrderItem.Read(x => (x.Value.OrderID == orderID) && (x.Value.ProductID == productID)));
                     break;
                 case CRUDOp.ReadAllByOrder:
                     Console.WriteLine("Enter order id");
                     orderID = int.Parse(Console.ReadLine());
-                    foreach (var oi in DalList.OrderItem.ReadAll(x=>x.Value.OrderID==orderID))
+                    foreach (var oi in DalList.OrderItem.ReadAll(x => x.Value.OrderID == orderID))
                     {
                         Console.WriteLine(oi);
                     }
@@ -346,12 +351,12 @@ internal class Program
                     }
 
                     Console.WriteLine("Enter order id name");
-                    string input = Console.ReadLine();
-                    if (input != "")
+                    string? input = Console.ReadLine();
+                    if (input != null)
                         tempOrderItem.OrderID = int.Parse(input);
                     Console.WriteLine("Enter product id price");
                     input = Console.ReadLine();
-                    if (input != "")
+                    if (input != null)
                         tempOrderItem.ProductID = int.Parse(input);
 
                     Console.WriteLine("Enter price of item");

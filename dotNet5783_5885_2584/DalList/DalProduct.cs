@@ -18,7 +18,7 @@ internal struct DalProduct : IProduct
     {
        if(p.ID == 0)
         {
-            Random r = new Random();
+            Random r = new ();
             int tID;
             //generate random id
             do
@@ -41,11 +41,13 @@ internal struct DalProduct : IProduct
     /// <returns>requested product</returns>
     /// <exception cref="Exception">when product is not exist throw exeption: "Product is not found</exception>
  
-    public Product Read(Func<Product?, bool> f)
+    public Product Read(Func<Product?, bool>? f)
     {
+        if(f == null)
+            throw new ExceptionEntityNotFound("Product is not found");
         Product? p = s_products.Find(x =>f(x));
         if (p.HasValue&& p?.ID != 0)
-            return new Product() { Price = p.Value.Price, Category = p.Value.Category, ID = p.Value.ID, InStock = p.Value.InStock, Name = p.Value.Name };
+            return new Product() { Price = p!.Value.Price, Category = p.Value.Category, ID = p.Value.ID, InStock = p.Value.InStock, Name = p.Value.Name };
         throw new ExceptionEntityNotFound("Product is not found");
     }
     /// <summary>
@@ -89,7 +91,7 @@ internal struct DalProduct : IProduct
     /// <param name="id">id of product to delete</param>
     public void Delete(int id)
     {
-       bool flag=  s_products.Remove(Read(x=>x.Value.ID==id));
+       bool flag=  s_products.Remove(Read(x=>x?.ID==id));
         if (!flag)
         {
             throw new ExceptionEntityNotFound("Order for delete is not found");

@@ -16,14 +16,14 @@ public interface IProduct
     /// </summary>
     /// <param name="id">product id</param>
     /// <returns>product by id</returns>
-    public BO.Product Read(Func<DO.Product?, bool> f);
+    public BO.Product Read(Func<DO.Product?, bool>? f);
     /// <summary>
     /// method that get product by id for client screen
     /// </summary>
     /// <param name="id">product id</param>
     /// <param name="cart"></param>
     /// <returns>prduct item or exception if product not exiest</returns>
-    public BO.ProductItem Read(Func<DO.Product?,bool> f, Cart cart);
+    public BO.ProductItem Read(BO.Cart cart, Func<DO.Product?, bool> f = null!);
     /// <summary>
     /// method that add product for manager screen
     /// </summary>

@@ -33,7 +33,7 @@ internal class Product : IProduct
             {
                 throw new BO.ExceptionInvalidInput("product name is required");
             }
-            DO.Product p = new DO.Product() { Category = (DO.Category)product.Category, Name = product.Name, Price = product.Price, InStock = product.InStock };
+            DO.Product p = new () { Category = (DO.Category?)product.Category, Name = product.Name, Price = product.Price, InStock = product.InStock };
             int id = _dal.Product.Create(p);
             return id;
         }
@@ -55,14 +55,17 @@ internal class Product : IProduct
     /// <returns>BO.Product obj</returns>
     /// <exception cref="BO.ExceptionInvalidInput">if the input is negative</exception>
     /// <exception cref="BO.ExceptionEntityNotFound"></exception>
-    public BO.Product Read(Func<DO.Product?, bool> f)
+    public BO.Product Read(Func<DO.Product?, bool>? f)
     {
         try
         {
+            if(f == null)
+                throw new DO.ExceptionEntityNotFound("product didn't find by ID");
+
             DO.Product p = _dal.Product.Read(x => f(x));
-            BO.Product boP = new BO.Product()
+            BO.Product boP = new ()
             {
-                Category = (BO.Category)p.Category,
+                Category = (BO.Category?)p.Category,
                 ID = p.ID,
                 InStock = p.InStock,
                 Name = p.Name,
@@ -85,16 +88,16 @@ internal class Product : IProduct
     /// <returns></returns>
     /// <exception cref="BO.ExceptionInvalidInput">if the product id is negative</exception>
     /// <exception cref="BO.ExceptionEntityNotFound">if the product doesn't exist</exception>
-    public BO.ProductItem Read(Func<DO.Product?, bool> f, BO.Cart cart)
+    public BO.ProductItem Read( BO.Cart cart, Func<DO.Product?, bool> f=null!)
     {
         cart.Items ??= new List<BO.OrderItem?>() { };
         try
         {
 
-            DO.Product p = _dal.Product.Read(x => f(x));
-            int productIndex = cart.Items.FindIndex(x => x.ProductID == p.ID);
-            int amount = productIndex == -1 ? 0 : cart.Items[productIndex].Amount;
-            BO.ProductItem boProductItem = new BO.ProductItem() { Category = (BO.Category)p.Category, ID = p.ID, InStock = p.InStock > 0, Name = p.Name, Price = p.Price, Amount = amount > 0 ? amount : 0 };
+            DO.Product p = _dal.Product.Read(f!=null?x => f(x):null);
+            int productIndex = cart.Items.FindIndex(x => x?.ProductID == p.ID);
+            int amount = productIndex == -1 ? 0 : cart.Items[productIndex]!.Amount;
+            BO.ProductItem boProductItem = new() { Category = (BO.Category?)p.Category, ID = p.ID, InStock = p.InStock > 0, Name = p.Name, Price = p.Price, Amount = amount > 0 ? amount : 0 };
             return boProductItem;
         }
         catch (DO.ExceptionEntityNotFound exp)
@@ -111,7 +114,7 @@ internal class Product : IProduct
     public IEnumerable<BO.ProductForList?> ReadAll(Func<DO.Product?, bool>? f = null)
     {
         IEnumerable<DO.Product?> doProducts;
-        List<BO.ProductForList> products = new List<BO.ProductForList>();
+        List<BO.ProductForList?> products = new ();
         if (f == null)
         {
             doProducts = _dal.Product.ReadAll();
@@ -121,9 +124,10 @@ internal class Product : IProduct
             doProducts = _dal.Product.ReadAll(x => f(x));
 
         }
-        foreach (DO.Product p in doProducts)
+        foreach (var p in doProducts)
         {
-            products.Add(new BO.ProductForList() { Category = (BO.Category)p.Category, Price = p.Price, ID = p.ID, Name = p.Name });
+            if(p.HasValue)
+            products.Add(new BO.ProductForList() { Category = (BO.Category?)p?.Category, Price = p!.Value.Price, ID = p.Value.ID, Name = p?.Name });
         }
         return products;
     }
@@ -156,7 +160,7 @@ internal class Product : IProduct
         }
         try
         {
-            DO.Product p = new DO.Product() { Category = (DO.Category)product.Category, ID = product.ID, InStock = product.InStock, Name = product.Name, Price = product.Price };
+            DO.Product p = new () { Category = (DO.Category?)product.Category, ID = product.ID, InStock = product.InStock, Name = product.Name, Price = product.Price };
             _dal.Product.Update(p);
         }
         catch (DO.ExceptionEntityNotFound exp)

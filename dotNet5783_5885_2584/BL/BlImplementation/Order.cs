@@ -13,8 +13,8 @@ internal class Order : IOrder
     {
         try
         {
-            DO.Order doOrder = _dal.Order.Read(x => x.Value.ID == id);
-            BO.Order boOrder = Read(x=>x.Value.ID==id);
+            DO.Order doOrder = _dal.Order.Read(x => x?.ID == id);
+            BO.Order boOrder = Read(x => x?.ID == id);
             if (doOrder.DeliveryDate == DateTime.MinValue)
             {
                 doOrder.DeliveryDate = DateTime.Now;
@@ -26,7 +26,7 @@ internal class Order : IOrder
         }
         catch (DO.ExceptionEntityNotFound exp)
         {
-            throw new BO.ExceptionEntityNotFound("can't set delivery, order is not exist ",exp);
+            throw new BO.ExceptionEntityNotFound("can't set delivery, order is not exist ", exp);
         }
     }
 
@@ -41,7 +41,7 @@ internal class Order : IOrder
     {
         try
         {
-            DO.Order doOrder = _dal.Order.Read(x=>x.Value.ID==id);
+            DO.Order doOrder = _dal.Order.Read(x => x?.ID == id);
             BO.OrderStatus oStatus = 0;
             List<(DateTime? d, string s)> tracking = new();
             if (doOrder.OrderDate != null)
@@ -64,7 +64,7 @@ internal class Order : IOrder
         }
         catch (DO.ExceptionEntityNotFound exp)
         {
-            throw new BO.ExceptionEntityNotFound("can't track order,order doesn't exist",exp);
+            throw new BO.ExceptionEntityNotFound("can't track order,order doesn't exist", exp);
         }
 
     }
@@ -76,59 +76,63 @@ internal class Order : IOrder
     /// <returns></returns>
     /// <exception cref="BO.ExceptionEntityNotFound">if the product doesn't exist </exception>
     /// <exception cref="BO.ExceptionInvalidInput">if the id is negative</exception>
-    public BO.Order Read(Func<DO.Order?,bool> f)
+    public BO.Order Read(Func<DO.Order?, bool>? f)
     {
 
-       
-           try {
-                DO.Order doOrder;
-                doOrder = _dal.Order.Read(x => f(x));
-                IEnumerable<DO.OrderItem?> doOrderItems = _dal.OrderItem.ReadAll(x => x.Value.OrderID == doOrder.ID);
-                List<BO.OrderItem?> Items = new();
-                double total = 0;
-                OrderStatus oStatus;
-                foreach (var item in doOrderItems)
-                {
-                    if(item != null)
-                    {
-                        Items.Add(new BO.OrderItem()
-                        {
-                            ID = item.Value.ID,
-                            Amount = item.Value.Amount,
-                            ProductID = item.Value.ProductID,
-                            Price = item.Value.Price,
-                            TotalPrice = item.Value.Amount * item.Value.Price,
-                            ProductName = _dal.Product.Read(x=>x.Value.ID==item.Value.ID).Name
-                        });
-                        total += item.Value.Amount * item.Value.Price;
-                    }
-                   
-                }
-                if (doOrder.DeliveryDate != DateTime.MinValue)
-                    oStatus = BO.OrderStatus.OrderIsDelivered;
-                else if (doOrder.ShipDate != DateTime.MinValue)
-                    oStatus = BO.OrderStatus.OrderIsShiped;
-                else
-                    oStatus = BO.OrderStatus.OrderIsConfirmed;
-                BO.Order order = new()
-                {
-                    CustomerAddress = doOrder.CustomerAddress,
-                    CustomerEmail = doOrder.CustomerEmail,
-                    CustomerName = doOrder.CustomerName,
-                    ID = doOrder.ID,
-                    OrderDate = doOrder.OrderDate,
-                    ShipDate = doOrder.ShipDate,
-                    DeliveryDate = doOrder.DeliveryDate,
-                    Items = Items,
-                    TotalPrice = total,
-                    Status = oStatus
-                };
-                return order;
-            }
-            catch (DO.ExceptionEntityNotFound exp)
+
+        try
+        {
+            DO.Order doOrder;
+            if (f == null)
+                throw new DO.ExceptionEntityNotFound("can't read order-order not found");
+
+            doOrder = _dal.Order.Read(x => f(x));
+            IEnumerable<DO.OrderItem?> doOrderItems = _dal.OrderItem.ReadAll(x => x?.OrderID == doOrder.ID);
+            List<BO.OrderItem?> Items = new();
+            double total = 0;
+            OrderStatus oStatus;
+            foreach (var item in doOrderItems)
             {
-                throw new BO.ExceptionEntityNotFound("can't read order-order not found", exp);
+                if (item != null)
+                {
+                    Items.Add(new BO.OrderItem()
+                    {
+                        ID = item.Value.ID,
+                        Amount = item.Value.Amount,
+                        ProductID = item.Value.ProductID,
+                        Price = item.Value.Price,
+                        TotalPrice = item.Value.Amount * item.Value.Price,
+                        ProductName = _dal.Product.Read(x => x?.ID == item.Value.ID).Name
+                    });
+                    total += item.Value.Amount * item.Value.Price;
+                }
+
             }
+            if (doOrder.DeliveryDate != DateTime.MinValue)
+                oStatus = BO.OrderStatus.OrderIsDelivered;
+            else if (doOrder.ShipDate != DateTime.MinValue)
+                oStatus = BO.OrderStatus.OrderIsShiped;
+            else
+                oStatus = BO.OrderStatus.OrderIsConfirmed;
+            BO.Order order = new()
+            {
+                CustomerAddress = doOrder.CustomerAddress,
+                CustomerEmail = doOrder.CustomerEmail,
+                CustomerName = doOrder.CustomerName,
+                ID = doOrder.ID,
+                OrderDate = doOrder.OrderDate,
+                ShipDate = doOrder.ShipDate,
+                DeliveryDate = doOrder.DeliveryDate,
+                Items = Items,
+                TotalPrice = total,
+                Status = oStatus
+            };
+            return order;
+        }
+        catch (DO.ExceptionEntityNotFound exp)
+        {
+            throw new BO.ExceptionEntityNotFound("can't read order-order not found", exp);
+        }
 
     }
 
@@ -137,26 +141,30 @@ internal class Order : IOrder
     /// build porder for list 
     /// </summary>
     /// <returns>order for list</returns>
-    public IEnumerable<BO.OrderForList?> ReadAll(Func<DO.Order?, bool>? f)
+    public IEnumerable<BO.OrderForList?> ReadAll(Func<DO.Order?, bool>? f = null)
     {
-        IEnumerable<DO.Order?> orders = _dal.Order.ReadAll(f!=null?x=>f(x):null);
+        IEnumerable<DO.Order?> orders = _dal.Order.ReadAll(f != null ? x => f(x) : null);
         List<OrderForList> orderForList = new();
-        foreach (DO.Order order in orders)
+        foreach (var order in orders)
         {
-            BO.OrderStatus orderStatus = BO.OrderStatus.OrderIsConfirmed;
-            if (order.DeliveryDate != null)
-                orderStatus = BO.OrderStatus.OrderIsDelivered;
-            else if (order.ShipDate != null)
-                orderStatus = BO.OrderStatus.OrderIsShiped;
-            (int, double) amountAndPrice = TotalPrice(order.ID);
-            orderForList.Add(new BO.OrderForList()
+            if (order.HasValue)
             {
-                ID = order.ID,
-                CustomerName = order.CustomerName,
-                Status = orderStatus,
-                Amount = amountAndPrice.Item1,
-                TotalPrice = amountAndPrice.Item2
-            });
+                BO.OrderStatus orderStatus = BO.OrderStatus.OrderIsConfirmed;
+                if (order?.DeliveryDate != null)
+                    orderStatus = BO.OrderStatus.OrderIsDelivered;
+                else if (order?.ShipDate != null)
+                    orderStatus = BO.OrderStatus.OrderIsShiped;
+                (int, double) amountAndPrice = TotalPrice(order!.Value.ID);
+                orderForList.Add(new BO.OrderForList()
+                {
+                    ID = order!.Value.ID,
+                    CustomerName = order?.CustomerName,
+                    Status = orderStatus,
+                    Amount = amountAndPrice.Item1,
+                    TotalPrice = amountAndPrice.Item2
+                });
+            }
+
         }
         return orderForList;
     }
@@ -172,8 +180,8 @@ internal class Order : IOrder
     {
         try
         {
-            DO.Order doOrder = _dal.Order.Read(x => x.Value.ID == id);
-            BO.Order boOrder = Read(x=> doOrder.ID==x.Value.ID);
+            DO.Order doOrder = _dal.Order.Read(x => x?.ID == id);
+            BO.Order boOrder = Read(x => doOrder.ID == x?.ID);
             if (doOrder.ShipDate == null)
             {
                 doOrder.ShipDate = DateTime.Now;
@@ -197,42 +205,53 @@ internal class Order : IOrder
     /// <exception cref="BO.ExceptionEntityNotFound"></exception>
     public BO.Order UpdateOrder(int orderID, BO.OrderItem orderItem)
     {
-        try {
-            DO.OrderItem doOrderItem = _dal.OrderItem.Read(x=>x.Value.ID==orderItem.ID);
-            BO.Order order = Read(x=>x.Value.ID== orderID);
-            int oiIndex = order.Items.FindIndex(x => x.ID == orderItem.ID);
-            if (oiIndex > -1)
+        try
+        {
+            DO.OrderItem doOrderItem = _dal.OrderItem.Read(x => x?.ID == orderItem.ID);
+            BO.Order order = Read(x => x?.ID == orderID);
+            if (order != null && order.Items != null)
             {
-                if (orderItem.Amount == 0)
+                int oiIndex = order.Items.FindIndex(x => x?.ID == orderItem.ID);
+                if (oiIndex > -1 && order.Items[oiIndex]!=null)
                 {
-                    _dal.OrderItem.Delete(doOrderItem.ID);
-                    order.Items.RemoveAt(oiIndex);
+                    if (orderItem.Amount == 0)
+                    {
+                        _dal.OrderItem.Delete(doOrderItem.ID);
+                        order.Items.RemoveAt(oiIndex);
+                    }
+                    else
+                    {
+
+                        order.TotalPrice = order.TotalPrice - order.Items[oiIndex]!.TotalPrice + orderItem.TotalPrice;
+                        order.Items[oiIndex]!.Amount = orderItem.Amount;
+                        doOrderItem.Amount = orderItem.Amount;
+                        order.Items[oiIndex]!.TotalPrice = orderItem.TotalPrice;
+                        _dal.OrderItem.Update(doOrderItem);
+                    }
+                    return order;
                 }
                 else
-                {
 
-                    order.TotalPrice = order.TotalPrice - order.Items[oiIndex].TotalPrice + orderItem.TotalPrice;
-                    order.Items[oiIndex].Amount = orderItem.Amount;
-                    doOrderItem.Amount = orderItem.Amount;
-                    order.Items[oiIndex].TotalPrice = orderItem.TotalPrice;
-                    _dal.OrderItem.Update(doOrderItem);
+                {
+                    order.Items.Add(orderItem);
+                    _dal.OrderItem.Create(new DO.OrderItem(orderItem.ProductID, orderID, orderItem.Price, orderItem.Amount));
+                    order.TotalPrice += orderItem.TotalPrice;
+                    return order;
                 }
-                return order;
             }
             else
-
             {
-                order.Items.Add(orderItem);
-                _dal.OrderItem.Create(new DO.OrderItem(orderItem.ProductID, orderID, orderItem.Price, orderItem.Amount));
-                order.TotalPrice += orderItem.TotalPrice;
-                return order;
+                throw new DO.ExceptionEntityNotFound("can't update order, order doesn't exist");
+
             }
-        }catch(DO.ExceptionEntityNotFound exp)
-        {
-            throw new BO.ExceptionEntityNotFound("can't update order, order doesn't exist",exp);
+
         }
-        
-           
+        catch (DO.ExceptionEntityNotFound exp)
+        {
+            throw new BO.ExceptionEntityNotFound("can't update order, order doesn't exist", exp);
+        }
+
+
     }
 
 
@@ -240,10 +259,14 @@ internal class Order : IOrder
     {
         double totalPrice = 0;
         int amount = 0;
-        foreach (DO.OrderItem order in _dal.OrderItem.ReadAll(x=>x.Value.OrderID==oID))
+        foreach (var order in _dal.OrderItem.ReadAll(x => x?.OrderID == oID))
         {
-            amount++;
-            totalPrice += order.Price;
+            if (order != null)
+            {
+                amount++;
+                totalPrice += order.Value.Price;
+            }
+           
         }
         return (amount, totalPrice);
     }

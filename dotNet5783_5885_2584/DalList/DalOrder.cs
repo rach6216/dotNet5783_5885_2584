@@ -6,7 +6,7 @@ namespace Dal;
 /// <summary>
 /// structure for actions on orders entities
 /// </summary>
-internal struct DalOrder:IOrder
+internal struct DalOrder : IOrder
 {
     #region Create
     /// <summary>
@@ -24,18 +24,22 @@ internal struct DalOrder:IOrder
 
     #region Read
 
-/// <summary>
-/// read order by condition
-/// </summary>
-/// <param name="f">lambda function bool</param>
-/// <returns>the first order that true in the condition</returns>
-/// <exception cref="ExceptionEntityNotFound"></exception>
-    public Order Read(Func<Order?, bool> f)
+    /// <summary>
+    /// read order by condition
+    /// </summary>
+    /// <param name="f">lambda function bool</param>
+    /// <returns>the first order that true in the condition</returns>
+    /// <exception cref="ExceptionEntityNotFound"></exception>
+    public Order Read(Func<Order?, bool>? f)
     {
-        Order? o = s_orders.Find(x => f(x));
-        if (o.HasValue&&o?.ID != 0 )
-            return new Order() { CustomerAddress = o.Value.CustomerAddress, CustomerEmail = o.Value.CustomerEmail, CustomerName = o.Value.CustomerName, DeliveryDate = o.Value.DeliveryDate, ID = o.Value.ID, OrderDate = o.Value.OrderDate, ShipDate = o.Value.ShipDate };
+        if (f != null)
+        {
+            Order? o = s_orders.Find(x => f(x));
+            if (o.HasValue && o?.ID != 0)
+                return new Order() { CustomerAddress = o!.Value.CustomerAddress, CustomerEmail = o!.Value.CustomerEmail, CustomerName = o.Value.CustomerName, DeliveryDate = o.Value.DeliveryDate, ID = o.Value.ID, OrderDate = o.Value.OrderDate, ShipDate = o.Value.ShipDate };
+        }
         throw new ExceptionEntityNotFound("Order is not found");
+
     }
 
     /// <summary>
@@ -45,10 +49,10 @@ internal struct DalOrder:IOrder
     public IEnumerable<Order?> ReadAll(Func<Order?, bool>? f = null)
     {
 
-        List<Order?> ol=s_orders;
+        List<Order?> ol = s_orders;
         if (f != null)
         {
-            ol = s_orders.FindAll(x=>f(x));
+            ol = s_orders.FindAll(x => f(x));
         }
         return ol;
     }
@@ -67,7 +71,7 @@ internal struct DalOrder:IOrder
             {
                 s_orders[i] = o;
                 return;
-            } 
+            }
         }
         throw new ExceptionEntityNotFound("the order entity not found");
     }
@@ -80,14 +84,14 @@ internal struct DalOrder:IOrder
     /// <param name="id">id of order to delete</param>
     public void Delete(int id)
     {
-       bool flag= s_orders.Remove(Read(x=>x.Value.ID==id));
+        bool flag = s_orders.Remove(Read(x => x!.Value.ID == id));
         if (!flag)
         {
             throw new ExceptionEntityNotFound("Order for delete is not found");
         }
     }
 
-   
+
 
 
     #endregion

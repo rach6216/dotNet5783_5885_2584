@@ -176,7 +176,7 @@ internal class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        Console.WriteLine(_bl.Product.Read(x=>x.Value.ID==id, cart));
+                        Console.WriteLine(_bl.Product.Read(cart,x=>x.Value.ID==id));
                     }
                     catch (ExceptionEntityNotFound exp)
                     {

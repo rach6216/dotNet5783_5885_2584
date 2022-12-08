@@ -20,20 +20,20 @@ internal class Cart : ICart
         DO.Product product;
         try
         {
-            product = _dal.Product.Read(x => x.Value.ID == id);
+            product = _dal.Product.Read(x => x?.ID == id);
         }
         catch (DO.ExceptionEntityNotFound exp)
         {
             throw new BO.ExceptionInvalidInput("can't get product,it doesn't exist", exp);
         }
-        int oiIndex = cart.Items.FindIndex(x => x.ProductID == id);
+        int oiIndex = cart.Items.FindIndex(x => x?.ProductID == id);
         if (oiIndex != -1)
         {
-            if (product.InStock > 0 && cart.Items[oiIndex]!=null)
+            if (product.InStock > 0 && cart.Items!=null&& cart.Items[oiIndex]!=null)
             {
-                cart.Items[oiIndex].Amount += 1;
+                cart.Items[oiIndex]!.Amount += 1;
                 product.InStock -= 1;
-                cart.Items[oiIndex].TotalPrice = cart.Items[oiIndex].Amount * cart.Items[oiIndex].Price;
+                cart.Items[oiIndex]!.TotalPrice = cart.Items[oiIndex]!.Amount * cart.Items[oiIndex]!.Price;
                 //update price of item
                 cart.TotalPrice += product.Price;
             }
@@ -60,20 +60,20 @@ internal class Cart : ICart
     {
         cart ??= new BO.Cart();
         cart.Items ??= new List<BO.OrderItem?>() { };
-        int oiIndex = cart.Items.FindIndex(x => x.ProductID == id);
-        if (cart.Items[oiIndex] != null && cart.Items[oiIndex].Amount != amount)
+        int oiIndex = cart.Items.FindIndex(x => x?.ProductID == id);
+        if (cart.Items[oiIndex] != null && cart.Items[oiIndex]!.Amount != amount)
         {
-            int oldAmount = cart.Items[oiIndex].Amount;
+            int oldAmount = cart.Items[oiIndex]!.Amount;
             if (0 == amount)
             {
-                cart.TotalPrice -= cart.Items[oiIndex].TotalPrice;
+                cart.TotalPrice -= cart.Items[oiIndex]!.TotalPrice;
                 cart.Items.RemoveAt(oiIndex);
             }
             else if (oldAmount > amount)
             {
-                cart.Items[oiIndex].Amount = amount;
-                cart.Items[oiIndex].TotalPrice -= (oldAmount - amount) * cart.Items[oiIndex].Price;
-                cart.TotalPrice -= (oldAmount - amount) * cart.Items[oiIndex].Price;
+                cart.Items[oiIndex]!.Amount = amount;
+                cart.Items[oiIndex]!.TotalPrice -= (oldAmount - amount) * cart.Items[oiIndex]!.Price;
+                cart.TotalPrice -= (oldAmount - amount) * cart.Items[oiIndex]!.Price;
             }
             else
             {
@@ -126,7 +126,7 @@ internal class Cart : ICart
             if (o != null)
                 try
                 {
-                    DO.Product p = _dal.Product.Read(x=>x.Value.ID==o.ProductID);
+                    DO.Product p = _dal.Product.Read(x=>(x!.Value.ID==o.ProductID));
                     if (p.InStock == 0)
                     {
                         messageOfMissingProducts += " ," + p.Name + " is out of stock";

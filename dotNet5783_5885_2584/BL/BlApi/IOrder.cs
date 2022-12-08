@@ -7,13 +7,13 @@ public interface IOrder
     /// get all orders
     /// </summary>
     /// <returns>List of all orders</returns>
-    public IEnumerable<BO.OrderForList?> ReadAll(Func<DO.Order?,bool>? f);
+    public IEnumerable<BO.OrderForList?> ReadAll(Func<DO.Order?,bool>? f=null);
     /// <summary>
     /// get order details
     /// </summary>
     /// <param name="id">order id</param>
     /// <returns>constructed order object</returns>
-    public BO.Order Read(Func<DO.Order?,bool> f);
+    public BO.Order Read(Func<DO.Order?,bool>? f);
     /// <summary>
     /// update the order ship date
     /// </summary>
