@@ -34,7 +34,7 @@ internal class Product : IProduct
                 throw new BO.ExceptionInvalidInput("product name is required");
             }
             DO.Product p = new DO.Product() { Category = (DO.Category)product.Category, Name = product.Name, Price = product.Price, InStock = product.InStock };
-            int id=_dal.Product.Create(p);
+            int id = _dal.Product.Create(p);
             return id;
         }
         catch (DO.ExceptionEntityNotFound exp)
@@ -55,27 +55,21 @@ internal class Product : IProduct
     /// <returns>BO.Product obj</returns>
     /// <exception cref="BO.ExceptionInvalidInput">if the input is negative</exception>
     /// <exception cref="BO.ExceptionEntityNotFound"></exception>
-    public BO.Product Read(int id)
+    public BO.Product Read(Func<DO.Product?, bool> f)
     {
         try
         {
-            if (id > 0)
+            DO.Product p = _dal.Product.Read(x => f(x));
+            BO.Product boP = new BO.Product()
             {
-                DO.Product p = _dal.Product.Read(x=>x.Value.ID==id);
-                BO.Product boP = new BO.Product()
-                {
-                    Category = (BO.Category)p.Category,
-                    ID = p.ID,
-                    InStock = p.InStock,
-                    Name = p.Name,
-                    Price = p.Price
-                };
-                return boP;
-            }
-            else
-            {
-                throw new BO.ExceptionInvalidInput("can't read a negative ID");
-            }
+                Category = (BO.Category)p.Category,
+                ID = p.ID,
+                InStock = p.InStock,
+                Name = p.Name,
+                Price = p.Price
+            };
+            return boP;
+
         }
         catch (DO.ExceptionEntityNotFound exp)
         {
@@ -91,23 +85,17 @@ internal class Product : IProduct
     /// <returns></returns>
     /// <exception cref="BO.ExceptionInvalidInput">if the product id is negative</exception>
     /// <exception cref="BO.ExceptionEntityNotFound">if the product doesn't exist</exception>
-    public BO.ProductItem Read(int id, BO.Cart cart)
+    public BO.ProductItem Read(Func<DO.Product?, bool> f, BO.Cart cart)
     {
         cart.Items ??= new List<BO.OrderItem?>() { };
         try
         {
-            if (id > 0)
-            {
-                DO.Product p = _dal.Product.Read(x => x.Value.ID == id);
-                int productIndex = cart.Items.FindIndex(x => x.ProductID == p.ID);
-                int amount = productIndex == -1 ? 0 : cart.Items[productIndex].Amount;
-                BO.ProductItem boProductItem = new BO.ProductItem() { Category = (BO.Category)p.Category, ID = p.ID, InStock = p.InStock > 0, Name = p.Name, Price = p.Price, Amount = amount > 0 ? amount : 0 };
-                return boProductItem;
-            }
-            else
-            {
-                throw new BO.ExceptionInvalidInput("can't find product with negative id");
-            }
+
+            DO.Product p = _dal.Product.Read(x => f(x));
+            int productIndex = cart.Items.FindIndex(x => x.ProductID == p.ID);
+            int amount = productIndex == -1 ? 0 : cart.Items[productIndex].Amount;
+            BO.ProductItem boProductItem = new BO.ProductItem() { Category = (BO.Category)p.Category, ID = p.ID, InStock = p.InStock > 0, Name = p.Name, Price = p.Price, Amount = amount > 0 ? amount : 0 };
+            return boProductItem;
         }
         catch (DO.ExceptionEntityNotFound exp)
         {
@@ -126,11 +114,11 @@ internal class Product : IProduct
         List<BO.ProductForList> products = new List<BO.ProductForList>();
         if (f == null)
         {
-          doProducts = _dal.Product.ReadAll();
+            doProducts = _dal.Product.ReadAll();
         }
         else
         {
-            doProducts = _dal.Product.ReadAll(x=>f(x));
+            doProducts = _dal.Product.ReadAll(x => f(x));
 
         }
         foreach (DO.Product p in doProducts)

@@ -14,7 +14,7 @@ internal class Order : IOrder
         try
         {
             DO.Order doOrder = _dal.Order.Read(x => x.Value.ID == id);
-            BO.Order boOrder = Read(id);
+            BO.Order boOrder = Read(x=>x.Value.ID==id);
             if (doOrder.DeliveryDate == DateTime.MinValue)
             {
                 doOrder.DeliveryDate = DateTime.Now;
@@ -76,14 +76,14 @@ internal class Order : IOrder
     /// <returns></returns>
     /// <exception cref="BO.ExceptionEntityNotFound">if the product doesn't exist </exception>
     /// <exception cref="BO.ExceptionInvalidInput">if the id is negative</exception>
-    public BO.Order Read(int id)
+    public BO.Order Read(Func<DO.Order?,bool> f)
     {
 
-        if (id > 0) try
-            {
+       
+           try {
                 DO.Order doOrder;
-                doOrder = _dal.Order.Read(x => x.Value.ID == id);
-                IEnumerable<DO.OrderItem?> doOrderItems = _dal.OrderItem.ReadAll(x => x.Value.ID == id);
+                doOrder = _dal.Order.Read(x => f(x));
+                IEnumerable<DO.OrderItem?> doOrderItems = _dal.OrderItem.ReadAll(x => x.Value.OrderID == doOrder.ID);
                 List<BO.OrderItem?> Items = new();
                 double total = 0;
                 OrderStatus oStatus;
@@ -98,7 +98,7 @@ internal class Order : IOrder
                             ProductID = item.Value.ProductID,
                             Price = item.Value.Price,
                             TotalPrice = item.Value.Amount * item.Value.Price,
-                            ProductName = _dal.Product.Read(x=>x.Value.ID==id).Name
+                            ProductName = _dal.Product.Read(x=>x.Value.ID==item.Value.ID).Name
                         });
                         total += item.Value.Amount * item.Value.Price;
                     }
@@ -129,10 +129,6 @@ internal class Order : IOrder
             {
                 throw new BO.ExceptionEntityNotFound("can't read order-order not found", exp);
             }
-        else
-        {
-            throw new BO.ExceptionInvalidInput("can't get negative id");
-        }
 
     }
 
@@ -141,9 +137,9 @@ internal class Order : IOrder
     /// build porder for list 
     /// </summary>
     /// <returns>order for list</returns>
-    public IEnumerable<BO.OrderForList?> ReadAll()
+    public IEnumerable<BO.OrderForList?> ReadAll(Func<DO.Order?, bool>? f)
     {
-        IEnumerable<DO.Order?> orders = _dal.Order.ReadAll();
+        IEnumerable<DO.Order?> orders = _dal.Order.ReadAll(f!=null?x=>f(x):null);
         List<OrderForList> orderForList = new();
         foreach (DO.Order order in orders)
         {
@@ -177,7 +173,7 @@ internal class Order : IOrder
         try
         {
             DO.Order doOrder = _dal.Order.Read(x => x.Value.ID == id);
-            BO.Order boOrder = Read(doOrder.ID);
+            BO.Order boOrder = Read(x=> doOrder.ID==x.Value.ID);
             if (doOrder.ShipDate == null)
             {
                 doOrder.ShipDate = DateTime.Now;
@@ -203,7 +199,7 @@ internal class Order : IOrder
     {
         try {
             DO.OrderItem doOrderItem = _dal.OrderItem.Read(x=>x.Value.ID==orderItem.ID);
-            BO.Order order = Read(orderID);
+            BO.Order order = Read(x=>x.Value.ID== orderID);
             int oiIndex = order.Items.FindIndex(x => x.ID == orderItem.ID);
             if (oiIndex > -1)
             {
