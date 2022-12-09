@@ -23,12 +23,13 @@ namespace PL.Products
     {
         private IBl bl = new Bl();
         private BO.Product _product = new();
-
-        public BoProductWindow(BO.ProductForList? p=null)
+        private bool isUpdate;
+        public BoProductWindow(BO.ProductForList? p = null)
         {
             InitializeComponent();
             if (p != null)
             {
+                isUpdate = true;
                 AddProductButton.Content = "UPDATE";
                 try
                 {
@@ -42,16 +43,16 @@ namespace PL.Products
                 {
 
                 }
-                                
+
             }
-            
+
 
             Category.ItemsSource = Enum.GetValues(typeof(BO.Category));
         }
 
         private void Name_TextChanged(object sender, TextChangedEventArgs e)
         {
-           Name.Text = Name.Text.Trim();
+            Name.Text = Name.Text.Trim();
             _product.Name = Name.Text;
         }
 
@@ -92,10 +93,13 @@ namespace PL.Products
 
         private void AddProductButton_Click(object sender, RoutedEventArgs e)
         {
-            bl.Product.AddProduct(_product);
+            if (isUpdate)
+                bl.Product.UpdateProduct(_product);
+            else
+                bl.Product.AddProduct(_product);
             this.Close();
         }
 
-       
+
     }
 }

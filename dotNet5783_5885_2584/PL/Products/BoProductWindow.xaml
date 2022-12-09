@@ -7,8 +7,7 @@
         mc:Ignorable="d"
         Title="BoProductWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="Add new Product" Grid.Row="2" HorizontalAlignment="Right" Margin="5" Padding="5"/>
-        <Button Content="add" HorizontalAlignment="Left" Margin="174,358,0,0" Name="AddProductButton" VerticalAlignment="Top" Height="50" Width="112" Click="AddProductButton_Click" />
+        <Button Content="Add new Product" HorizontalAlignment="Right" Margin="0,357,33,26" Name="AddProductButton" Padding="5" Click="AddProductButton_Click"/>
         <TextBox HorizontalAlignment="Left" Margin="174,94,0,0" Name="Name" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="Name_TextChanged" />
         <TextBox HorizontalAlignment="Left" Margin="176,189,0,0" Name="Price" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="Price_TextChanged" />
         <TextBox HorizontalAlignment="Left" Margin="176,253,0,0" Name="InStock" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="InStock_TextChanged"/>

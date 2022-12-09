@@ -14,6 +14,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DO;
 
 namespace PL.Products;
 
@@ -45,11 +46,18 @@ public partial class BoProductListWindow : Window
         ProductsListview.ItemsSource = bl.Product.ReadAll(category!=(object)""?x=>(BO.Category?)x!.Value.Category==(BO.Category)category:null);
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)=> new BoProductWindow().Show();
+    private void Button_Click(object sender, RoutedEventArgs e)
+    { 
+        new BoProductWindow().ShowDialog();
+        ProductsListview.ItemsSource = bl.Product.ReadAll();
+
+    }
 
     private void ProductsListview_doubleClicked(object sender, MouseButtonEventArgs e)
     {
-        new BoProductWindow((sender as ListView)!.SelectedItem as BO.ProductForList).Show();
+        new BoProductWindow((sender as ListView)!.SelectedItem as BO.ProductForList).ShowDialog();
+        ProductsListview.ItemsSource = bl.Product.ReadAll();
+
     }
 
 }
