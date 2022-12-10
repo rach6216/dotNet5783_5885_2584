@@ -2,6 +2,7 @@
 using BlImplementation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,11 +25,15 @@ namespace PL.Products
         private IBl bl = new Bl();
         private BO.Product _product = new();
         private bool isUpdate;
-        public BoProductWindow(BO.ProductForList? p = null)
+        public BoProductWindow()
         {
             InitializeComponent();
-            if (p != null)
-            {
+            Category.ItemsSource = Enum.GetValues(typeof(BO.Category));
+        }
+
+        public BoProductWindow(BO.ProductForList p )
+        {
+                InitializeComponent();
                 isUpdate = true;
                 AddProductButton.Content = "UPDATE";
                 try
@@ -44,7 +49,7 @@ namespace PL.Products
 
                 }
 
-            }
+            
 
 
             Category.ItemsSource = Enum.GetValues(typeof(BO.Category));

@@ -49,8 +49,8 @@ public partial class BoProductListWindow : Window
     private void Button_Click(object sender, RoutedEventArgs e)
     { 
         new BoProductWindow().ShowDialog();
-        ProductsListview.ItemsSource = bl.Product.ReadAll();
-
+        var category = CategorySelector.SelectedItem;
+        ProductsListview.ItemsSource = bl.Product.ReadAll(category != (object)"" ? x => (BO.Category?)x!.Value.Category == (BO.Category)category : null);
     }
 
     private void ProductsListview_doubleClicked(object sender, MouseButtonEventArgs e)
