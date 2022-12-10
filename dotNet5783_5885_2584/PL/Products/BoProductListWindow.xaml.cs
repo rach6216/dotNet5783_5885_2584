@@ -1,5 +1,6 @@
 ﻿using BlApi;
 using BlImplementation;
+using System;
 using System.Windows;
 
 namespace PL.Products;
@@ -15,7 +16,11 @@ public partial class BoProductListWindow : Window
     {
         InitializeComponent();
         ProductsListview.ItemsSource = bl.Product.ReadAll();
+        CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.Category));
     }
-    
 
+    private void CategorySelector_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+
+    }
 }
