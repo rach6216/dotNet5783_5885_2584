@@ -29,29 +29,28 @@ namespace PL.Products
         {
             InitializeComponent();
             Category.ItemsSource = Enum.GetValues(typeof(BO.Category));
+            ID.Visibility = Visibility.Collapsed;
         }
 
-        public BoProductWindow(BO.ProductForList p )
+        public BoProductWindow(BO.ProductForList p)
         {
-                InitializeComponent();
-                isUpdate = true;
-                AddProductButton.Content = "UPDATE";
-                try
-                {
-                    _product = bl.Product.Read(x => x!.Value.ID == p.ID);
-                    Name.Text = _product.Name;
-                    Price.Text = _product.Price.ToString();
-                    Category.SelectedItem = _product.Category;
-                    InStock.Text = _product.InStock.ToString();
-                }
-                catch
-                {
+            InitializeComponent();
+            isUpdate = true;
+            AddProductButton.Content = "UPDATE";
+            try
+            {
+                _product = bl.Product.Read(x => x!.Value.ID == p.ID);
+                Name.Text = _product.Name;
+                Price.Text = _product.Price.ToString();
+                Category.SelectedItem = _product.Category;
+                InStock.Text = _product.InStock.ToString();
+                ID.Content += _product.ID.ToString();
+               
+            }
+            catch
+            {
 
-                }
-
-            
-
-
+            }
             Category.ItemsSource = Enum.GetValues(typeof(BO.Category));
         }
 
@@ -105,6 +104,9 @@ namespace PL.Products
             this.Close();
         }
 
+        private void ID_TextChanged(object sender, TextChangedEventArgs e)
+        {
 
+        }
     }
 }
