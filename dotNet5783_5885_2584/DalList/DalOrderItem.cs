@@ -23,59 +23,35 @@ internal struct DalOrderItem:IOrderItem
     #endregion
 
     #region Read
-    /// <summary>
-    /// get order-item by id
-    /// </summary>
-    /// <param name="id">id of the order-item request</param>
-    /// <returns>order-item with the requested id</returns>
-    /// <exception cref="Exception">if there are no order-item with the id throw string: "Order item is not found"</exception>
-    public OrderItem Read(int id)
-    {
-       OrderItem oi= s_orderItems.Find(x=>x.ID==id);
-       if(oi.ID!=0)
-            return oi;
-        throw new ExceptionEntityNotFound("Order item is not found");
-    }
 
     /// <summary>
     /// get all the order-items
     /// </summary>
     /// <returns>array with all the order-items</returns>
-    public IEnumerable<OrderItem> Read()
+    public IEnumerable<OrderItem?> ReadAll(Func<OrderItem?, bool>? f = null)
     {
-        List<OrderItem> list = s_orderItems;
-        return list;
-    }
-
-
-    /// <summary>
-    /// get order item by two id's:order & product
-    /// </summary>
-    /// <param name="oID">order id</param>
-    /// <param name="pID">product id</param>
-    /// <returns>order-item with these two id's</returns>
-    /// <exception cref="Exception">when there are no such order-item throw string: Order item is not found </exception>
-    public OrderItem Read(int oID, int pID)
-    {
-        OrderItem oi = s_orderItems.Find(x => x.OrderID == oID&&x.ProductID==pID);
-        if (oi.ID != 0)
-            return oi;
-        throw new ExceptionEntityNotFound("Order item is not found");
-    }
-    /// <summary>
-    /// get all the order-items of specific order
-    /// </summary>
-    /// <param name="oID">order id</param>
-    /// <returns>array with order-items</returns>
-    public IEnumerable<OrderItem> ReadByOrder(int oID)
-    {
-        List<OrderItem> list = new();
-        for (int i = 0; i < s_orderItems.Count; i++)
+        List<OrderItem?> list = s_orderItems;
+        if (f != null)
         {
-            if (s_orderItems[i].OrderID == oID)
-                list.Add(s_orderItems[i]);
+            list = s_orderItems.FindAll(x => f(x));
         }
         return list;
+    }
+
+    /// <summary>
+    /// read order item by condition
+    /// </summary>
+    /// <param name="f"></param>
+    /// <returns></returns>
+    /// <exception cref="ExceptionEntityNotFound"></exception>
+    public OrderItem Read(Func<OrderItem?, bool>? f)
+    {
+        if(f == null)
+            throw new ExceptionEntityNotFound("Order item is not found");
+        OrderItem? oi = s_orderItems.Find(x => f(x));
+        if (oi.HasValue&& oi?.ID != 0 )
+            return new OrderItem() { ID = oi!.Value.ID, Amount = oi.Value.Amount, OrderID = oi.Value.OrderID, Price = oi.Value.Price, ProductID = oi.Value.ProductID };
+        throw new ExceptionEntityNotFound("Order item is not found");
     }
     #endregion
 
@@ -88,7 +64,7 @@ internal struct DalOrderItem:IOrderItem
     {
         for (int i = 0; i < s_orderItems.Count; i++)
         {
-            if (s_orderItems[i].ID == oi.ID)
+            if (s_orderItems[i]?.ID == oi.ID)
                 s_orderItems[i] = oi;
         }
     }
@@ -101,10 +77,12 @@ internal struct DalOrderItem:IOrderItem
     /// <param name="id">order-item id to delete</param>
     public void Delete(int id)
     {
-      bool flag= s_orderItems.Remove(Read(id));
+      bool flag= s_orderItems.Remove(Read(x=>x?.ID==id));
         if (!flag)
             throw new ExceptionEntityNotFound("the order-item to delete is not found");
     }
+
+   
     #endregion
 
 }

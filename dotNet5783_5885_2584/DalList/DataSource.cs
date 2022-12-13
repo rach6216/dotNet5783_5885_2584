@@ -1,7 +1,6 @@
 ﻿namespace Dal;
 using DO;
-using System.Net.Mail;
-using System.Runtime.CompilerServices;
+
 
 
 /// <summary>
@@ -17,9 +16,9 @@ internal static class DataSource
     /// <summary>
     /// static arrays for storing orders,products and order-items
     /// </summary>
-    static internal List<Order> s_orders=new();
-    static internal List<Product> s_products=new();
-    static internal List<OrderItem> s_orderItems = new();
+    static internal List<Order?> s_orders=new();
+    static internal List<Product?> s_products=new();
+    static internal List<OrderItem?> s_orderItems = new();
     #endregion
 
     #region Static ctor and init fuction
@@ -87,8 +86,14 @@ internal static class DataSource
             for (int j2 = 0; j2 < j && k < 40; j2++)
             {
                 k++;
-                Product product = s_products[rnd.Next(10)];
-                addOrderItem(new OrderItem(product.ID, s_orders[i].ID, product.Price, rnd.Next(1, 10)));
+                int r=rnd.Next(10);
+                if (s_products[r] != null && s_orders[i]!=null)
+                {
+                    int id = s_orders[i].Value.ID;
+                    Product product = (Product)s_products[r];
+                    addOrderItem(new OrderItem(product.ID,id, product.Price, rnd.Next(1, 10)));
+                }
+                
             }
         }
     }
@@ -116,7 +121,7 @@ internal static class DataSource
         do
         {
             tID = r.Next(10000000, 99999999);
-            s_products.ForEach(x => { if (x.ID == tID) tID = 0; });
+            s_products.ForEach(x => { if (x?.ID == tID) tID = 0; });
         } while (tID == 0);
         newProduct.ID = tID;
         s_products.Add(newProduct);

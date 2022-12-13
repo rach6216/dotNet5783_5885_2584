@@ -18,13 +18,13 @@ internal struct DalProduct : IProduct
     {
        if(p.ID == 0)
         {
-            Random r = new Random();
+            Random r = new ();
             int tID;
             //generate random id
             do
             {
                 tID = r.Next(10000000, 99999999);
-                s_products.ForEach(x => { if (x.ID == tID) tID = 0; });
+                s_products.ForEach(x => { if (x?.ID == tID) tID = 0; });
             } while (tID == 0);
             p.ID = tID;
         }
@@ -35,25 +35,32 @@ internal struct DalProduct : IProduct
 
     #region Read
     /// <summary>
-    /// get product by id
+    /// get product by condition
     /// </summary>
     /// <param name="id">id of requested product</param>
     /// <returns>requested product</returns>
     /// <exception cref="Exception">when product is not exist throw exeption: "Product is not found</exception>
-    public Product Read(int id)
+ 
+    public Product Read(Func<Product?, bool>? f)
     {
-        Product p = s_products.Find(x => x.ID == id);
-        if (p.ID != 0)
-            return p;
+        if(f == null)
+            throw new ExceptionEntityNotFound("Product is not found");
+        Product? p = s_products.Find(x =>f(x));
+        if (p.HasValue&& p?.ID != 0)
+            return new Product() { Price = p!.Value.Price, Category = p.Value.Category, ID = p.Value.ID, InStock = p.Value.InStock, Name = p.Value.Name };
         throw new ExceptionEntityNotFound("Product is not found");
     }
     /// <summary>
     /// get all the products
     /// </summary>
     /// <returns>array of the products</returns>
-    public IEnumerable<Product> Read()
+    public IEnumerable<Product?> ReadAll(Func<Product?, bool>? f = null)
     {
-        List<Product> products = s_products;
+        List<Product?> products = s_products;
+        if(f != null)
+        {
+            products = s_products.FindAll(x => f(x));
+        }
         return products;
     }
     #endregion
@@ -67,7 +74,7 @@ internal struct DalProduct : IProduct
     {
         for(int i = 0; i < s_products.Count; i++)
         {
-            if (s_products[i].ID == p.ID)
+            if (s_products[i]?.ID == p.ID)
             {
                 s_products[i] = p;
                 return;
@@ -84,12 +91,14 @@ internal struct DalProduct : IProduct
     /// <param name="id">id of product to delete</param>
     public void Delete(int id)
     {
-       bool flag=  s_products.Remove(Read(id));
+       bool flag=  s_products.Remove(Read(x=>x?.ID==id));
         if (!flag)
         {
             throw new ExceptionEntityNotFound("Order for delete is not found");
         }
     }
+
+   
     #endregion
 
 }

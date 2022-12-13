@@ -95,7 +95,7 @@ internal class Program
                     int id = int.Parse(Console.ReadLine());
                     try
                     {
-                        Console.WriteLine(_bl.Product.Read(id));
+                        Console.WriteLine(_bl.Product.Read(x=>x.Value.ID==id));
                     }
                     catch (Exception exp)
                     {
@@ -126,7 +126,7 @@ internal class Program
                     Product tempProduct = new Product();
                     try
                     {
-                        tempProduct = _bl.Product.Read(id);
+                        tempProduct = _bl.Product.Read(x=>x.Value.ID==id);
                     }
                     catch (ExceptionEntityNotFound exp)
                     {
@@ -176,7 +176,7 @@ internal class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        Console.WriteLine(_bl.Product.Read(id, cart));
+                        Console.WriteLine(_bl.Product.Read(cart,x=>x.Value.ID==id));
                     }
                     catch (ExceptionEntityNotFound exp)
                     {
@@ -218,7 +218,7 @@ internal class Program
                     BO.Order order = new BO.Order();
                     try
                     {
-                        order = _bl.Order.Read(id);
+                        order = _bl.Order.Read(x=>x.Value.ID==id);
                         Console.WriteLine(order);
                         {
                             Console.WriteLine(order);
@@ -230,7 +230,7 @@ internal class Program
                     }
                     break;
                 case CrudOrder.ReadAll:
-                    foreach (var item in _bl.Order.ReadAll())
+                    foreach (var item in _bl.Order.ReadAll(null))
                     {
                         Console.WriteLine(item);
                     }
@@ -241,7 +241,7 @@ internal class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        order = _bl.Order.Read(id);
+                        order = _bl.Order.Read(x=>x.Value.ID==id);
                         Console.WriteLine(order);
                         Console.WriteLine("enter order-item id");
                         int orderItemID = int.Parse(Console.ReadLine());
@@ -260,7 +260,7 @@ internal class Program
                         if (productid != 0)
                         {
                             orderItem.ProductID = productid;
-                            BO.Product p = _bl.Product.Read(productid);
+                            BO.Product p = _bl.Product.Read(x=>x.Value.ID==productid);
                             orderItem.ProductName = p.Name;
                             orderItem.Price = p.Price;
                         }
