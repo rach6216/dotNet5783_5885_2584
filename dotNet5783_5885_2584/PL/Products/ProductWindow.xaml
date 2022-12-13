@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PL.Products"
         mc:Ignorable="d"
         Title="BoProductWindow" Height="450" Width="800">
-    <Grid>
+    <Grid Name="productGrid">
         <Button Content="Add new Product" HorizontalAlignment="Right" Margin="0,357,33,26" Name="AddProductButton" Padding="5" Click="AddProductButton_Click"/>
         <TextBox HorizontalAlignment="Left" Margin="172,156,0,0" Name="Name" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="Name_TextChanged" />
         <TextBox HorizontalAlignment="Left" Margin="174,251,0,0" Name="Price" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="Price_TextChanged" />

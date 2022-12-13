@@ -24,11 +24,14 @@ VerticalAlignment="Stretch" Width="auto">
         <ListView x:Name="ProductsListview" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="ProductsListview_doubleClicked"  >
             <ListView.View >
                 <GridView >
-                    <GridViewColumn />
-                </GridView>
+                    <GridViewColumn Header="ID" />
+                    <GridViewColumn Header="Name" />
+                    <GridViewColumn Header="Category" />
+                    <GridViewColumn Header="Price" />
+                  </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Add new Product" Grid.Row="1" HorizontalAlignment="Left" Margin="636,475,0,50" Padding="5" Click="Button_Click"/>
+        <Button Content="Add new Product" Grid.Row="1" Name="AddProductButton" HorizontalAlignment="Left" Margin="636,475,0,50" Padding="5" Click="AddProductButton_click"/>
 
     </Grid>
 </Window>
