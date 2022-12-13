@@ -27,11 +27,14 @@
         <ListView x:Name="ProductsListview" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="ProductsListview_doubleClicked" Grid.ColumnSpan="2" Margin="0,46,0,0" Grid.RowSpan="2" Foreground="#FF295FEE" FontFamily="Yu Gothic UI Light" FontSize="16" BorderThickness="1,1,1,1" BorderBrush="#FF4681EB"  >
             <ListView.View >
                 <GridView >
-                    <GridViewColumn />
-                </GridView>
+                    <GridViewColumn Header="ID" />
+                    <GridViewColumn Header="Name" />
+                    <GridViewColumn Header="Category" />
+                    <GridViewColumn Header="Price" />
+                  </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Add new Product" Grid.Row="1" HorizontalAlignment="Left" Margin="636,475,0,50" Padding="5" Click="Button_Click"/>
+        <Button Content="Add new Product" Grid.Row="1" Name="AddProductButton" HorizontalAlignment="Left" Margin="636,475,0,50" Padding="5" Click="AddProductButton_click"/>
 
     </Grid>
 </Window>
