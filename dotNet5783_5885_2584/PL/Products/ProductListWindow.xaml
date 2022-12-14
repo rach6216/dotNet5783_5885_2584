@@ -7,13 +7,16 @@
         mc:Ignorable="d"
         Title="BoProductListWindow" Height="640" Width="800">
     <Grid Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="387*"/>
+            <ColumnDefinition Width="13*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
             <RowDefinition Height="500*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
-VerticalAlignment="Stretch" Width="auto">
+        <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -21,7 +24,7 @@ VerticalAlignment="Stretch" Width="auto">
             <ComboBox Name="CategorySelector" HorizontalAlignment= "Stretch" VerticalAlignment="Stretch" Grid.Column="1" SelectionChanged="CategorySelector_SelectionChanged"/>
             <Label Content="Category:" HorizontalAlignment="Left" Margin="30,13,0,0" VerticalAlignment="Top" Grid.Column="0"/>
         </Grid>
-        <ListView x:Name="ProductsListview" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="ProductsListview_doubleClicked"  >
+        <ListView x:Name="ProductsListview" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="ProductsListview_doubleClicked" Grid.ColumnSpan="2" Margin="0,46,0,0" Grid.RowSpan="2" Foreground="#FF295FEE" FontFamily="Yu Gothic UI Light" FontSize="16" BorderThickness="1,1,1,1" BorderBrush="#FF4681EB"  >
             <ListView.View >
                 <GridView >
                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ID}"/>
