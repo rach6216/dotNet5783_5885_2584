@@ -7,16 +7,23 @@
         mc:Ignorable="d"
         Title="BoProductWindow" Height="450" Width="800">
     <Grid Name="productGrid">
-        <Button Content="Add new Product" HorizontalAlignment="Right" Margin="0,357,33,26" Name="AddProductButton" Padding="5" Click="AddProductButton_Click"/>
-        <TextBox HorizontalAlignment="Left" Margin="172,156,0,0" Name="Name" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="Name_TextChanged" />
-        <TextBox HorizontalAlignment="Left" Margin="174,251,0,0" Name="Price" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="Price_TextChanged" />
-        <TextBox HorizontalAlignment="Left" Margin="174,314,0,0" Name="InStock" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="InStock_TextChanged"/>
-        <Label Content="category:" HorizontalAlignment="Left" Margin="174,175,0,0" VerticalAlignment="Top"/>
-        <Label Content="name:" HorizontalAlignment="Left" Margin="174,125,0,0" VerticalAlignment="Top"/>
-        <Label Content="price:" HorizontalAlignment="Left" Margin="172,225,0,0" VerticalAlignment="Top"/>
-        <Label Content="instock:" HorizontalAlignment="Left" Margin="174,284,0,0" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="174,203,0,0" Name="Category" VerticalAlignment="Top" Width="180" SelectionChanged="Category_SelectionChanged" />
-        <Label Content="product ID: " HorizontalAlignment="Left" Margin="171,94,0,0" Name="ID" VerticalAlignment="Top" Height="24" RenderTransformOrigin="0.496,2.07"/>
+        <Grid.OpacityMask>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="Black"/>
+                <GradientStop Color="White" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.OpacityMask>
+        <Button Content="Add new Product" HorizontalAlignment="Right" Margin="0,349,84,29" Name="AddProductButton" Padding="5" Click="AddProductButton_Click" Background="#FF0400CE" FontSize="18" Foreground="White"/>
+        <TextBox HorizontalAlignment="Left" Margin="295,100,0,0" Name="Name" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="Name_TextChanged" FontSize="18" />
+        <TextBox HorizontalAlignment="Left" Margin="295,200,0,0" Name="Price" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="Price_TextChanged" FontSize="18" />
+        <TextBox HorizontalAlignment="Left" Margin="295,250,0,0" Name="InStock" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="InStock_TextChanged" FontSize="18"/>
+        <Label Content="category:" HorizontalAlignment="Left" Margin="195,150,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCFBFB" Background="#FF0400CE"/>
+        <Label Content="name:" HorizontalAlignment="Left" Margin="195,100,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.056,1.502" FontSize="18" Foreground="White" Background="#FF0400CE"/>
+        <Label Content="price:" HorizontalAlignment="Left" Margin="195,200,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFFFEFE" Background="#FF0400CE"/>
+        <Label Content="instock:" HorizontalAlignment="Left" Margin="195,250,0,0" VerticalAlignment="Top" Foreground="#FFFFFEFE" FontSize="18" Background="#FF0400CE"/>
+        <ComboBox HorizontalAlignment="Left" Margin="295,150,0,0" Name="Category" VerticalAlignment="Top" Width="180" SelectionChanged="Category_SelectionChanged" FontSize="18" />
+        <Label Content="product ID:" HorizontalAlignment="Left" Margin="195,50,0,0" Name="ID" VerticalAlignment="Top" Height="34" RenderTransformOrigin="0.496,2.07" Foreground="White" FontSize="18" Background="#FF0400CE"/>
+        <Label x:Name="Id" Content="" HorizontalAlignment="Left" Height="35" Margin="303,50,0,0" VerticalAlignment="Top" Width="119" FontSize="18"/>
 
     </Grid>
 </Window>

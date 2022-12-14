@@ -1,20 +1,8 @@
 ﻿using BlApi;
 using BlImplementation;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.Products;
 
@@ -45,7 +33,7 @@ public partial class BoProductWindow : Window
             Price.Text = _product.Price.ToString();
             Category.SelectedItem = _product.Category;
             InStock.Text = _product.InStock.ToString();
-            ID.Content += _product.ID.ToString();
+            Id.Content = _product.ID.ToString();
 
         }
         catch

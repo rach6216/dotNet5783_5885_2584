@@ -4,15 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 
 namespace PL.Products;
@@ -28,12 +20,11 @@ public partial class BoProductListWindow : Window
     {
         InitializeComponent();
         List<object> l = new() { };
-
+        l.Add("");
         foreach (var category in Enum.GetValues(typeof(BO.Category)))
         {
-            l.Add((object)category);
+            l.Add(category);
         }
-        l.Insert(0, "");
         CategorySelector.ItemsSource = l;
         ProductsListview.ItemsSource = bl.Product.ReadAll();
 
@@ -43,14 +34,15 @@ public partial class BoProductListWindow : Window
     {
 
         var category = CategorySelector.SelectedItem;
-        ProductsListview.ItemsSource = bl.Product.ReadAll(category != (object)"" ? x => (BO.Category?)x!.Value.Category == (BO.Category)category : null);
+        
+            ProductsListview.ItemsSource = bl.Product.ReadAll(category !=(object)"" ? x => (BO.Category?)x!.Value.Category == (BO.Category)category : null);
 
     }
 
     private void AddProductButton_click(object sender, RoutedEventArgs e)
     {
         new BoProductWindow().ShowDialog();
-        var category = CategorySelector.SelectedItem;      
+        var category = CategorySelector.SelectedItem;
         ProductsListview.ItemsSource = bl.Product.ReadAll(category != null ? x => (BO.Category?)x!.Value.Category == (BO.Category)category : null);
     }
 
@@ -62,5 +54,4 @@ public partial class BoProductListWindow : Window
 
     }
 
-    }
 }
