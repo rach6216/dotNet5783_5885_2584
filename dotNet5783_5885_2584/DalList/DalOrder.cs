@@ -35,8 +35,8 @@ internal struct DalOrder : IOrder
         if (f != null)
         {
             Order? o = s_orders.Find(x => f(x));
-            if (o.HasValue && o?.ID != 0)
-                return new Order() { CustomerAddress = o!.Value.CustomerAddress, CustomerEmail = o!.Value.CustomerEmail, CustomerName = o.Value.CustomerName, DeliveryDate = o.Value.DeliveryDate, ID = o.Value.ID, OrderDate = o.Value.OrderDate, ShipDate = o.Value.ShipDate };
+            if (o?.ID != 0)
+                return new Order() { CustomerAddress = o?.CustomerAddress, CustomerEmail = o?.CustomerEmail, CustomerName = o?.CustomerName, DeliveryDate = o?.DeliveryDate, ID = o?.ID??0, OrderDate = o?.OrderDate, ShipDate = o?.ShipDate };
         }
         throw new ExceptionEntityNotFound("Order is not found");
 
@@ -84,7 +84,7 @@ internal struct DalOrder : IOrder
     /// <param name="id">id of order to delete</param>
     public void Delete(int id)
     {
-        bool flag = s_orders.Remove(Read(x => x!.Value.ID == id));
+        bool flag = s_orders.Remove(Read(x => x?.ID == id));
         if (!flag)
         {
             throw new ExceptionEntityNotFound("Order for delete is not found");

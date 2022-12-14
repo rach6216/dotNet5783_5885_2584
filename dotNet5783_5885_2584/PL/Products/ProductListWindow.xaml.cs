@@ -35,6 +35,7 @@ public partial class BoProductListWindow : Window
         }
         l.Insert(0, "");
         CategorySelector.ItemsSource = l;
+        
         ProductsListview.ItemsSource = bl.Product.ReadAll();
 
     }
@@ -51,15 +52,15 @@ public partial class BoProductListWindow : Window
     {
         new BoProductWindow().ShowDialog();
         var category = CategorySelector.SelectedItem;      
-        ProductsListview.ItemsSource = bl.Product.ReadAll(category != null ? x => (BO.Category?)x!.Value.Category == (BO.Category)category : null);
+        ProductsListview.ItemsSource = bl.Product.ReadAll(category != null ? x => (BO.Category?)x?.Category == (BO.Category)category : null);
     }
 
     private void ProductsListview_doubleClicked(object sender, MouseButtonEventArgs e)
     {
         new BoProductWindow((sender as ListView)!.SelectedItem as BO.ProductForList).ShowDialog();
         object cat = CategorySelector.SelectedItem;
-        ProductsListview.ItemsSource = bl.Product.ReadAll(cat != null ? x => (BO.Category?)x!.Value.Category == (BO.Category)cat : null);
-
+        ProductsListview.ItemsSource = bl.Product.ReadAll(cat != null ? x => (BO.Category?)x?.Category == (BO.Category)cat : null);
+        
     }
 
 }

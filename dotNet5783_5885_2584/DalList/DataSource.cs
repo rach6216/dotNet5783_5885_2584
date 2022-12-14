@@ -89,7 +89,7 @@ internal static class DataSource
                 int r=rnd.Next(10);
                 if (s_products[r] != null && s_orders[i]!=null)
                 {
-                    int id = s_orders[i].Value.ID;
+                    int id = s_orders[i]?.ID??0;
                     Product product = (Product)s_products[r];
                     addOrderItem(new OrderItem(product.ID,id, product.Price, rnd.Next(1, 10)));
                 }

@@ -126,8 +126,8 @@ internal class Product : IProduct
         }
         foreach (var p in doProducts)
         {
-            if(p.HasValue)
-            products.Add(new BO.ProductForList() { Category = (BO.Category?)p?.Category, Price = p!.Value.Price, ID = p.Value.ID, Name = p?.Name });
+            if(p!=null)
+            products.Add(new BO.ProductForList() { Category = (BO.Category?)p?.Category, Price = p?.Price??0, ID = p?.ID??0, Name = p?.Name });
         }
         return products;
     }

@@ -49,8 +49,8 @@ internal struct DalOrderItem:IOrderItem
         if(f == null)
             throw new ExceptionEntityNotFound("Order item is not found");
         OrderItem? oi = s_orderItems.Find(x => f(x));
-        if (oi.HasValue&& oi?.ID != 0 )
-            return new OrderItem() { ID = oi!.Value.ID, Amount = oi.Value.Amount, OrderID = oi.Value.OrderID, Price = oi.Value.Price, ProductID = oi.Value.ProductID };
+        if ( oi?.ID != 0 )
+            return new OrderItem() { ID = oi?.ID??0, Amount = oi?.Amount??0, OrderID = oi?.OrderID??0, Price = oi?.Price??0, ProductID = oi?.ProductID??0 };
         throw new ExceptionEntityNotFound("Order item is not found");
     }
     #endregion
