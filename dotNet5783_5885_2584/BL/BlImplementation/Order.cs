@@ -15,7 +15,7 @@ internal class Order : IOrder
         {
             DO.Order doOrder = _dal.Order.Read(x => x?.ID == id);
             BO.Order boOrder = Read(x => x?.ID == id);
-            if (doOrder.DeliveryDate == DateTime.MinValue)
+            if (doOrder.DeliveryDate == null)
             {
                 doOrder.DeliveryDate = DateTime.Now;
                 boOrder.DeliveryDate = DateTime.Now;
@@ -97,20 +97,20 @@ internal class Order : IOrder
                 {
                     Items.Add(new BO.OrderItem()
                     {
-                        ID = item.Value.ID,
-                        Amount = item.Value.Amount,
-                        ProductID = item.Value.ProductID,
-                        Price = item.Value.Price,
-                        TotalPrice = item.Value.Amount * item.Value.Price,
-                        ProductName = _dal.Product.Read(x => x?.ID == item.Value.ID).Name
+                        ID = item?.ID??0,
+                        Amount = item?.Amount??0,
+                        ProductID = item?.ProductID??0,
+                        Price = item?.Price??0,
+                        TotalPrice = item?.Amount??0 * item?.Price??0,
+                        ProductName = _dal.Product.Read(x => x?.ID == item?.ID).Name
                     });
-                    total += item.Value.Amount * item.Value.Price;
+                    total += item?.Amount??0 * item?.Price??0;
                 }
 
             }
-            if (doOrder.DeliveryDate != DateTime.MinValue)
+            if (doOrder.DeliveryDate !=null)
                 oStatus = BO.OrderStatus.OrderIsDelivered;
-            else if (doOrder.ShipDate != DateTime.MinValue)
+            else if (doOrder.ShipDate != null)
                 oStatus = BO.OrderStatus.OrderIsShiped;
             else
                 oStatus = BO.OrderStatus.OrderIsConfirmed;
@@ -147,23 +147,21 @@ internal class Order : IOrder
         List<OrderForList> orderForList = new();
         foreach (var order in orders)
         {
-            if (order.HasValue)
-            {
                 BO.OrderStatus orderStatus = BO.OrderStatus.OrderIsConfirmed;
                 if (order?.DeliveryDate != null)
                     orderStatus = BO.OrderStatus.OrderIsDelivered;
                 else if (order?.ShipDate != null)
                     orderStatus = BO.OrderStatus.OrderIsShiped;
-                (int, double) amountAndPrice = TotalPrice(order!.Value.ID);
+                (int, double) amountAndPrice = TotalPrice(order?.ID??0);
                 orderForList.Add(new BO.OrderForList()
                 {
-                    ID = order!.Value.ID,
+                    ID = order?.ID??0,
                     CustomerName = order?.CustomerName,
                     Status = orderStatus,
                     Amount = amountAndPrice.Item1,
                     TotalPrice = amountAndPrice.Item2
                 });
-            }
+            
 
         }
         return orderForList;
@@ -264,7 +262,7 @@ internal class Order : IOrder
             if (order != null)
             {
                 amount++;
-                totalPrice += order.Value.Price;
+                totalPrice += order?.Price??0;
             }
            
         }

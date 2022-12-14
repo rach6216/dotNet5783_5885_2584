@@ -23,7 +23,7 @@ public partial class BoProductListWindow : Window
         l.Add("");
         foreach (var category in Enum.GetValues(typeof(BO.Category)))
         {
-            l.Add(category);
+            l.Add((object)category);
         }
         CategorySelector.ItemsSource = l;
         ProductsListview.ItemsSource = bl.Product.ReadAll();

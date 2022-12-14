@@ -61,17 +61,17 @@ internal class Program
             {
                 case CrudProduct.Create:
                     Console.WriteLine("Enter product name");
-                    string name = Console.ReadLine();
+                    string? name = Console.ReadLine();
                     Console.WriteLine("Enter product price");
                     double price = 0;
                     try
                     {
-                        price = Double.Parse(Console.ReadLine());
+                        price = double.Parse(Console.ReadLine());
                     }
                     catch (Exception exp)
                     {
                         Console.WriteLine(exp.Message);
-                        price = Double.Parse(Console.ReadLine());
+                        break;
                     }
                     Console.WriteLine("Enter product category");
                     Console.WriteLine("our categories:");
@@ -79,7 +79,16 @@ internal class Program
                     Category category;
                     Enum.TryParse(Console.ReadLine(), out category);
                     Console.WriteLine("Enter amount in stock");
-                    int instock = int.Parse(Console.ReadLine());
+                    int instock = 0;
+                    try
+                    {
+                         instock = int.Parse(Console.ReadLine());
+
+                    }
+                    catch
+                    {
+                        break;
+                    }
                     try
                     {
                         Console.WriteLine("product #" + _bl.Product.AddProduct(new Product() { Category = category, InStock = instock, Name = name, Price = price }) + " created");
@@ -92,10 +101,18 @@ internal class Program
 
                 case CrudProduct.Read:
                     Console.WriteLine("Enter product ID");
-                    int id = int.Parse(Console.ReadLine());
+                    int id = 0;
                     try
                     {
-                        Console.WriteLine(_bl.Product.Read(x=>x.Value.ID==id));
+                         id = int.Parse(Console.ReadLine());
+                    }
+                    catch
+                    {
+                        break;
+                    }
+                    try
+                    {
+                        Console.WriteLine(_bl.Product.Read(x => x?.ID == id));
                     }
                     catch (Exception exp)
                     {
@@ -110,7 +127,15 @@ internal class Program
                     break;
                 case CrudProduct.Delete:
                     Console.WriteLine("Enter product ID for delete");
-                    id = int.Parse(Console.ReadLine());
+                    try
+                    {
+                        id = int.Parse(Console.ReadLine());
+
+                    }
+                    catch
+                    {
+                        break;
+                    }
                     try
                     {
                         _bl.Product.DelProduct(id);
@@ -122,11 +147,18 @@ internal class Program
                     break;
                 case CrudProduct.Update:
                     Console.WriteLine("Enter product ID to update");
-                    id = int.Parse(Console.ReadLine());
+                    try
+                    {
+                        id = int.Parse(Console.ReadLine());
+                    }
+                    catch
+                    {
+                        break;
+                    }
                     Product tempProduct = new Product();
                     try
                     {
-                        tempProduct = _bl.Product.Read(x=>x.Value.ID==id);
+                        tempProduct = _bl.Product.Read(x => x?.ID == id);
                     }
                     catch (ExceptionEntityNotFound exp)
                     {
@@ -176,7 +208,7 @@ internal class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        Console.WriteLine(_bl.Product.Read(cart,x=>x.Value.ID==id));
+                        Console.WriteLine(_bl.Product.Read(cart, x => x?.ID == id));
                     }
                     catch (ExceptionEntityNotFound exp)
                     {
@@ -218,7 +250,7 @@ internal class Program
                     BO.Order order = new BO.Order();
                     try
                     {
-                        order = _bl.Order.Read(x=>x.Value.ID==id);
+                        order = _bl.Order.Read(x => x?.ID == id);
                         Console.WriteLine(order);
                         {
                             Console.WriteLine(order);
@@ -241,7 +273,7 @@ internal class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        order = _bl.Order.Read(x=>x.Value.ID==id);
+                        order = _bl.Order.Read(x => x?.ID == id);
                         Console.WriteLine(order);
                         Console.WriteLine("enter order-item id");
                         int orderItemID = int.Parse(Console.ReadLine());
@@ -260,7 +292,7 @@ internal class Program
                         if (productid != 0)
                         {
                             orderItem.ProductID = productid;
-                            BO.Product p = _bl.Product.Read(x=>x.Value.ID==productid);
+                            BO.Product p = _bl.Product.Read(x => x?.ID == productid);
                             orderItem.ProductName = p.Name;
                             orderItem.Price = p.Price;
                         }
@@ -369,7 +401,7 @@ internal class Program
 
                     try
                     {
-                       Order order= _bl.Cart.ConfirmOrder(cart, name, email, address);
+                        Order order = _bl.Cart.ConfirmOrder(cart, name, email, address);
                         Console.WriteLine(order);
                     }
                     catch (BO.ExceptionEntityNotFound exp)

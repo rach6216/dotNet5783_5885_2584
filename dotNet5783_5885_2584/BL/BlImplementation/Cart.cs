@@ -14,8 +14,8 @@ internal class Cart : ICart
     /// <returns>the update cart with the new product</returns>
     public BO.Cart AddProduct(BO.Cart cart, int id)
     {
-        
-          cart??=  cart = new BO.Cart();
+
+        cart ??= new BO.Cart();
         cart.Items ??= new List<BO.OrderItem?>() { };
         DO.Product product;
         try
@@ -29,7 +29,7 @@ internal class Cart : ICart
         int oiIndex = cart.Items.FindIndex(x => x?.ProductID == id);
         if (oiIndex != -1)
         {
-            if (product.InStock > 0 && cart.Items!=null&& cart.Items[oiIndex]!=null)
+            if (product.InStock > 0 && cart.Items != null && cart.Items[oiIndex] != null)
             {
                 cart.Items[oiIndex]!.Amount += 1;
                 product.InStock -= 1;
@@ -126,7 +126,7 @@ internal class Cart : ICart
             if (o != null)
                 try
                 {
-                    DO.Product p = _dal.Product.Read(x=>(x!.Value.ID==o.ProductID));
+                    DO.Product p = _dal.Product.Read(x => (x?.ID == o.ProductID));
                     if (p.InStock == 0)
                     {
                         messageOfMissingProducts += " ," + p.Name + " is out of stock";

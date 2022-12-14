@@ -46,8 +46,8 @@ internal struct DalProduct : IProduct
         if(f == null)
             throw new ExceptionEntityNotFound("Product is not found");
         Product? p = s_products.Find(x =>f(x));
-        if (p.HasValue&& p?.ID != 0)
-            return new Product() { Price = p!.Value.Price, Category = p.Value.Category, ID = p.Value.ID, InStock = p.Value.InStock, Name = p.Value.Name };
+        if ( p?.ID != 0)
+            return new Product() { Price = p?.Price??0, Category = p?.Category, ID = p?.ID??0, InStock = p?.InStock??0, Name = p?.Name };
         throw new ExceptionEntityNotFound("Product is not found");
     }
     /// <summary>

@@ -28,7 +28,7 @@ public partial class BoProductWindow : Window
         AddProductButton.Content = "UPDATE";
         try
         {
-            _product = bl.Product.Read(x => x!.Value.ID == p.ID);
+            _product = bl.Product.Read(x => x?.ID == p.ID);
             Name.Text = _product.Name;
             Price.Text = _product.Price.ToString();
             Category.SelectedItem = _product.Category;
