@@ -40,7 +40,7 @@ public partial class BoProductWindow : Window
         }
         catch
         {
-            
+            this.Close();
         }
         Category.ItemsSource = Enum.GetValues(typeof(BO.Category));
     }
