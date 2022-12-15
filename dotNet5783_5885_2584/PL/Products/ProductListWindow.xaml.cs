@@ -30,6 +30,7 @@ public partial class BoProductListWindow : Window
         CategorySelector.ItemsSource = l;
 
         ProductsListview.ItemsSource = bl.Product.ReadAll();
+      
 
     }
 

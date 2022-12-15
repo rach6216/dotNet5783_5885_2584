@@ -95,7 +95,10 @@ public partial class BoProductWindow : Window
             try
             {
                 if (isUpdate)
+                {
                     bl.Product.UpdateProduct(_product);
+                    
+                }
                 else
                     bl.Product.AddProduct(_product);
                 this.Close();

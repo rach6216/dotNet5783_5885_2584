@@ -70,6 +70,7 @@ internal class Program
                     }
                     catch (Exception exp)
                     {
+
                         Console.WriteLine(exp.Message);
                         break;
                     }
@@ -159,6 +160,7 @@ internal class Program
                     try
                     {
                         tempProduct = _bl.Product.Read(x => x?.ID == id);
+                        
                     }
                     catch (ExceptionEntityNotFound exp)
                     {
