@@ -1,5 +1,6 @@
 ﻿using BlApi;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 
 namespace BlImplementation;
 
@@ -102,6 +103,7 @@ internal class Cart : ICart
             throw new BO.ExceptionInvalidInput("invalid customer address ");
         if (customerName == null)
             throw new BO.ExceptionInvalidInput("invalid customer name ");
+        bool isEmail = Regex.IsMatch(customerEmail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
         if (customerEmail == null || !IsValid(customerEmail))
             throw new BO.ExceptionInvalidInput("invalid customer email ");
         //create order

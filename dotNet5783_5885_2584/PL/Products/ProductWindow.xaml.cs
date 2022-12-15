@@ -1,8 +1,10 @@
 ﻿using BlApi;
 using BlImplementation;
 using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+
 
 namespace PL.Products;
 
@@ -43,28 +45,16 @@ public partial class BoProductWindow : Window
         Category.ItemsSource = Enum.GetValues(typeof(BO.Category));
     }
 
-    private void Name_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        Name.Text = Name.Text.Trim();
-        _product.Name = Name.Text;
-    }
-
-    private void Category_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        _product.Category = (BO.Category)Category.SelectedItem;
-    }
 
     private void Price_TextChanged(object sender, TextChangedEventArgs e)
     {
         Price.Text = Price.Text.Trim();
-        try
+        //check if the input is positive double
+        bool IsPDouble = Regex.IsMatch(Price.Text, "[^0-9,.]+");
+
+        if (IsPDouble)
         {
-            if (Price.Text.Length > 0)
-                _product.Price = double.Parse(Price.Text);
-        }
-        catch
-        {
-            MessageBox.Show("price must be a number");
+            MessageBox.Show("price must be a positive number");
             Price.Clear();
         }
     }
@@ -72,14 +62,12 @@ public partial class BoProductWindow : Window
     private void InStock_TextChanged(object sender, TextChangedEventArgs e)
     {
         InStock.Text = InStock.Text.Trim();
-        try
+        //check if the input is positive int
+        bool IsPInt = Regex.IsMatch(InStock.Text, "[^0-9]+");
+
+        if (IsPInt)
         {
-            if (InStock.Text.Length > 0)
-                _product.InStock = int.Parse(InStock.Text);
-        }
-        catch
-        {
-            MessageBox.Show("instock must be a number");
+            MessageBox.Show("instock must be a positive integer number");
             InStock.Clear();
         }
     }
@@ -92,6 +80,10 @@ public partial class BoProductWindow : Window
         }
         else
         {
+            _product.Name = Name.Text;
+            _product.Category = (BO.Category)Category.SelectedItem;
+            _product.Price = Double.Parse(Price.Text);
+            _product.InStock = int.Parse(InStock.Text);
             try
             {
                 if (isUpdate)

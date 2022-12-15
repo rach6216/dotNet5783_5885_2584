@@ -17,7 +17,6 @@
 	  <None Remove="bCar.jpg" />
 	  <None Remove="c.jpg" />
 	  <None Remove="car.jpg" />
-	  <None Remove="Products\bDesign.png" />
 	  <None Remove="Products\c.jpg" />
 	</ItemGroup>
 
@@ -29,7 +28,6 @@
 	  <Resource Include="bCar.jpg" />
 	  <Resource Include="c.jpg" />
 	  <Resource Include="car.jpg" />
-	  <Resource Include="Products\bDesign.png" />
 	  <Resource Include="Products\c.jpg" />
 	</ItemGroup>
 
