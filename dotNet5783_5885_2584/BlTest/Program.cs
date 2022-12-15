@@ -1,12 +1,9 @@
-﻿
-using BlApi;
-using BlImplementation;
-using BO;
+﻿using BO;
 namespace BlTest;
 
 internal class Program
 {
-    static private IBl _bl = new Bl();
+    static private BlApi.IBl _bl = BlApi.Factory.Get();
     static private Cart cart = new Cart();
     static void Main(string[] args)
     {

@@ -5,7 +5,7 @@ using Dal;
 
 internal class Program
 {
-    static DalList DalList = new ();
+    static DalApi.IDal? DalList = DalApi.Factory.Get();
 
     private static void Main()
     {

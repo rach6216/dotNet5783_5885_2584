@@ -4,7 +4,7 @@ using BlApi;
 
 namespace BlImplementation;
 
-sealed public class Bl : IBl
+sealed internal class Bl : IBl
 {
     public ICart Cart => new Cart();
 

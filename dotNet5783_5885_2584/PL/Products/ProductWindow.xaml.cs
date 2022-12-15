@@ -1,6 +1,4 @@
-﻿using BlApi;
-using BlImplementation;
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,7 +11,7 @@ namespace PL.Products;
 /// </summary>
 public partial class BoProductWindow : Window
 {
-    private IBl bl = new Bl();
+    private BlApi.IBl? bl = BlApi.Factory.Get();
     private BO.Product _product = new();
     private bool isUpdate;
     public BoProductWindow()
