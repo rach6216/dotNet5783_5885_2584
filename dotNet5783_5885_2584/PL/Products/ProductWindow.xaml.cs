@@ -40,7 +40,7 @@ public partial class BoProductWindow : Window
         }
         catch
         {
-            
+            this.Close();
         }
         Category.ItemsSource = Enum.GetValues(typeof(BO.Category));
     }
@@ -51,6 +51,9 @@ public partial class BoProductWindow : Window
         Price.Text = Price.Text.Trim();
         //check if the input is positive double
         bool IsPDouble = Regex.IsMatch(Price.Text, @"^[0-9]+\.?[0-9]*$");
+
+        if (IsPDouble)
+       
         IsPDouble = IsPDouble || Price.Text == "";
         if (!IsPDouble)
         {
