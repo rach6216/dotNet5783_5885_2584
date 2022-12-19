@@ -19,6 +19,8 @@ internal class Product : IProduct
     /// <returns>bo product</returns>
     public int AddProduct(BO.Product product)
     {
+        if (_dal == null)
+            throw new BO.ExceptionNullDal();
         try
         {
             if (product.ID < 0)
@@ -41,7 +43,7 @@ internal class Product : IProduct
              p=p.GenericParse(product);
             // p = new () { Category = (DO.Category?)product.Category, Name = product.Name, Price = product.Price, InStock = product.InStock };
             Console.WriteLine(p);
-            int id = _dal!.Product.Create(p);
+            int id = _dal.Product.Create(p);
             return id;
         }
         catch (DO.ExceptionEntityNotFound exp)
@@ -64,12 +66,14 @@ internal class Product : IProduct
     /// <exception cref="BO.ExceptionEntityNotFound"></exception>
     public BO.Product Read(Func<DO.Product?, bool>? f)
     {
+        if (_dal == null)
+            throw new BO.ExceptionNullDal();
         try
         {
             if (f == null)
                 throw new DO.ExceptionEntityNotFound("product didn't find by ID");
 
-            DO.Product p = _dal!.Product.Read(x => f(x));
+            DO.Product p = _dal.Product.Read(x => f(x));
             BO.Product boP = new()
             {
                 Category = (BO.Category?)p.Category,
@@ -97,11 +101,13 @@ internal class Product : IProduct
     /// <exception cref="BO.ExceptionEntityNotFound">if the product doesn't exist</exception>
     public BO.ProductItem Read(BO.Cart cart, Func<DO.Product?, bool> f = null!)
     {
+        if (_dal == null)
+            throw new BO.ExceptionNullDal();
         cart.Items ??= new List<BO.OrderItem?>() { };
         try
         {
 
-            DO.Product p = _dal!.Product.Read(f != null ? x => f(x) : null);
+            DO.Product p = _dal.Product.Read(f != null ? x => f(x) : null);
             int productIndex = cart.Items.FindIndex(x => x?.ProductID == p.ID);
             int amount = productIndex == -1 ? 0 : cart.Items[productIndex]!.Amount;
             BO.ProductItem boProductItem = new() { Category = (BO.Category?)p.Category, ID = p.ID, InStock = p.InStock > 0, Name = p.Name, Price = p.Price, Amount = amount > 0 ? amount : 0 };
@@ -120,15 +126,17 @@ internal class Product : IProduct
     /// <returns>product for list IEnumerable</returns>
     public IEnumerable<BO.ProductForList?> ReadAll(Func<DO.Product?, bool>? f = null)
     {
+        if (_dal == null)
+            throw new BO.ExceptionNullDal();
         IEnumerable<DO.Product?> doProducts;
         List<BO.ProductForList?> products = new();
         if (f == null)
         {
-            doProducts = _dal!.Product.ReadAll();
+            doProducts = _dal.Product.ReadAll();
         }
         else
         {
-            doProducts = _dal!.Product.ReadAll(f);
+            doProducts = _dal.Product.ReadAll(f);
 
         }
         foreach (var p in doProducts)
@@ -149,6 +157,8 @@ internal class Product : IProduct
     /// <exception cref="BO.ExceptionEntityNotFound">if the product doesn't exist</exception>
     public void UpdateProduct(BO.Product product)
     {
+        if (_dal == null)
+            throw new BO.ExceptionNullDal();
         if (product.ID < 0)
         {
             throw new BO.ExceptionInvalidInput("product id is negative");
@@ -168,7 +178,7 @@ internal class Product : IProduct
         try
         {
             DO.Product p = new() { Category = (DO.Category?)product.Category, ID = product.ID, InStock = product.InStock, Name = product.Name, Price = product.Price };
-            _dal!.Product.Update(p);
+            _dal.Product.Update(p);
         }
         catch (DO.ExceptionEntityNotFound exp)
         {
@@ -187,7 +197,9 @@ internal class Product : IProduct
     /// <exception cref="BO.ExceptionEntityNotFound">if the product doesn't exist</exception>
     public void DelProduct(int id)
     {
-        IEnumerable<DO.OrderItem?> orderItems = _dal!.OrderItem.ReadAll();
+        if (_dal == null)
+            throw new BO.ExceptionNullDal();
+        IEnumerable<DO.OrderItem?> orderItems = _dal.OrderItem.ReadAll();
         foreach (var item in orderItems)
         {
             if (item?.ProductID == id)

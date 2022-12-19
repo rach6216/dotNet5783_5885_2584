@@ -11,6 +11,8 @@ internal class Order : IOrder
 
     public BO.Order DeliveryOrder(int id)
     {
+        if (_dal == null)
+            throw new BO.ExceptionNullDal();
         try
         {
             DO.Order doOrder = _dal.Order.Read(x => x?.ID == id);
@@ -39,6 +41,8 @@ internal class Order : IOrder
     /// <exception cref="BO.ExceptionEntityNotFound">if the order doesn't exist</exception>
     public BO.OrderTracking OrderTracking(int id)
     {
+        if (_dal == null)
+            throw new BO.ExceptionNullDal();
         try
         {
             DO.Order doOrder = _dal.Order.Read(x => x?.ID == id);
@@ -78,8 +82,8 @@ internal class Order : IOrder
     /// <exception cref="BO.ExceptionInvalidInput">if the id is negative</exception>
     public BO.Order Read(Func<DO.Order?, bool>? f)
     {
-
-
+        if (_dal == null)
+            throw new BO.ExceptionNullDal();
         try
         {
             DO.Order doOrder;
@@ -143,6 +147,8 @@ internal class Order : IOrder
     /// <returns>order for list</returns>
     public IEnumerable<BO.OrderForList?> ReadAll(Func<DO.Order?, bool>? f = null)
     {
+        if (_dal == null)
+            throw new BO.ExceptionNullDal();
         IEnumerable<DO.Order?> orders = _dal.Order.ReadAll(f != null ? x => f(x) : null);
         List<OrderForList> orderForList = new();
         foreach (var order in orders)
@@ -176,6 +182,8 @@ internal class Order : IOrder
     /// <exception cref="BO.ExceptionEntityNotFound"></exception>
     public BO.Order ShipOrder(int id)
     {
+        if (_dal == null)
+            throw new BO.ExceptionNullDal();
         try
         {
             DO.Order doOrder = _dal.Order.Read(x => x?.ID == id);
@@ -203,6 +211,8 @@ internal class Order : IOrder
     /// <exception cref="BO.ExceptionEntityNotFound"></exception>
     public BO.Order UpdateOrder(int orderID, BO.OrderItem orderItem)
     {
+        if (_dal == null)
+            throw new BO.ExceptionNullDal();
         try
         {
             DO.OrderItem doOrderItem = _dal.OrderItem.Read(x => x?.ID == orderItem.ID);
@@ -255,6 +265,8 @@ internal class Order : IOrder
 
     private (int, double) TotalPrice(int oID)
     {
+        if (_dal == null)
+            throw new BO.ExceptionNullDal();
         double totalPrice = 0;
         int amount = 0;
         foreach (var order in _dal.OrderItem.ReadAll(x => x?.OrderID == oID))

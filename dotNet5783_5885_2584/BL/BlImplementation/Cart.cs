@@ -15,13 +15,14 @@ internal class Cart : ICart
     /// <returns>the update cart with the new product</returns>
     public BO.Cart AddProduct(BO.Cart cart, int id)
     {
-
+        if (_dal == null)
+            throw new BO.ExceptionNullDal();
         cart ??= new BO.Cart();
         cart.Items ??= new List<BO.OrderItem?>() { };
         DO.Product product;
         try
         {
-            product = _dal!.Product.Read(x => x?.ID == id);
+            product = _dal.Product.Read(x => x?.ID == id);
         }
         catch (DO.ExceptionEntityNotFound exp)
         {
@@ -95,6 +96,8 @@ internal class Cart : ICart
     /// <param name="customerAdress">adress of the customer</param>
     public BO.Order ConfirmOrder(BO.Cart cart, string customerName, string customerEmail, string customerAdress)
     {
+        if (_dal == null)
+            throw new BO.ExceptionNullDal();
         cart ??= new BO.Cart();
         if (cart.Items == null || cart.Items.Count == 0)
             throw new BO.ExceptionCannotCreateItem("cart is empty, can't confirm order");
@@ -108,7 +111,7 @@ internal class Cart : ICart
             throw new BO.ExceptionInvalidInput("invalid customer email ");
         //create order
         DO.Order order = new(customerName, customerEmail, customerAdress, DateTime.Now);
-        int orderID = _dal!.Order.Create(order);
+        int orderID = _dal.Order.Create(order);
         BO.Order order2 = new()
         {
             ID = orderID,

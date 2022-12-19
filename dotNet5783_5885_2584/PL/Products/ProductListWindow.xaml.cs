@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DalApi;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,24 +35,29 @@ public partial class BoProductListWindow : Window
 
     private void CategorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-
+        if (bl == null)
+            throw new BO.ExceptionNullDal();
         var category = CategorySelector.SelectedItem;
-        ProductsListview.ItemsSource = bl!.Product.ReadAll(category != (object)"" ? x => (BO.Category?)x!.Value.Category == (BO.Category)category : null);
+        ProductsListview.ItemsSource = bl.Product.ReadAll(category != (object)"" ? x => (BO.Category?)x!.Value.Category == (BO.Category)category : null);
 
     }
 
     private void AddProductButton_click(object sender, RoutedEventArgs e)
     {
+        if (bl == null)
+            throw new BO.ExceptionNullDal();
         new BoProductWindow().ShowDialog();
         var category = CategorySelector.SelectedItem;
-        ProductsListview.ItemsSource = bl!.Product.ReadAll(category != null ? x => (BO.Category?)x?.Category == (BO.Category)category : null);
+        ProductsListview.ItemsSource = bl.Product.ReadAll(category != null ? x => (BO.Category?)x?.Category == (BO.Category)category : null);
     }
 
     private void ProductsListview_doubleClicked(object sender, MouseButtonEventArgs e)
     {
+        if (bl == null)
+            throw new BO.ExceptionNullDal();
         new BoProductWindow((sender as ListView)!.SelectedItem as BO.ProductForList).ShowDialog();
         object cat = CategorySelector.SelectedItem;
-        ProductsListview.ItemsSource = bl!.Product.ReadAll(cat != null ? x => (BO.Category?)x?.Category == (BO.Category)cat : null);
+        ProductsListview.ItemsSource = bl.Product.ReadAll(cat != null ? x => (BO.Category?)x?.Category == (BO.Category)cat : null);
 
     }
 

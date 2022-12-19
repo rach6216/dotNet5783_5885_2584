@@ -97,3 +97,16 @@ public class ExceptionCannotCreateItem : Exception
     {
     }
 }
+
+public class ExceptionNullDal : Exception
+{
+    public ExceptionNullDal(string msg) : base(msg)
+    {
+    }
+    public ExceptionNullDal() : base()
+    {
+    }
+    public ExceptionNullDal(string msg, Exception exp) : base(msg, exp)
+    {
+    }
+}
