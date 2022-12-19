@@ -41,7 +41,7 @@ internal class Product : IProduct
              p=p.GenericParse(product);
             // p = new () { Category = (DO.Category?)product.Category, Name = product.Name, Price = product.Price, InStock = product.InStock };
             Console.WriteLine(p);
-            int id = _dal.Product.Create(p);
+            int id = _dal!.Product.Create(p);
             return id;
         }
         catch (DO.ExceptionEntityNotFound exp)
@@ -69,7 +69,7 @@ internal class Product : IProduct
             if (f == null)
                 throw new DO.ExceptionEntityNotFound("product didn't find by ID");
 
-            DO.Product p = _dal.Product.Read(x => f(x));
+            DO.Product p = _dal!.Product.Read(x => f(x));
             BO.Product boP = new()
             {
                 Category = (BO.Category?)p.Category,
@@ -101,7 +101,7 @@ internal class Product : IProduct
         try
         {
 
-            DO.Product p = _dal.Product.Read(f != null ? x => f(x) : null);
+            DO.Product p = _dal!.Product.Read(f != null ? x => f(x) : null);
             int productIndex = cart.Items.FindIndex(x => x?.ProductID == p.ID);
             int amount = productIndex == -1 ? 0 : cart.Items[productIndex]!.Amount;
             BO.ProductItem boProductItem = new() { Category = (BO.Category?)p.Category, ID = p.ID, InStock = p.InStock > 0, Name = p.Name, Price = p.Price, Amount = amount > 0 ? amount : 0 };
@@ -124,11 +124,11 @@ internal class Product : IProduct
         List<BO.ProductForList?> products = new();
         if (f == null)
         {
-            doProducts = _dal.Product.ReadAll();
+            doProducts = _dal!.Product.ReadAll();
         }
         else
         {
-            doProducts = _dal.Product.ReadAll(f);
+            doProducts = _dal!.Product.ReadAll(f);
 
         }
         foreach (var p in doProducts)
@@ -168,7 +168,7 @@ internal class Product : IProduct
         try
         {
             DO.Product p = new() { Category = (DO.Category?)product.Category, ID = product.ID, InStock = product.InStock, Name = product.Name, Price = product.Price };
-            _dal.Product.Update(p);
+            _dal!.Product.Update(p);
         }
         catch (DO.ExceptionEntityNotFound exp)
         {
@@ -187,7 +187,7 @@ internal class Product : IProduct
     /// <exception cref="BO.ExceptionEntityNotFound">if the product doesn't exist</exception>
     public void DelProduct(int id)
     {
-        IEnumerable<DO.OrderItem?> orderItems = _dal.OrderItem.ReadAll();
+        IEnumerable<DO.OrderItem?> orderItems = _dal!.OrderItem.ReadAll();
         foreach (var item in orderItems)
         {
             if (item?.ProductID == id)

@@ -11,8 +11,8 @@ internal static class Extentions
 {
     public static U GenericParse<U, T>(this U toObj, T fromObj)
     {
-        object from = fromObj;
-        object to = toObj;
+        object from = fromObj!;
+        object to = toObj!;
         Type fromObjectType = from.GetType();
         Type toObjectType = to.GetType();
 
@@ -28,7 +28,7 @@ internal static class Extentions
                     toObjectType.GetProperty(propertyName);
 
 
-                Type toPropertyType = toProperty.PropertyType;
+                Type toPropertyType = toProperty!.PropertyType;
 
                 if (toProperty != null && toProperty.CanWrite)
                 {
@@ -64,7 +64,7 @@ internal static class Extentions
     public static void ToStringG<U>(this U obj)
     {
 
-        Type objectType = obj.GetType();
+        Type objectType = obj!.GetType();
 
         foreach (System.Reflection.PropertyInfo propName in
             objectType.GetProperties())

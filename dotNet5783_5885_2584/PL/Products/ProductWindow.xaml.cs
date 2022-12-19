@@ -89,11 +89,11 @@ public partial class BoProductWindow : Window
             {
                 if (isUpdate)
                 {
-                    bl.Product.UpdateProduct(_product);
+                    bl!.Product.UpdateProduct(_product);
                     
                 }
                 else
-                    bl.Product.AddProduct(_product);
+                    bl!.Product.AddProduct(_product);
                 this.Close();
             }
             catch (BO.ExceptionInvalidInput exp)
