@@ -76,7 +76,7 @@ public partial class BoProductWindow : Window
     private void AddProductButton_Click(object sender, RoutedEventArgs e)
     {
         if (bl == null)
-            throw new BO.ExceptionNullDal();
+            throw new BO.ExceptionNullBl();
         if (Name.Text == "" || Price.Text == "" || InStock.Text == null || Category.SelectedItem == null)
         {
             MessageBox.Show("Invalid input");

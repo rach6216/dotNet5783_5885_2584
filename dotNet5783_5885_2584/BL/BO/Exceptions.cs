@@ -110,3 +110,15 @@ public class ExceptionNullDal : Exception
     {
     }
 }
+public class ExceptionNullBl : Exception
+{
+    public ExceptionNullBl(string msg) : base(msg)
+    {
+    }
+    public ExceptionNullBl() : base()
+    {
+    }
+    public ExceptionNullBl(string msg, Exception exp) : base(msg, exp)
+    {
+    }
+}

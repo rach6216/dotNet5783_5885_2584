@@ -36,7 +36,7 @@ public partial class BoProductListWindow : Window
     private void CategorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (bl == null)
-            throw new BO.ExceptionNullDal();
+            throw new BO.ExceptionNullBl();
         var category = CategorySelector.SelectedItem;
         ProductsListview.ItemsSource = bl.Product.ReadAll(category != (object)"" ? x => (BO.Category?)x!.Value.Category == (BO.Category)category : null);
 
@@ -45,7 +45,7 @@ public partial class BoProductListWindow : Window
     private void AddProductButton_click(object sender, RoutedEventArgs e)
     {
         if (bl == null)
-            throw new BO.ExceptionNullDal();
+            throw new BO.ExceptionNullBl();
         new BoProductWindow().ShowDialog();
         var category = CategorySelector.SelectedItem;
         ProductsListview.ItemsSource = bl.Product.ReadAll(category != null ? x => (BO.Category?)x?.Category == (BO.Category)category : null);
@@ -54,7 +54,7 @@ public partial class BoProductListWindow : Window
     private void ProductsListview_doubleClicked(object sender, MouseButtonEventArgs e)
     {
         if (bl == null)
-            throw new BO.ExceptionNullDal();
+            throw new BO.ExceptionNullBl();
         new BoProductWindow((sender as ListView)!.SelectedItem as BO.ProductForList).ShowDialog();
         object cat = CategorySelector.SelectedItem;
         ProductsListview.ItemsSource = bl.Product.ReadAll(cat != null ? x => (BO.Category?)x?.Category == (BO.Category)cat : null);
