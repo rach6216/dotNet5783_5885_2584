@@ -32,9 +32,8 @@ internal static class Extentions
                 if (toProperty != null && toProperty.CanWrite)
                 {
                     object? fromValue = fromProperty.GetValue(from, null);
-                    object? toValue = toProperty.GetValue(to, null);
                     if (toPropertyType == propertyType)
-                        toProperty.SetValue(to, fromValue, null);
+                        toProperty.SetValue(to, fromValue);
                     //else
                     //    try
                     //    {
@@ -51,28 +50,26 @@ internal static class Extentions
 
 
                     //    }
-
-
                 }
             }
         }
         toObj = (U)to;
         return toObj;
     }
-    public static void ToStringG<U>(this U obj)
+    public static string ToStringG<U>(this U obj)
     {
 
 
         Type objectType = obj.GetType();
-
+        String str = "";
         foreach (System.Reflection.PropertyInfo propName in
             objectType.GetProperties())
         {
             if (propName.CanRead)
             {
-                Console.WriteLine(propName.Name + ": ");
-                Console.WriteLine(propName.GetValue(obj));
+                str += propName.Name + ": " + propName.GetValue(obj) + "\n";
             }
         }
+        return str;
     }
 }

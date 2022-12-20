@@ -3,6 +3,10 @@ ladies & gentlemens
 .NET project Shira Polak &amp; Rachel Fabian 
 
 
-בונוסים:
-שלב 3: REGEXP לבדיקת תקינות תיבות הטקסט.
-מתודות הרחבה עבור ToString, המרה
+Bonuses:
+stage 3: REGEX for validation of input
+ extentions methods for convertion and toString.
+
+ stage 4:singletone with Lazy initialization and thread safe 
+ (which protects the program from duplicate data changes at the 
+ same time and initial the instance only when it's needed.)
