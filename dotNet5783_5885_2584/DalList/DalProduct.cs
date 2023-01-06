@@ -1,5 +1,6 @@
 ﻿using DO;
 using DalApi;
+using System.Linq;
 using static Dal.DataSource;
 
 namespace Dal;
@@ -45,10 +46,14 @@ internal struct DalProduct : IProduct
     {
         if(f == null)
             throw new ExceptionEntityNotFound("Product is not found");
-        Product? p = s_products.Find(x =>f(x));
-        if ( p?.ID != 0)
-            return new Product() { Price = p?.Price??0, Category = p?.Category, ID = p?.ID??0, InStock = p?.InStock??0, Name = p?.Name };
-        throw new ExceptionEntityNotFound("Product is not found");
+        try
+        {
+            return s_products.Select(x => new Product() { Price = x?.Price ?? 0, Category = x?.Category, ID = x?.ID ?? 0, InStock = x?.InStock ?? 0, Name = x?.Name }).First(x => f(x) && x.ID != 0);
+        }
+        catch
+        {
+            throw new ExceptionEntityNotFound("Product is not found");
+        }
     }
     /// <summary>
     /// get all the products
@@ -56,10 +61,10 @@ internal struct DalProduct : IProduct
     /// <returns>array of the products</returns>
     public IEnumerable<Product?> ReadAll(Func<Product?, bool>? f = null)
     {
-        List<Product?> products = s_products;
+        IEnumerable<Product?> products = s_products;
         if(f != null)
         {
-            products = s_products.FindAll(x => f(x));
+            products = s_products.Where(x => f(x));
         }
         return products;
     }
@@ -72,15 +77,10 @@ internal struct DalProduct : IProduct
     /// <param name="p">product to update</param>
     public void Update(Product p)
     {
-        for(int i = 0; i < s_products.Count; i++)
-        {
-            if (s_products[i]?.ID == p.ID)
-            {
-                s_products[i] = p;
-                return;
-            }
-        }
-        throw new ExceptionEntityNotFound("the product to update is not found");
+        s_products.RemoveAll(x => x?.ID == p.ID && x != null);
+
+        s_products.Add(p);
+        //throw new ExceptionEntityNotFound("the product to update is not found");
     }
     #endregion
 

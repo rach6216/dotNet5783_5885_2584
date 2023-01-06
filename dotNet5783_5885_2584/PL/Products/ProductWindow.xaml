@@ -4,8 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Products"
+        xmlns:Pl="clr-namespace:PL"
+        
+        DataContext="{Binding RelativeSource={RelativeSource self }}"
         mc:Ignorable="d"
         Title="BoProductWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Pl:NotBooleanToVisibilityConverter x:Key="notBooleanToVisibilityConverter" />
+        <Pl:NotBooleanToUpdateOrAddConverter x:Key="NotBooleanToUpdateOrAddConverter" />
+
+    </Window.Resources>
+    
     <Grid Name="productGrid">
         <Grid.OpacityMask>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -13,17 +22,21 @@
                 <GradientStop Color="White" Offset="1"/>
             </LinearGradientBrush>
         </Grid.OpacityMask>
-        <Button Content="Add new Product" HorizontalAlignment="Right" Margin="0,349,84,29" Name="AddProductButton" Padding="5" Click="AddProductButton_Click" Background="#FF0160C6" FontSize="18" Foreground="White"/>
-        <TextBox HorizontalAlignment="Left" Margin="295,100,0,0" Name="Name" TextWrapping="Wrap" VerticalAlignment="Top" Width="180"  FontSize="18" />
-        <TextBox HorizontalAlignment="Left" Margin="295,200,0,0" Name="Price" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="Price_TextChanged" FontSize="18" />
-        <TextBox HorizontalAlignment="Left" Margin="295,250,0,0" Name="InStock" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="InStock_TextChanged" FontSize="18"/>
+        <Button Content="{Binding IsUpdate, Converter={StaticResource NotBooleanToUpdateOrAddConverter}}" HorizontalAlignment="Right" Margin="0,349,84,29" Name="AddProductButton" Padding="5" Click="AddProductButton_Click" Background="#FF0160C6" FontSize="18" Foreground="White"/>
+        <TextBox HorizontalAlignment="Left"  Text="{Binding MyProduct.Name,Mode=TwoWay}" Margin="295,100,0,0" Name="Name" TextWrapping="Wrap" VerticalAlignment="Top" Width="180"  FontSize="18" />
+        <TextBox HorizontalAlignment="Left" Text="{Binding MyProduct.Price,Mode=TwoWay}" Margin="295,200,0,0" Name="Price" TextWrapping="Wrap" VerticalAlignment="Top" Width="180"  FontSize="18" />
+        <TextBox HorizontalAlignment="Left" Text="{Binding MyProduct.InStock,Mode=TwoWay}" Margin="295,250,0,0" Name="InStock" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" FontSize="18"/>
         <Label Content="category:" HorizontalAlignment="Left" Margin="195,150,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCFBFB" Background="#FF0160C6"/>
         <Label Content="name:" HorizontalAlignment="Left" Margin="195,100,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.056,1.502" FontSize="18" Foreground="White" Background="#FF0160C6"/>
         <Label Content="price:" HorizontalAlignment="Left" Margin="195,200,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFFFEFE" Background="#FF0160C6"/>
         <Label Content="instock:" HorizontalAlignment="Left" Margin="195,250,0,0" VerticalAlignment="Top" Foreground="#FFFFFEFE" FontSize="18" Background="#FF0160C6"/>
-        <ComboBox HorizontalAlignment="Left" Margin="295,150,0,0" Name="Category" VerticalAlignment="Top" Width="180" FontSize="18" />
-        <Label Content="product ID:" HorizontalAlignment="Left" Margin="195,50,0,0" Name="ID" VerticalAlignment="Top" Height="34" RenderTransformOrigin="0.496,2.07" Foreground="White" FontSize="18" Background="#FF0160C6"/>
-        <Label x:Name="Id" Content="" HorizontalAlignment="Left" Height="35" Margin="303,50,0,0" VerticalAlignment="Top" Width="119" FontSize="18"/>
+        <ComboBox HorizontalAlignment="Left" SelectedItem="{Binding MyProduct.Category, Mode=TwoWay}" ItemsSource="{Binding Categories, Mode=TwoWay}" Margin="295,150,0,0" Name="Category" VerticalAlignment="Top" Width="180" FontSize="18" />
+        <Label Content="product ID:" Visibility="{Binding IsUpdate, 
+      
+                                 Converter={StaticResource notBooleanToVisibilityConverter}}" HorizontalAlignment="Left" Margin="195,50,0,0" Name="ID" VerticalAlignment="Top" Height="34" RenderTransformOrigin="0.496,2.07" Foreground="White" FontSize="18" Background="#FF0160C6"/>
+        <Label x:Name="Id" Content="{Binding MyProduct.ID}" Visibility="{Binding IsUpdate, 
+      
+                                 Converter={StaticResource notBooleanToVisibilityConverter}}" HorizontalAlignment="Left" Height="35" Margin="303,50,0,0" VerticalAlignment="Top" Width="119" FontSize="18"/>
 
     </Grid>
 </Window>

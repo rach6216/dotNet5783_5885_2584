@@ -124,12 +124,12 @@ internal class Product : IProduct
     /// create list of product to show
     /// </summary>
     /// <returns>product for list IEnumerable</returns>
-    public IEnumerable<BO.ProductForList?> ReadAll(Func<DO.Product?, bool>? f = null)
+    public IEnumerable<BO.ProductForList> ReadAll(Func<DO.Product?, bool>? f = null)
     {
         if (_dal == null)
             throw new BO.ExceptionNullDal();
         IEnumerable<DO.Product?> doProducts;
-        List<BO.ProductForList?> products = new();
+        List<BO.ProductForList> products = new();
         if (f == null)
         {
             doProducts = _dal.Product.ReadAll();
