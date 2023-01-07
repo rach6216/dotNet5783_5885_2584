@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Products"
         mc:Ignorable="d"
-        Title="BoProductWindow" Height="450" Width="800">
-    <Grid Name="productGrid">
+        Title="BoProductWindow" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <Grid Name="productGrid" DataContext="{Binding Product}">
         <Grid.OpacityMask>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="Black"/>
@@ -14,9 +16,9 @@
             </LinearGradientBrush>
         </Grid.OpacityMask>
         <Button Content="Add new Product" HorizontalAlignment="Right" Margin="0,349,84,29" Name="AddProductButton" Padding="5" Click="AddProductButton_Click" Background="#FF0160C6" FontSize="18" Foreground="White"/>
-        <TextBox HorizontalAlignment="Left" Margin="295,100,0,0" Name="Name" TextWrapping="Wrap" VerticalAlignment="Top" Width="180"  FontSize="18" />
-        <TextBox HorizontalAlignment="Left" Margin="295,200,0,0" Name="Price" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="Price_TextChanged" FontSize="18" />
-        <TextBox HorizontalAlignment="Left" Margin="295,250,0,0" Name="InStock" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="InStock_TextChanged" FontSize="18"/>
+        <TextBox Text="{Binding Name, Mode=TwoWay}" HorizontalAlignment="Left" Margin="295,100,0,0" Name="Name" TextWrapping="Wrap" VerticalAlignment="Top" Width="180"  FontSize="18" />
+        <TextBox Text="{Binding Price, Mode=TwoWay}" HorizontalAlignment="Left" Margin="295,200,0,0" Name="Price" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="Price_TextChanged" FontSize="18" />
+        <TextBox Text="{Binding InStock, Mode=TwoWay}" HorizontalAlignment="Left" Margin="295,250,0,0" Name="InStock" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="InStock_TextChanged" FontSize="18"/>
         <Label Content="category:" HorizontalAlignment="Left" Margin="195,150,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCFBFB" Background="#FF0160C6"/>
         <Label Content="name:" HorizontalAlignment="Left" Margin="195,100,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.056,1.502" FontSize="18" Foreground="White" Background="#FF0160C6"/>
         <Label Content="price:" HorizontalAlignment="Left" Margin="195,200,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFFFEFE" Background="#FF0160C6"/>

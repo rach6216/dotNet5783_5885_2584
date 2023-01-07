@@ -47,12 +47,12 @@ public partial class BoProductWindow : Window
     private void Price_TextChanged(object sender, TextChangedEventArgs e)
     {
         Price.Text = Price.Text.Trim();
-        //check if the input is positive double
+        //check if the input is positive double number
         bool IsPDouble = Regex.IsMatch(Price.Text, @"^[0-9]+\.?[0-9]*$");
 
-        if (IsPDouble)
+        //if (IsPDouble)
        
-        IsPDouble = IsPDouble || Price.Text == "";
+        //IsPDouble = IsPDouble || Price.Text == "";
         if (!IsPDouble)
         {
             MessageBox.Show("price must be a positive number");
