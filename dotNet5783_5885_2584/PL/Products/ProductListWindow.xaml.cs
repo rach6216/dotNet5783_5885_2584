@@ -1,45 +1,68 @@
-﻿using DalApi;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
-
+using System.Linq;
+using System.ComponentModel;
+using System.Xml.Linq;
 
 namespace PL.Products;
 
 /// <summary>
 /// Interaction logic for BoProductListWindow.xaml
 /// </summary>
-public partial class BoProductListWindow : Window
+public partial class BoProductListWindow : Window, INotifyPropertyChanged
 {
     private BlApi.IBl? bl = BlApi.Factory.Get();
+    private ObservableCollection<object> _categories;
+    public ObservableCollection<object> Categories
+    {
+        get { return _categories; }
+        set
+        {
+            _categories = value;
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs("Categories"));
+            }
+        }
+    }
+    public object Category { get; set; }
+   
+    private ObservableCollection<BO.ProductForList> _productList;
+    public ObservableCollection<BO.ProductForList> ProductList
+    {
+        get { return _productList; }
+        set
+        {
+            _productList = value;
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs("ProductList"));
+            }
+        }
+    }
+
 
     public BoProductListWindow()
     {
+        ProductList = new(bl.Product.ReadAll());
+        Categories = new();
         InitializeComponent();
-        List<object> l = new() { };
-
         foreach (var category in Enum.GetValues(typeof(BO.Category)))
         {
-            l.Add((object)category);
+            Categories.Add(category);
         }
-        l.Insert(0, "");
-        CategorySelector.ItemsSource = l;
-
-        ProductsListview.ItemsSource = bl.Product.ReadAll();
-      
-
+        Categories.Insert(0, "");
     }
 
     private void CategorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (bl == null)
             throw new BO.ExceptionNullBl();
-        var category = CategorySelector.SelectedItem;
-        ProductsListview.ItemsSource = bl.Product.ReadAll(category != (object)"" ? x => (BO.Category?)x!.Value.Category == (BO.Category)category : null);
-
+        ProductList = new( bl.Product.ReadAll((Category as BO.Category?) != null ? x => (BO.Category?)x?.Category == (BO.Category)Category : null));
     }
 
     private void AddProductButton_click(object sender, RoutedEventArgs e)
@@ -47,8 +70,7 @@ public partial class BoProductListWindow : Window
         if (bl == null)
             throw new BO.ExceptionNullBl();
         new BoProductWindow().ShowDialog();
-        var category = CategorySelector.SelectedItem;
-        ProductsListview.ItemsSource = bl.Product.ReadAll(category != null ? x => (BO.Category?)x?.Category == (BO.Category)category : null);
+        ProductList = new(bl.Product.ReadAll((Category as BO.Category?) != null ? x => (BO.Category?)x?.Category == (BO.Category)Category : null));
     }
 
     private void ProductsListview_doubleClicked(object sender, MouseButtonEventArgs e)
@@ -56,10 +78,8 @@ public partial class BoProductListWindow : Window
         if (bl == null)
             throw new BO.ExceptionNullBl();
         new BoProductWindow((sender as ListView)!.SelectedItem as BO.ProductForList).ShowDialog();
-        object cat = CategorySelector.SelectedItem;
-        ProductsListview.ItemsSource = bl.Product.ReadAll(cat != null ? x => (BO.Category?)x?.Category == (BO.Category)cat : null);
-
+        ProductList = new(bl.Product.ReadAll((Category as BO.Category?) != null ? x => (BO.Category?)x?.Category == (BO.Category)Category : null));
     }
 
-
+    public event PropertyChangedEventHandler? PropertyChanged;
 }

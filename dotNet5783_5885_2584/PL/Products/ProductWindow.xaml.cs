@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,93 +11,92 @@ namespace PL.Products;
 /// <summary>
 /// Interaction logic for BoProductWindow.xaml
 /// </summary>
-public partial class BoProductWindow : Window
+public partial class BoProductWindow : Window, INotifyPropertyChanged
 {
     private BlApi.IBl? bl = BlApi.Factory.Get();
-    private BO.Product _product = new();
-    private bool isUpdate;
+    public ObservableCollection<object> _categories;
+    public ObservableCollection<object> Categories
+    {
+        get { return _categories; }
+        set
+        {
+            _categories = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Categories)));
+        }
+    }
+    private BO.Product _myProduct = new();
+    public BO.Product MyProduct
+    {
+        get { return _myProduct; }
+        set
+        {
+            _myProduct = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MyProduct)));
+        }
+    }
+    private bool _isUpdate;
+    public bool IsUpdate
+    {
+        get { return _isUpdate; }
+        set
+        {
+            _isUpdate = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsUpdate)));
+        }
+    }
+
+
+
     public BoProductWindow()
     {
+        Categories = new();
         InitializeComponent();
-        Category.ItemsSource = Enum.GetValues(typeof(BO.Category));
-        ID.Visibility = Visibility.Collapsed;
+        foreach (var cat in Enum.GetValues(typeof(BO.Category)))
+        {
+            Categories.Add(cat);
+        }
     }
 
     public BoProductWindow(BO.ProductForList p)
     {
         InitializeComponent();
-        isUpdate = true;
-        AddProductButton.Content = "UPDATE";
+        IsUpdate = true;
+        Categories = new();
         try
         {
-            _product = bl.Product.Read(x => x?.ID == p.ID);
-            Name.Text = _product.Name;
-            Price.Text = _product.Price.ToString();
-            Category.SelectedItem = _product.Category;
-            InStock.Text = _product.InStock.ToString();
-            Id.Content = _product.ID.ToString();
-
+            MyProduct = bl.Product.Read(x => x?.ID == p.ID);
         }
         catch
         {
             this.Close();
         }
-        Category.ItemsSource = Enum.GetValues(typeof(BO.Category));
-    }
-
-
-    private void Price_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        Price.Text = Price.Text.Trim();
-        //check if the input is positive double number
-        bool IsPDouble = Regex.IsMatch(Price.Text, @"^[0-9]+\.?[0-9]*$");
-
-        //if (IsPDouble)
-       
-        //IsPDouble = IsPDouble || Price.Text == "";
-        if (!IsPDouble)
+        Categories.Clear();
+        foreach (var item in Enum.GetValues(typeof(BO.Category)))
         {
-            MessageBox.Show("price must be a positive number");
-            Price.Clear();
+            Categories.Add(item);
         }
+
     }
 
-    private void InStock_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        InStock.Text = InStock.Text.Trim();
-        //check if the input is positive int
-        bool IsPInt = Regex.IsMatch(InStock.Text, "[^0-9].+");
-
-        if (IsPInt)
-        {
-            MessageBox.Show("instock must be a positive integer number");
-            InStock.Clear();
-        }
-    }
 
     private void AddProductButton_Click(object sender, RoutedEventArgs e)
     {
         if (bl == null)
             throw new BO.ExceptionNullBl();
-        if (Name.Text == "" || Price.Text == "" || InStock.Text == null || Category.SelectedItem == null)
+        if (MyProduct.Name == "" || MyProduct.Price <0 || MyProduct.InStock < 0 || MyProduct.Category == null)
         {
             MessageBox.Show("Invalid input");
         }
         else
         {
-            _product.Name = Name.Text;
-            _product.Category = (BO.Category)Category.SelectedItem;
-            _product.Price = Double.Parse(Price.Text);
-            _product.InStock = int.Parse(InStock.Text);
             try
             {
-                if (isUpdate)
+                if (IsUpdate)
                 {
-                    bl.Product.UpdateProduct(_product);
-                    
+                    bl.Product.UpdateProduct(MyProduct);
                 }
                 else
-                    bl.Product.AddProduct(_product);
+                    bl.Product.AddProduct(MyProduct);
                 this.Close();
             }
             catch (BO.ExceptionInvalidInput exp)
@@ -117,6 +118,7 @@ public partial class BoProductWindow : Window
         }
     }
 
+    public event PropertyChangedEventHandler? PropertyChanged;
 
 }
 
