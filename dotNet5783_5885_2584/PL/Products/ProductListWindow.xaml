@@ -6,7 +6,7 @@
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource self }}"
         Title="BoProductListWindow" Height="640" Width="800">
-    <Grid Name="MainGrid">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="369*"/>
             <ColumnDefinition Width="18*"/>
@@ -17,15 +17,15 @@
             <RowDefinition Height="500*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="3">
+        <Grid Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
-            <ComboBox Name="CategorySelector" ItemsSource="{Binding Categories ,Mode=TwoWay}" SelectedItem="{Binding Category, Mode=TwoWay}" HorizontalAlignment= "Stretch" VerticalAlignment="Stretch" Grid.Column="1" SelectionChanged="CategorySelector_SelectionChanged" FontSize="18"/>
+            <ComboBox ItemsSource="{Binding Categories ,Mode=TwoWay}" SelectedItem="{Binding Category, Mode=TwoWay}" HorizontalAlignment= "Stretch" VerticalAlignment="Stretch" Grid.Column="1" SelectionChanged="CategorySelector_SelectionChanged" FontSize="18"/>
             <Label Content="Category:" HorizontalAlignment="Left" Margin="30,3,0,0" VerticalAlignment="Top" Grid.Column="0" FontSize="18"/>
         </Grid>
-        <ListView x:Name="ProductsListview" ItemsSource="{Binding ProductList, Mode=TwoWay}" MouseDoubleClick="ProductsListview_doubleClicked" Grid.ColumnSpan="3" Margin="0,46,0,0" Grid.RowSpan="2" Foreground="#FF0160C6" FontFamily="Yu Gothic UI Light" FontSize="18" BorderThickness="1,1,1,1" BorderBrush="#FF4681EB">
+        <ListView ItemsSource="{Binding ProductList, Mode=TwoWay}" MouseDoubleClick="ProductsListview_doubleClicked" Grid.ColumnSpan="3" Margin="0,46,0,0" Grid.RowSpan="2" Foreground="#FF0160C6" FontFamily="Yu Gothic UI Light" FontSize="18" BorderThickness="1,1,1,1" BorderBrush="#FF4681EB">
             <ListView.View >
                 <GridView >
                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ID}" />
@@ -35,7 +35,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Add new Product" Grid.Row="1" Name="AddProductButton" HorizontalAlignment="Left" Margin="509,433,0,45" Padding="5" Click="AddProductButton_click" FontSize="18" Foreground="White" Background="#FF0160C6" Width="158"/>
+        <Button Content="Add new Product" Grid.Row="1" HorizontalAlignment="Left" Margin="509,433,0,45" Padding="5" Click="AddProductButton_click" FontSize="18" Foreground="White" Background="#FF0160C6" Width="158"/>
 
     </Grid>
 </Window>

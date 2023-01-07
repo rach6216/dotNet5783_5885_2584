@@ -17,9 +17,9 @@ internal struct DalProduct : IProduct
     /// <returns>the id of the product</returns>
     public int Create(Product p)
     {
-       if(p.ID == 0)
+        if (p.ID == 0)
         {
-            Random r = new ();
+            Random r = new();
             int tID;
             //generate random id
             do
@@ -41,10 +41,10 @@ internal struct DalProduct : IProduct
     /// <param name="id">id of requested product</param>
     /// <returns>requested product</returns>
     /// <exception cref="Exception">when product is not exist throw exeption: "Product is not found</exception>
- 
+
     public Product Read(Func<Product?, bool>? f)
     {
-        if(f == null)
+        if (f == null)
             throw new ExceptionEntityNotFound("Product is not found");
         try
         {
@@ -62,7 +62,7 @@ internal struct DalProduct : IProduct
     public IEnumerable<Product?> ReadAll(Func<Product?, bool>? f = null)
     {
         IEnumerable<Product?> products = s_products;
-        if(f != null)
+        if (f != null)
         {
             products = s_products.Where(x => f(x));
         }
@@ -77,10 +77,9 @@ internal struct DalProduct : IProduct
     /// <param name="p">product to update</param>
     public void Update(Product p)
     {
-        s_products.RemoveAll(x => x?.ID == p.ID && x != null);
-
+        if (1 > s_products.RemoveAll(x => x?.ID == p.ID && x != null))
+            throw new ExceptionEntityNotFound("the product to update is not found");
         s_products.Add(p);
-        //throw new ExceptionEntityNotFound("the product to update is not found");
     }
     #endregion
 
@@ -91,14 +90,9 @@ internal struct DalProduct : IProduct
     /// <param name="id">id of product to delete</param>
     public void Delete(int id)
     {
-       bool flag=  s_products.Remove(Read(x=>x?.ID==id));
-        if (!flag)
-        {
-            throw new ExceptionEntityNotFound("Order for delete is not found");
-        }
+        if (1 > s_products.RemoveAll(x => x?.ID == id))
+            throw new ExceptionEntityNotFound("Product to delete is not found");
     }
-
-   
     #endregion
 
 }

@@ -30,11 +30,7 @@ internal struct DalOrderItem:IOrderItem
     /// <returns>array with all the order-items</returns>
     public IEnumerable<OrderItem?> ReadAll(Func<OrderItem?, bool>? f = null)
     {
-        List<OrderItem?> list = s_orderItems;
-        if (f != null)
-        {
-            list = s_orderItems.FindAll(x => f(x));
-        }
+        List<OrderItem?> list =f!=null? s_orderItems.Where(f).ToList(): s_orderItems;
         return list;
     }
 
@@ -48,10 +44,14 @@ internal struct DalOrderItem:IOrderItem
     {
         if(f == null)
             throw new ExceptionEntityNotFound("Order item is not found");
-        OrderItem? oi = s_orderItems.Find(x => f(x));
-        if ( oi?.ID != 0 )
-            return new OrderItem() { ID = oi?.ID??0, Amount = oi?.Amount??0, OrderID = oi?.OrderID??0, Price = oi?.Price??0, ProductID = oi?.ProductID??0 };
-        throw new ExceptionEntityNotFound("Order item is not found");
+        try
+        {
+            return s_orderItems.First(f)??throw new Exception();
+        }
+        catch
+        {
+            throw new ExceptionEntityNotFound("Order item is not found");
+        }
     }
     #endregion
 
@@ -62,11 +62,9 @@ internal struct DalOrderItem:IOrderItem
     /// <param name="oi">order-item id to update</param>
     public void Update(OrderItem oi)
     {
-        for (int i = 0; i < s_orderItems.Count; i++)
-        {
-            if (s_orderItems[i]?.ID == oi.ID)
-                s_orderItems[i] = oi;
-        }
+        if (1 > s_orderItems.RemoveAll(x => oi.ID == x?.ID))
+            throw new ExceptionEntityNotFound("order-item not found");
+        s_orderItems.Add(oi);
     }
     #endregion
 
@@ -77,8 +75,7 @@ internal struct DalOrderItem:IOrderItem
     /// <param name="id">order-item id to delete</param>
     public void Delete(int id)
     {
-      bool flag= s_orderItems.Remove(Read(x=>x?.ID==id));
-        if (!flag)
+      if(1> s_orderItems.RemoveAll(x=>x?.ID==id))
             throw new ExceptionEntityNotFound("the order-item to delete is not found");
     }
 

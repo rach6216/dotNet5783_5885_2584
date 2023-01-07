@@ -73,7 +73,7 @@ internal class Product : IProduct
             if (f == null)
                 throw new DO.ExceptionEntityNotFound("product didn't find by ID");
 
-            DO.Product p = _dal.Product.Read(x => f(x));
+            DO.Product p = _dal.Product.Read( f);
             BO.Product boP = new()
             {
                 Category = (BO.Category?)p.Category,
@@ -108,9 +108,8 @@ internal class Product : IProduct
         {
 
             DO.Product p = _dal.Product.Read(f != null ? x => f(x) : null);
-            int productIndex = cart.Items.FindIndex(x => x?.ProductID == p.ID);
-            int amount = productIndex == -1 ? 0 : cart.Items[productIndex]!.Amount;
-            BO.ProductItem boProductItem = new() { Category = (BO.Category?)p.Category, ID = p.ID, InStock = p.InStock > 0, Name = p.Name, Price = p.Price, Amount = amount > 0 ? amount : 0 };
+            BO.OrderItem oi = cart.Items.FirstOrDefault(x => x?.ProductID == p.ID)??new OrderItem() { };
+            BO.ProductItem boProductItem = new() { Category = (BO.Category?)p.Category, ID = p.ID, InStock = p.InStock > 0, Name = p.Name, Price = p.Price, Amount =  oi?.Amount?? 0 };
             return boProductItem;
         }
         catch (DO.ExceptionEntityNotFound exp)
@@ -129,7 +128,6 @@ internal class Product : IProduct
         if (_dal == null)
             throw new BO.ExceptionNullDal();
         IEnumerable<DO.Product?> doProducts;
-        List<BO.ProductForList> products = new();
         if (f == null)
         {
             doProducts = _dal.Product.ReadAll();
@@ -137,14 +135,10 @@ internal class Product : IProduct
         else
         {
             doProducts = _dal.Product.ReadAll(f);
-
         }
-        foreach (var p in doProducts)
-        {
-            if (p != null)
-                products.Add(new BO.ProductForList() { Category = (BO.Category?)p?.Category, Price = p?.Price ?? 0, ID = p?.ID ?? 0, Name = p?.Name });
-        }
-        return products;
+        return (from p in doProducts
+                   where p!=null
+                   select new BO.ProductForList() { Category = (BO.Category?)p?.Category, Price = p?.Price ?? 0, ID = p?.ID ?? 0, Name = p?.Name }).ToList();
     }
     #endregion
 
@@ -200,6 +194,7 @@ internal class Product : IProduct
         if (_dal == null)
             throw new BO.ExceptionNullDal();
         IEnumerable<DO.OrderItem?> orderItems = _dal.OrderItem.ReadAll();
+        
         foreach (var item in orderItems)
         {
             if (item?.ProductID == id)

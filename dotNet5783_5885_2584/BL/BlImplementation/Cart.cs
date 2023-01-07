@@ -19,37 +19,18 @@ internal class Cart : ICart
             throw new BO.ExceptionNullDal();
         cart ??= new BO.Cart();
         cart.Items ??= new List<BO.OrderItem?>() { };
-        DO.Product product;
         try
         {
-            product = _dal.Product.Read(x => x?.ID == id);
+            int productAmount = (from orderItem in cart.Items
+                                 where orderItem.ID == id
+                                 select orderItem).FirstOrDefault()?.Amount ?? default;
+            cart = UpdatePAmount(cart, id, productAmount + 1);
         }
         catch (DO.ExceptionEntityNotFound exp)
         {
             throw new BO.ExceptionInvalidInput("can't get product,it doesn't exist", exp);
         }
-        int oiIndex = cart.Items.FindIndex(x => x?.ProductID == id);
-        if (oiIndex != -1)
-        {
-            if (product.InStock > 0 && cart.Items != null && cart.Items[oiIndex] != null)
-            {
-                cart.Items[oiIndex]!.Amount += 1;
-                product.InStock -= 1;
-                cart.Items[oiIndex]!.TotalPrice = cart.Items[oiIndex]!.Amount * cart.Items[oiIndex]!.Price;
-                //update price of item
-                cart.TotalPrice += product.Price;
-            }
-        }
-        else
-        {
-            if (product.InStock > 0)
-            {
-                cart.Items.Add(new BO.OrderItem() { Amount = 1, Price = product.Price, ProductID = id, ProductName = product.Name, TotalPrice = product.Price });
-                cart.TotalPrice += product.Price;
-            }
-        }
         return cart;
-
     }
     /// <summary>
     /// update product amoumt in cart
@@ -62,29 +43,27 @@ internal class Cart : ICart
     {
         cart ??= new BO.Cart();
         cart.Items ??= new List<BO.OrderItem?>() { };
-        int oiIndex = cart.Items.FindIndex(x => x?.ProductID == id);
-        if (cart.Items[oiIndex] != null && cart.Items[oiIndex]!.Amount != amount)
+        DO.Product product = new() { };
+        try
         {
-            int oldAmount = cart.Items[oiIndex]!.Amount;
-            if (0 == amount)
-            {
-                cart.TotalPrice -= cart.Items[oiIndex]!.TotalPrice;
-                cart.Items.RemoveAt(oiIndex);
-            }
-            else if (oldAmount > amount)
-            {
-                cart.Items[oiIndex]!.Amount = amount;
-                cart.Items[oiIndex]!.TotalPrice -= (oldAmount - amount) * cart.Items[oiIndex]!.Price;
-                cart.TotalPrice -= (oldAmount - amount) * cart.Items[oiIndex]!.Price;
-            }
-            else
-            {
-                for (int i = 0; i < amount - oldAmount; i++)
-                    AddProduct(cart, id);
-
-            }
+            product = _dal?.Product.Read(x => x?.ID == id) ?? throw new BO.ExceptionNullDal();
         }
-
+        catch (DO.ExceptionEntityNotFound exp)
+        {
+            throw new BO.ExceptionInvalidInput("can't get product,it doesn't exist", exp);
+        }
+        if (product.InStock < amount)
+            throw new BO.ExceptionProductOutOfStock("can't update product amount, there is only " + product.InStock + " items in stock");
+        BO.OrderItem item = cart.Items.FirstOrDefault(x => x?.ID == id) ?? new BO.OrderItem() { Price = product.Price, ProductID = id, ProductName = product.Name };
+        product.InStock += item.Amount;
+        cart.TotalPrice -= item.TotalPrice;
+        cart.Items.RemoveAll(x => x?.ID == id);
+        item.Amount = amount;
+        product.InStock -= amount;
+        item.TotalPrice = item.Amount * item.Price;
+        if (amount > 0)
+            cart.Items.Add(item);
+        cart.TotalPrice += item.TotalPrice;
         return cart;
     }
     /// <summary>
@@ -102,22 +81,17 @@ internal class Cart : ICart
         if (cart.Items == null || cart.Items.Count == 0)
             throw new BO.ExceptionCannotCreateItem("cart is empty, can't confirm order");
         //integrity check
-        if (customerAdress == null)
-            throw new BO.ExceptionInvalidInput("invalid customer address ");
-        if (customerName == null)
-            throw new BO.ExceptionInvalidInput("invalid customer name ");
         bool isEmail = Regex.IsMatch(customerEmail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
         if (customerEmail == null || !IsValid(customerEmail))
             throw new BO.ExceptionInvalidInput("invalid customer email ");
         //create order
-        DO.Order order = new(customerName, customerEmail, customerAdress, DateTime.Now);
+        DO.Order order = new(customerName ?? throw new BO.ExceptionInvalidInput("invalid customer name "), customerEmail, customerAdress ?? throw new BO.ExceptionInvalidInput("invalid customer address "), DateTime.Now);
         int orderID = _dal.Order.Create(order);
         BO.Order order2 = new()
         {
             ID = orderID,
             CustomerAddress = customerAdress,
-            CustomerEmail = customerEmail
-            ,
+            CustomerEmail = customerEmail,
             CustomerName = customerName,
             Status = 0,
             TotalPrice = 0,
@@ -131,7 +105,7 @@ internal class Cart : ICart
             if (o != null)
                 try
                 {
-                    DO.Product p = _dal.Product.Read(x => (x?.ID == o.ProductID));
+                    DO.Product p = _dal.Product.Read(x => x?.ID == o.ProductID);
                     if (p.InStock == 0)
                     {
                         messageOfMissingProducts += " ," + p.Name + " is out of stock";

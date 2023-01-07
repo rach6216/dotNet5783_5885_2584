@@ -1,7 +1,9 @@
 ﻿
 using BlApi;
 using BO;
-
+using DO;
+using System.Linq;
+using System.Security.Cryptography;
 
 namespace BlImplementation;
 
@@ -90,29 +92,25 @@ internal class Order : IOrder
             if (f == null)
                 throw new DO.ExceptionEntityNotFound("can't read order-order not found");
 
-            doOrder = _dal.Order.Read(x => f(x));
+            doOrder = _dal.Order.Read(f);
             IEnumerable<DO.OrderItem?> doOrderItems = _dal.OrderItem.ReadAll(x => x?.OrderID == doOrder.ID);
             List<BO.OrderItem?> Items = new();
-            double total = 0;
-            OrderStatus oStatus;
-            foreach (var item in doOrderItems)
-            {
-                if (item != null)
-                {
-                    Items.Add(new BO.OrderItem()
-                    {
-                        ID = item?.ID??0,
-                        Amount = item?.Amount??0,
-                        ProductID = item?.ProductID??0,
-                        Price = item?.Price??0,
-                        TotalPrice = item?.Amount??0 * item?.Price??0,
-                        ProductName = _dal.Product.Read(x => x?.ID == item?.ID).Name
-                    });
-                    total += item?.Amount??0 * item?.Price??0;
-                }
 
-            }
-            if (doOrder.DeliveryDate !=null)
+            OrderStatus oStatus;
+            Items = doOrderItems.Where(x => x != null).Select(item => new BO.OrderItem()
+            {
+                ID = item?.ID ?? 0,
+                Amount = item?.Amount ?? 0,
+                ProductID = item?.ProductID ?? 0,
+                Price = item?.Price ?? 0,
+                TotalPrice = item?.Amount ?? 0 * item?.Price ?? 0,
+                ProductName = _dal.Product.Read(x => x?.ID == item?.ID).Name
+            }).ToList<BO.OrderItem?>();
+            double total = (from oi in doOrderItems
+                            select new { totalSum = oi?.Amount * oi?.Price })
+                           .Sum(x => x.totalSum) ?? default;
+
+            if (doOrder.DeliveryDate != null)
                 oStatus = BO.OrderStatus.OrderIsDelivered;
             else if (doOrder.ShipDate != null)
                 oStatus = BO.OrderStatus.OrderIsShiped;
@@ -150,26 +148,16 @@ internal class Order : IOrder
         if (_dal == null)
             throw new BO.ExceptionNullDal();
         IEnumerable<DO.Order?> orders = _dal.Order.ReadAll(f != null ? x => f(x) : null);
-        List<OrderForList> orderForList = new();
-        foreach (var order in orders)
-        {
-                BO.OrderStatus orderStatus = BO.OrderStatus.OrderIsConfirmed;
-                if (order?.DeliveryDate != null)
-                    orderStatus = BO.OrderStatus.OrderIsDelivered;
-                else if (order?.ShipDate != null)
-                    orderStatus = BO.OrderStatus.OrderIsShiped;
-                (int, double) amountAndPrice = TotalPrice(order?.ID??0);
-                orderForList.Add(new BO.OrderForList()
-                {
-                    ID = order?.ID??0,
-                    CustomerName = order?.CustomerName,
-                    Status = orderStatus,
-                    Amount = amountAndPrice.Item1,
-                    TotalPrice = amountAndPrice.Item2
-                });
-            
-
-        }
+        List<OrderForList> orderForList =(from item in orders
+         let orderStatus = CalculateStatus(item)
+         let totalPrice = TotalPrice(item?.ID ?? default)
+         where item!=null
+         select new BO.OrderForList(){ ID=item?.ID??0,
+             CustomerName = item?.CustomerName,
+             Status = orderStatus,
+             Amount = totalPrice.Item1,
+             TotalPrice = totalPrice.Item2
+         }).ToList();
         return orderForList;
     }
 
@@ -220,7 +208,7 @@ internal class Order : IOrder
             if (order != null && order.Items != null)
             {
                 int oiIndex = order.Items.FindIndex(x => x?.ID == orderItem.ID);
-                if (oiIndex > -1 && order.Items[oiIndex]!=null)
+                if (oiIndex > -1 && order.Items[oiIndex] != null)
                 {
                     if (orderItem.Amount == 0)
                     {
@@ -267,18 +255,19 @@ internal class Order : IOrder
     {
         if (_dal == null)
             throw new BO.ExceptionNullDal();
-        double totalPrice = 0;
-        int amount = 0;
-        foreach (var order in _dal.OrderItem.ReadAll(x => x?.OrderID == oID))
-        {
-            if (order != null)
-            {
-                amount++;
-                totalPrice += order?.Price??0;
-            }
-           
-        }
+        IEnumerable<DO.OrderItem?> l = _dal.OrderItem.ReadAll(x => x?.OrderID == oID && x != null);
+        int amount=l.Count();
+        double totalPrice = l.Sum(x => x?.Amount*x?.Price) ?? default;
         return (amount, totalPrice);
+    }
+    BO.OrderStatus CalculateStatus(DO.Order? order)
+    {
+        BO.OrderStatus orderStatus = BO.OrderStatus.OrderIsConfirmed;
+        if (order?.DeliveryDate != null)
+            orderStatus = BO.OrderStatus.OrderIsDelivered;
+        else if (order?.ShipDate != null)
+            orderStatus = BO.OrderStatus.OrderIsShiped;
+        return orderStatus;
     }
 
 }
