@@ -32,14 +32,14 @@ internal struct DalOrder : IOrder
     /// <exception cref="ExceptionEntityNotFound"></exception>
     public Order Read(Func<Order?, bool>? f)
     {
-        if (f != null)
+        try
         {
-            Order? o = s_orders.Find(x => f(x));
-            if (o?.ID != 0)
-                return new Order() { CustomerAddress = o?.CustomerAddress, CustomerEmail = o?.CustomerEmail, CustomerName = o?.CustomerName, DeliveryDate = o?.DeliveryDate, ID = o?.ID??0, OrderDate = o?.OrderDate, ShipDate = o?.ShipDate };
+            return s_orders.First(f ?? throw new Exception()) ?? throw new Exception();
         }
-        throw new ExceptionEntityNotFound("Order is not found");
-
+        catch
+        {
+            throw new ExceptionEntityNotFound("Order is not found");
+        }
     }
 
     /// <summary>
@@ -48,11 +48,10 @@ internal struct DalOrder : IOrder
     /// <returns>array with all the orders</returns>
     public IEnumerable<Order?> ReadAll(Func<Order?, bool>? f = null)
     {
-
         List<Order?> ol = s_orders;
         if (f != null)
         {
-            ol = s_orders.FindAll(x => f(x));
+            ol = s_orders.Where(f).ToList();
         }
         return ol;
     }
@@ -65,15 +64,9 @@ internal struct DalOrder : IOrder
     /// <param name="o">order to update</param>
     public void Update(Order o)
     {
-        for (int i = 0; i < s_orders.Count; i++)
-        {
-            if (s_orders[i]?.ID == o.ID)
-            {
-                s_orders[i] = o;
-                return;
-            }
-        }
-        throw new ExceptionEntityNotFound("the order entity not found");
+        if (1 > s_orders.RemoveAll(x => o.ID == x?.ID))
+            throw new ExceptionEntityNotFound("the order entity not found");
+        s_orders.Add(o);
     }
     #endregion
 
@@ -84,14 +77,9 @@ internal struct DalOrder : IOrder
     /// <param name="id">id of order to delete</param>
     public void Delete(int id)
     {
-        bool flag = s_orders.Remove(Read(x => x?.ID == id));
-        if (!flag)
-        {
+        if (1 > s_orders.RemoveAll(x => x?.ID == id))
             throw new ExceptionEntityNotFound("Order for delete is not found");
-        }
     }
-
-
 
 
     #endregion

@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Linq;
 using System.ComponentModel;
 using System.Xml.Linq;
+using System.Windows.Data;
 
 namespace PL.Products;
 
@@ -16,7 +17,7 @@ namespace PL.Products;
 public partial class BoProductListWindow : Window, INotifyPropertyChanged
 {
     private BlApi.IBl? bl = BlApi.Factory.Get();
-    private ObservableCollection<object> _categories;
+    private ObservableCollection<object> _categories = new() { };
     public ObservableCollection<object> Categories
     {
         get { return _categories; }
@@ -27,11 +28,12 @@ public partial class BoProductListWindow : Window, INotifyPropertyChanged
             {
                 PropertyChanged(this, new PropertyChangedEventArgs("Categories"));
             }
+            
         }
     }
     public object Category { get; set; }
    
-    private ObservableCollection<BO.ProductForList> _productList;
+    private ObservableCollection<BO.ProductForList> _productList = new() { };
     public ObservableCollection<BO.ProductForList> ProductList
     {
         get { return _productList; }

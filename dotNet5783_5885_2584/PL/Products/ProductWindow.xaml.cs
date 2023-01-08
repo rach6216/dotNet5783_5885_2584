@@ -14,7 +14,8 @@ namespace PL.Products;
 public partial class BoProductWindow : Window, INotifyPropertyChanged
 {
     private BlApi.IBl? bl = BlApi.Factory.Get();
-    public ObservableCollection<object> _categories;
+
+    private ObservableCollection<object> _categories=new();
     public ObservableCollection<object> Categories
     {
         get { return _categories; }
@@ -24,6 +25,7 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Categories)));
         }
     }
+
     private BO.Product _myProduct = new();
     public BO.Product MyProduct
     {
@@ -34,7 +36,8 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MyProduct)));
         }
     }
-    private bool _isUpdate;
+
+    private bool _isUpdate=false;
     public bool IsUpdate
     {
         get { return _isUpdate; }
@@ -49,7 +52,6 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
 
     public BoProductWindow()
     {
-        Categories = new();
         InitializeComponent();
         foreach (var cat in Enum.GetValues(typeof(BO.Category)))
         {
@@ -59,9 +61,7 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
 
     public BoProductWindow(BO.ProductForList p)
     {
-        InitializeComponent();
         IsUpdate = true;
-        Categories = new();
         try
         {
             MyProduct = bl.Product.Read(x => x?.ID == p.ID);
@@ -75,7 +75,7 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
         {
             Categories.Add(item);
         }
-
+        InitializeComponent();
     }
 
 

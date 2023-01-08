@@ -36,7 +36,7 @@ internal static class DataSource
     /// </summary>
     static private void s_Initialize()
     {
-        (string, int, Category, int)[] productDetails = {
+        List<(string, int, Category, int)> productDetails =new() {
         ("Chevrolet Spark",81700,Category.Family,8),
        ("Tesla 2017 Model S",250000,Category.VIP,4),
         ("Skoda Tsi Ambition Oktavia",104600,Category.Family,1),
@@ -56,10 +56,7 @@ internal static class DataSource
         ("yeudisf","yeudisf@gcom","wherever")
         };
 
-        foreach ((string, int, Category, int) item in productDetails)
-        {
-            addProduct(new Product(){Name=item.Item1, Price=item.Item2, Category=item.Item3, InStock=item.Item4});
-        }
+        productDetails.ForEach(item => addProduct(new Product() { Name = item.Item1, Price = item.Item2, Category = item.Item3, InStock = item.Item4 }));
         for (int i = 0; i < 9; i++)
         {
             (string, string, string) user = userDetails[rnd.Next(userDetails.Length)];

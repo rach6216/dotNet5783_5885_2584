@@ -13,9 +13,9 @@ sealed internal class DalList : IDal
     private static readonly Lazy<IDal> _instance = new Lazy<IDal>(() => new DalList());
     public static IDal Instance { get { return _instance.Value; } }
 
-    public IProduct Product => new DalProduct();
-    public IOrder Order => new DalOrder();
-    public IOrderItem OrderItem => new DalOrderItem();
+    public IProduct Product { get; } = new DalProduct();
+    public IOrder Order { get; }= new DalOrder();
+    public IOrderItem OrderItem { get; } = new Dal.DalOrderItem();
     //return the value property
     private DalList()
     {
