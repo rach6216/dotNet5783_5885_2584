@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Xml.Linq;
 using System.Windows.Data;
 
-namespace PL.Products;
+namespace PL;
 
 /// <summary>
 /// Interaction logic for BoProductListWindow.xaml

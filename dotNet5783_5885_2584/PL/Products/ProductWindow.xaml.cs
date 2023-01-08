@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 
-namespace PL.Products;
+namespace PL;
 
 /// <summary>
 /// Interaction logic for BoProductWindow.xaml
