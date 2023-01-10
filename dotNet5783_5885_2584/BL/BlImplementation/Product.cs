@@ -193,7 +193,7 @@ internal class Product : IProduct
         }
         return (from p in doProducts
                 where p != null
-                select new BO.ProductItem() { Category = (BO.Category?)p?.Category, Price = p?.Price ?? 0, ID = p?.ID ?? 0, Name = p?.Name });
+                select new BO.ProductItem() {InStock=p?.InStock>0 ,Category = (BO.Category?)p?.Category, Price = p?.Price ?? 0, ID = p?.ID ?? 0, Name = p?.Name });
     }
     #endregion
 
