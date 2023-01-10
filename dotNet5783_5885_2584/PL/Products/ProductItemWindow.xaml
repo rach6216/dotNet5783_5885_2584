@@ -1,0 +1,29 @@
+﻿<Window x:Class="PL.ProductItemWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource self }}"
+        Title="ProductItemWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.OpacityMask>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="Black"/>
+                <GradientStop Color="White" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.OpacityMask>
+        <Label Content="product ID:" HorizontalAlignment="Left" Margin="195,50,0,0" VerticalAlignment="Top" Height="34" RenderTransformOrigin="0.496,2.07" Foreground="White" FontSize="18" Background="#FF0160C6"/>
+        <Label Content="{Binding MyProductItem.ID}" HorizontalAlignment="Left" Height="35" Margin="303,50,0,0" VerticalAlignment="Top" Width="119" FontSize="18"/>
+        <Label Content="name:" HorizontalAlignment="Left" Margin="195,100,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.056,1.502" FontSize="18" Foreground="White" Background="#FF0160C6"/>
+        <Label Content="{Binding MyProductItem.Name,Mode=TwoWay}" Margin="303,100,317,0" VerticalAlignment="Top" Width="180"  FontSize="18" Height="34" />
+        <Label Content="category:" HorizontalAlignment="Left" Margin="195,150,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCFBFB" Background="#FF0160C6"/>
+        <Label Content="{Binding MyProductItem.Category ,Mode=TwoWay}" Margin="303,150,317,0" VerticalAlignment="Top" Width="180"  FontSize="18" Height="34" />
+        <Label Content="price:" HorizontalAlignment="Left" Margin="195,200,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFFFEFE" Background="#FF0160C6"/>
+        <Label Content="{Binding MyProductItem.Price,Mode=TwoWay}" Margin="303,0,316,0" VerticalAlignment="Center"  FontSize="18" Height="34" />
+        <Label Content="in stock:" HorizontalAlignment="Left" Margin="195,250,0,0" VerticalAlignment="Top" Foreground="#FFFFFEFE" FontSize="18" Background="#FF0160C6"/>
+        <Label Content="{Binding MyProductItem.InStock, Mode=TwoWay}" Margin="303,250,317,0" VerticalAlignment="Top" FontSize="18" Height="34" />
+        <Button x:Name="addToCart" Content=" add to cart " Margin="511,115,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1"/>
+        <Button x:Name="delFromCart" Content=" delete from cart " Margin="511,0,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36" VerticalAlignment="Center" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1"/>
+    </Grid>
+</Window>

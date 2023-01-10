@@ -31,7 +31,7 @@ public partial class OrderWindow : Window
     {
         InitializeComponent();
     }
-    public OrderWindow(BO.OrderForList o)
+    public OrderWindow(BO.OrderForList? o)
     {
         try
         {
@@ -39,7 +39,8 @@ public partial class OrderWindow : Window
         }
         catch
         {
-            this.Close();
+            MessageBox.Show("hhh");
+            //this.Close();
         }
         InitializeComponent();
     }

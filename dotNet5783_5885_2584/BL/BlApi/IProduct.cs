@@ -11,6 +11,12 @@ public interface IProduct
     /// </summary>
     /// <returns>list of all products</returns>
     public IEnumerable<BO.ProductForList?> ReadAll(Func<DO.Product?, bool>? f = null);
+    
+    /// <summary>
+    /// method that get all products by product Item
+    /// </summary>
+    /// <returns>list of all products</returns>
+    public IEnumerable<BO.ProductItem?> ReadAllPI(Func<DO.Product?, bool>? f = null);
     /// <summary>
     /// method that get product by id for manager screen
     /// </summary>

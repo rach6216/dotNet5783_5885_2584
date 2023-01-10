@@ -5,8 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource self }}"
         Title="OrderWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.OpacityMask>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="Black"/>
+                <GradientStop Color="White" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.OpacityMask>
+        <Label Content="order ID:" HorizontalAlignment="Left" Margin="195,50,0,0" VerticalAlignment="Top" Height="34" RenderTransformOrigin="0.496,2.07" Foreground="White" FontSize="18" Background="#FF0160C6"/>
+        <Label Content="{Binding MyOrder.ID}" HorizontalAlignment="Left" Height="35" Margin="363,50,0,0" VerticalAlignment="Top" Width="119" FontSize="18"/>
+        <Label Content="customer name:" HorizontalAlignment="Left" Margin="195,100,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.056,1.502" FontSize="18" Foreground="White" Background="#FF0160C6"/>
+        <Label Content="{Binding MyOrder.CustomerName,Mode=TwoWay}" Margin="303,100,317,0" VerticalAlignment="Top" Width="180"  FontSize="18" Height="34" />
+        <Label Content="customer email:" HorizontalAlignment="Left" Margin="195,143,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.056,1.502" FontSize="18" Foreground="White" Background="#FF0160C6"/>
+        <Label Content="{Binding MyOrder.CustomerEmail,Mode=TwoWay}" Margin="303,100,317,0" VerticalAlignment="Top" Width="180"  FontSize="18" Height="34" />
+        <Label Content="customer adress:" HorizontalAlignment="Left" Margin="195,160,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.056,1.502" FontSize="18" Foreground="White" Background="#FF0160C6"/>
+        <Label Content="{Binding MyOrder.CustomerAddress,Mode=TwoWay}" Margin="363,100,257,0" VerticalAlignment="Top" Width="180"  FontSize="18" Height="34" RenderTransformOrigin="-0.034,0.516" />
+        <Label Content="status:" HorizontalAlignment="Left" Margin="195,150,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCFBFB" Background="#FF0160C6"/>
+        <Label Content="{Binding MyOrder.Status ,Mode=TwoWay}" Margin="363,150,257,0" VerticalAlignment="Top" Width="180"  FontSize="18" Height="34" />
+        <Label Content="order date:" HorizontalAlignment="Left" Margin="195,200,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFFFEFE" Background="#FF0160C6"/>
+        <Label Content="{Binding MyOrder.OrderDate,Mode=TwoWay}" Margin="303,0,316,0" VerticalAlignment="Center"  FontSize="18" Height="34" />
+        <Label Content="ship date:" HorizontalAlignment="Left" Margin="195,200,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFFFEFE" Background="#FF0160C6"/>
+        <Label Content="{Binding MyOrder.ShipDate,Mode=TwoWay}" Margin="303,0,316,0" VerticalAlignment="Center"  FontSize="18" Height="34" />
+        <Label Content="delivery date:" HorizontalAlignment="Left" Margin="195,200,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFFFEFE" Background="#FF0160C6"/>
+        <Label Content="{Binding MyOrder.DeliveryDate,Mode=TwoWay}" Margin="303,0,316,0" VerticalAlignment="Center"  FontSize="18" Height="34" />
+        <Label Content="items:" HorizontalAlignment="Left" Margin="195,250,0,0" VerticalAlignment="Top" Foreground="#FFFFFEFE" FontSize="18" Background="#FF0160C6"/>
+        <Label Content="{Binding MyOrder.Items, Mode=TwoWay}" Margin="303,250,317,0" VerticalAlignment="Top" FontSize="18" Height="34" />
     </Grid>
 </Window>

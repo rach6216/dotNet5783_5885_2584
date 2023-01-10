@@ -171,4 +171,15 @@ internal class Cart : ICart
         catch { isValid = false; }
         return isValid;
     }
+    ///// <param name="id">product id</param>
+    ///// <returns>amount of certain product in the cart</returns>
+    //public int GetProductAmount(BO.Cart cart, int id)
+    //{
+    //    foreach(var i in cart.Items)
+    //    {
+    //        if(i.ID==id)
+    //            return i.Amount;
+    //    }
+    //    return 0;
+    //}
 }

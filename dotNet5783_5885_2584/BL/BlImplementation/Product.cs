@@ -90,6 +90,39 @@ internal class Product : IProduct
             throw new BO.ExceptionEntityNotFound("product didn't find by ID", exp);
         }
     }
+    ///// <summary>
+    ///// get productItem by ID
+    ///// </summary>
+    ///// <param name="id">product id</param>
+    ///// <returns>BO.Product obj</returns>
+    ///// <exception cref="BO.ExceptionInvalidInput">if the input is negative</exception>
+    ///// <exception cref="BO.ExceptionEntityNotFound"></exception>
+    //public BO.ProductItem ReadPI(Func<DO.Product?, bool>? f)
+    //{
+    //    if (_dal == null)
+    //        throw new BO.ExceptionNullDal();
+    //    try
+    //    {
+    //        if (f == null)
+    //            throw new DO.ExceptionEntityNotFound("product-item didn't find by ID");
+
+    //        DO.Product p = _dal.Product.Read(f);
+    //        BO.ProductItem boP = new()
+    //        {
+    //            Category = (BO.Category?)p.Category,
+    //            ID = p.ID,
+    //            InStock = (p.InStock==0 ? false : true),
+    //            Name = p.Name,
+    //            Price = p.Price
+    //        };
+    //        return boP;
+
+    //    }
+    //    catch (DO.ExceptionEntityNotFound exp)
+    //    {
+    //        throw new BO.ExceptionEntityNotFound("product didn't find by ID", exp);
+    //    }
+    //}
 
     /// <summary>
     /// get product item by id
@@ -139,6 +172,28 @@ internal class Product : IProduct
         return (from p in doProducts
                    where p!=null
                    select new BO.ProductForList() { Category = (BO.Category?)p?.Category, Price = p?.Price ?? 0, ID = p?.ID ?? 0, Name = p?.Name }).ToList();
+    }
+
+    /// <summary>
+    /// create list of productItem to show
+    /// </summary>
+    /// <returns>productItem for list IEnumerable</returns>
+    public IEnumerable<BO.ProductItem> ReadAllPI(Func<DO.Product?, bool>? f = null)
+    {
+        if (_dal == null)
+            throw new BO.ExceptionNullDal();
+        IEnumerable<DO.Product?> doProducts;
+        if (f == null)
+        {
+            doProducts = _dal.Product.ReadAll();
+        }
+        else
+        {
+            doProducts = _dal.Product.ReadAll(f);
+        }
+        return (from p in doProducts
+                where p != null
+                select new BO.ProductItem() { Category = (BO.Category?)p?.Category, Price = p?.Price ?? 0, ID = p?.ID ?? 0, Name = p?.Name });
     }
     #endregion
 

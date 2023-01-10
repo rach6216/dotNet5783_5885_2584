@@ -12,7 +12,11 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
     }
-    private void productListButton_Click(object sender, RoutedEventArgs e) => new adminWindow().Show();
+    private void productListButton_Click(object sender, RoutedEventArgs e) => new AdminWindow().Show();
 
     private BlApi.IBl? bl = BlApi.Factory.Get();
+
+    private void newOrderButton_Click(object sender, RoutedEventArgs e) => new NewOrderWindow().Show();
+
+    private void orderTrackingButton_Click(object sender, RoutedEventArgs e) => new OrderTrackingWindow().Show();
 }

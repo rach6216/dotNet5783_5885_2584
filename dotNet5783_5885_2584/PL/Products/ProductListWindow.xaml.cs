@@ -31,6 +31,7 @@ public partial class BoProductListWindow : Window, INotifyPropertyChanged
             
         }
     }
+   
     public object Category { get; set; }
    
     private ObservableCollection<BO.ProductForList> _productList = new() { };

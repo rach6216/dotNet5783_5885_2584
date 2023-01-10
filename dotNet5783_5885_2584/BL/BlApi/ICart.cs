@@ -31,4 +31,6 @@ public interface ICart
     /// <param name="customerEmail">email of the customer</param>
     /// <param name="customerAdress">adress of the customer</param>
     public BO.Order ConfirmOrder(BO.Cart cart, string customerName, string customerEmail, string customerAdress);
+    /// <param name="id">product id</param>
+    /// <returns>amount of certain product in the cart</returns>
 }

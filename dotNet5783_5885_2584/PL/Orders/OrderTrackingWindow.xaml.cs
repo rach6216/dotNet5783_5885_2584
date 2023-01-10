@@ -1,5 +1,4 @@
-﻿using PL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,16 +15,12 @@ using System.Windows.Shapes;
 namespace PL;
 
 /// <summary>
-/// Interaction logic for adminWindow.xaml
+/// Interaction logic for OrderTrackingWindow.xaml
 /// </summary>
-public partial class AdminWindow : Window
+public partial class OrderTrackingWindow : Window
 {
-    public AdminWindow()
+    public OrderTrackingWindow()
     {
         InitializeComponent();
     }
-
-    private void productButton_Click(object sender, RoutedEventArgs e) => new BoProductListWindow().Show();
-
-    private void orderButton_Click(object sender, RoutedEventArgs e) => new OrderListWindow().Show();
 }

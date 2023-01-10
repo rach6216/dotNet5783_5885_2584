@@ -1,6 +1,7 @@
 ﻿using BO;
 using PL;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -21,19 +22,24 @@ namespace PL;
 /// <summary>
 /// Interaction logic for ordersListWindow.xaml
 /// </summary>
-public partial class ordersListWindow : Window
+public partial class OrderListWindow : Window, INotifyPropertyChanged
 {
     private BlApi.IBl? bl = BlApi.Factory.Get();
     private ObservableCollection<BO.OrderForList> _orderList = new() { };
     public ObservableCollection<BO.OrderForList> OrderList
     {
         get { return _orderList; }
-        set { _orderList = value; }
+        set { 
+            _orderList = value;
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs("OrderList"));
+            }
+        }
     }
-    public ordersListWindow()
+    public OrderListWindow()
     {
-        //convert???????????
-        //OrderList = (ObservableCollection<BO.OrderForList>) bl.Order.ReadAll();
+        OrderList =new ObservableCollection<BO.OrderForList>(bl.Order.ReadAll().Cast<BO.OrderForList>());
         InitializeComponent();
     }
 
@@ -41,8 +47,8 @@ public partial class ordersListWindow : Window
     {
         if (bl == null)
             throw new BO.ExceptionNullBl();
-        new OrderWindow((sender as ListView)!.SelectedItem as BO.OrderForList).ShowDialog();
-        OrderList = new(bl.Order.ReadAll() as ObservableCollection<BO.OrderForList>);
+        new OrderWindow((sender as ListView)?.SelectedItem as BO.OrderForList).ShowDialog();
+        OrderList = new ObservableCollection<BO.OrderForList>(bl.Order.ReadAll().Cast<BO.OrderForList>());
     }
-
+    public event PropertyChangedEventHandler? PropertyChanged;
 }

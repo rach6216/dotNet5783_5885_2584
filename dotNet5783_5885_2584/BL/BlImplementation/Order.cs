@@ -104,7 +104,7 @@ internal class Order : IOrder
                 ProductID = item?.ProductID ?? 0,
                 Price = item?.Price ?? 0,
                 TotalPrice = item?.Amount ?? 0 * item?.Price ?? 0,
-                ProductName = _dal.Product.Read(x => x?.ID == item?.ID).Name
+                ProductName = _dal.Product.Read(x => x?.ID == item?.ProductID).Name
             }).ToList<BO.OrderItem?>();
             double total = (from oi in doOrderItems
                             select new { totalSum = oi?.Amount * oi?.Price })
