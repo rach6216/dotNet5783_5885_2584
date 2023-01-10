@@ -49,21 +49,21 @@ internal class Order : IOrder
         {
             DO.Order doOrder = _dal.Order.Read(x => x?.ID == id);
             BO.OrderStatus oStatus = 0;
-            List<(DateTime? d, string s)> tracking = new();
+            List< Tuple<DateTime? , string >> tracking = new();
             if (doOrder.OrderDate != null)
             {
                 oStatus = BO.OrderStatus.OrderIsConfirmed;
-                tracking.Add((doOrder.OrderDate, "order created"));
+                tracking.Add((doOrder.OrderDate, "order created").ToTuple());
             }
             else if (doOrder.ShipDate != null)
             {
                 oStatus = BO.OrderStatus.OrderIsShiped;
-                tracking.Add((doOrder.ShipDate, "order shiped"));
+                tracking.Add((doOrder.ShipDate, "order shiped").ToTuple());
             }
             else
             {
                 oStatus = BO.OrderStatus.OrderIsDelivered;
-                tracking.Add((doOrder.DeliveryDate, "order delivered"));
+                tracking.Add((doOrder.DeliveryDate, "order delivered").ToTuple());
             }
 
             return new BO.OrderTracking() { ID = doOrder.ID, Status = oStatus, Tracking = tracking };
