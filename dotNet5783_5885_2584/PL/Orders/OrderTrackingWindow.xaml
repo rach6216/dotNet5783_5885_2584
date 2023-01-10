@@ -3,10 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="OrderTrackingWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="16*"/>
+            <RowDefinition Height="15*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Enter your order id: " HorizontalAlignment="Left" Margin="77,50,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCFBFB" Background="#FF0160C6"/>
+        <TextBox HorizontalAlignment="Left" Text="{Binding ID,Mode=TwoWay}"  Margin="253,50,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="87" FontSize="18" Height="34"/>
+        <Button x:Name="confirmId" Content=" confirm " Margin="347,50,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Height="34"/>
+        <TextBlock Content="{Binding MyOrderT.Status}" Grid.RowSpan="2">
+            <Label Content="Status:" HorizontalAlignment="Left" Margin="75,100,0,0" VerticalAlignment="Top" FontSize="24" Foreground="#FFFCFBFB" Background="#FF0160C6" Height="44"/>
+            <Label Content="{Binding MyOrderT.Status}" HorizontalAlignment="Left" Margin="75,100,0,0" VerticalAlignment="Top" FontSize="24" Foreground="#FF0160C6" Background="#FFFCFBFB" Height="30"/>
+        </TextBlock>
     </Grid>
 </Window>
