@@ -23,15 +23,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Resource Include="Orders\orderDelivered.png" />
+	  <Resource Include="Images\orderDelivered.png" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Resource Include="Orders\orderConfirmed.png" />
+	  <Resource Include="Images\orderConfirmed.png" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Resource Include="Orders\orderShipped.png" />
+	  <Resource Include="Images\orderShipped.png" />
 	</ItemGroup>
 
 	<ItemGroup>

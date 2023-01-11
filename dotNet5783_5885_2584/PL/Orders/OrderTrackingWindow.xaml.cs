@@ -77,7 +77,7 @@ public partial class OrderTrackingWindow : Window,INotifyPropertyChanged
             }
             else
             {
-                //message
+                MessageBox.Show("Order not exist");
             }
         }
         catch
@@ -89,6 +89,9 @@ public partial class OrderTrackingWindow : Window,INotifyPropertyChanged
 
     private void OrderDetails_Click(object sender, RoutedEventArgs e)
     {
-        new OrderWindow((int)OrderID).ShowDialog();
+        if (OrderTracking != null)
+            new OrderWindow((int)OrderID).ShowDialog();
+        else
+            MessageBox.Show("order not exist");
     }
 }

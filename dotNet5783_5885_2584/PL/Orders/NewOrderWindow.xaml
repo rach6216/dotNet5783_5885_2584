@@ -13,19 +13,19 @@
             <ColumnDefinition Width="13*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="500*"/>
+            <RowDefinition Height="51*"/>
+            <RowDefinition Height="383*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="3" Margin="0,0,0,388" Grid.RowSpan="2">
+        <Grid Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="3" Margin="0,0,0,1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
             <ComboBox ItemsSource="{Binding Categories ,Mode=TwoWay}" SelectedItem="{Binding Category, Mode=TwoWay}" HorizontalAlignment= "Stretch" VerticalAlignment="Stretch" Grid.Column="1" SelectionChanged="CategorySelector_SelectionChanged" FontSize="18"/>
-            <Label Content="Category:" HorizontalAlignment="Left" Margin="30,3,0,0" VerticalAlignment="Top" Grid.Column="0" FontSize="18"/>
+            <Label Content="Category:" HorizontalAlignment="Right" Margin="0,0,0,19" FontSize="18" Height="34"/>
         </Grid>
-        <ListView ItemsSource="{Binding ProductItemList, Mode=TwoWay}" MouseDoubleClick="ListView_MouseDoubleClick"  Grid.ColumnSpan="3" Margin="0,46,0,0" Grid.RowSpan="2" Foreground="#FF0160C6" FontFamily="Yu Gothic UI Light" FontSize="18" BorderThickness="1,1,1,1" BorderBrush="#FF4681EB">
+        <ListView ItemsSource="{Binding ProductItemList, Mode=TwoWay}" MouseDoubleClick="ListView_MouseDoubleClick"  Grid.ColumnSpan="3" Margin="0,19,0,-5" Grid.RowSpan="2" Foreground="#FF0160C6" FontFamily="Yu Gothic UI Light" FontSize="18" BorderThickness="1,1,1,1" BorderBrush="#FF4681EB" Grid.Row="1">
             <ListView.View >
                 <GridView >
                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ID}" />
@@ -37,5 +37,6 @@
             </ListView.View>
         </ListView>
         <Button Content="cart" Grid.Row="1" HorizontalAlignment="Left" Margin="606,311,0,38" Padding="5" FontSize="18" Foreground="White" Background="#FF0160C6" Width="158" Grid.ColumnSpan="2" Click="cartButton_Click"/>
+        <Button Content="group by category" HorizontalAlignment="Left" Margin="124,11,0,0" VerticalAlignment="Top" Click="GroupByCategory_Click"/>
     </Grid>
 </Window>

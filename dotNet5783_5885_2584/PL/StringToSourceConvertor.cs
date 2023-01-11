@@ -15,13 +15,13 @@ public class StringToSourceConvertor : IValueConverter
         string status = (string)value;
         if (status== "order created")
         {
-            return "Orders/orderConfirmed.png";
+            return "Images/orderConfirmed.png";
         }
         if(status== "order shiped")
         {
-            return "Orders/orderShipped.png";
+            return "Images/orderShipped.png";
         }
-        return "Orders/orderDelivered.png";
+        return "Images/orderDelivered.png";
     }
 
     public object ConvertBack(
