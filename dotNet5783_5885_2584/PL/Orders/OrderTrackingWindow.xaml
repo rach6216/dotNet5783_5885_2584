@@ -23,7 +23,8 @@
                 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    
+                    <ColumnDefinition Width="*" />
+
 
                 </Grid.ColumnDefinitions>
 
@@ -34,6 +35,9 @@
                 </Ellipse>
                 <TextBlock Text="{Binding  Path=Item1}" Grid.Row="1" HorizontalAlignment="Center" Grid.Column="0"/>
                 <TextBlock Text="{Binding  Path=Item2}" Grid.Row="2" HorizontalAlignment="Center" Grid.Column="0"/>
+                <Rectangle Fill="blue" Stroke="Blue" StrokeThickness="2" StrokeDashArray="" Width="80"  Height="2"                      SnapsToDevicePixels="True" Grid.Column="1" Grid.Row="1" >
+                    
+                </Rectangle>
             </Grid>
         </DataTemplate>
     </Window.Resources>
