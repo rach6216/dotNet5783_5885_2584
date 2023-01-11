@@ -83,4 +83,15 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
         new ProductItemWindow((sender as ListView)!.SelectedItem as BO.ProductItem).ShowDialog();
         ProductItemList = new(bl.Product.ReadAllPI((Category as BO.Category?) != null ? x => (BO.Category?)x?.Category == (BO.Category)Category : null));
     }
+
+    private void GroupByCategory_Click(object sender, RoutedEventArgs e)
+    {
+ 
+        var GropupingProducts = (from p in ProductItemList
+                                group p by p.Category into catGroup
+                                from pr in catGroup
+                                select pr).ToList();
+
+        ProductItemList = new(GropupingProducts);  
+    }
 }

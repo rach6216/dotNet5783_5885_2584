@@ -63,32 +63,4 @@ public partial class OrderTrackingWindow : Window,INotifyPropertyChanged
         
         InitializeComponent();
     }
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    private void TrackOrder_Click(object sender, RoutedEventArgs e)
-    {
-        try
-        {if (OrderID != null)
-            {
-               // bl.Order.ShipOrder((int)OrderID);
-                OrderTracking = bl.Order.OrderTracking((int)OrderID);
-                Tracking = new(OrderTracking.Tracking);
-
-            }
-            else
-            {
-                //message
-            }
-        }
-        catch
-        {
-            OrderTracking=new();
-            Tracking = new();
-        }
-    }
-
-    private void OrderDetails_Click(object sender, RoutedEventArgs e)
-    {
-        new OrderWindow((int)OrderID).ShowDialog();
-    }
 }
