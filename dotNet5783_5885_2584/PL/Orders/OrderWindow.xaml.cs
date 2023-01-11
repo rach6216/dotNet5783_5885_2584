@@ -45,8 +45,7 @@ public partial class OrderWindow : Window, INotifyPropertyChanged
         try
         {
             MyOrder = bl.Order.Read(x => x?.ID == id);
-            if (MyOrder != null)
-                MessageBox.Show("gh");
+            InitializeComponent();
         }
         catch
         {

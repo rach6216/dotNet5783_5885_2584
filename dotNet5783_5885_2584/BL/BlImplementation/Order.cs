@@ -50,17 +50,17 @@ internal class Order : IOrder
             DO.Order doOrder = _dal.Order.Read(x => x?.ID == id);
             BO.OrderStatus oStatus = 0;
             List< Tuple<DateTime? , string >> tracking = new();
-            if (doOrder.OrderDate != null)
+            if (doOrder.OrderDate != null&&doOrder.OrderDate!=DateTime.MinValue)
             {
                 oStatus = BO.OrderStatus.OrderIsConfirmed;
                 tracking.Add((doOrder.OrderDate, "order created").ToTuple());
             }
-             if (doOrder.ShipDate != null)
+             if (doOrder.ShipDate != null && doOrder.ShipDate != DateTime.MinValue)
             {
                 oStatus = BO.OrderStatus.OrderIsShiped;
                 tracking.Add((doOrder.ShipDate, "order shiped").ToTuple());
             }
-            if(doOrder.DeliveryDate != null)
+            if(doOrder.DeliveryDate != null && doOrder.DeliveryDate != DateTime.MinValue)
             {
                 oStatus = BO.OrderStatus.OrderIsDelivered;
                 tracking.Add((doOrder.DeliveryDate, "order delivered").ToTuple());

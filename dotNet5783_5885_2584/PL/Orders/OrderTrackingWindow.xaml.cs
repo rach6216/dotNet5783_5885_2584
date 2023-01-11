@@ -35,6 +35,7 @@ public partial class OrderTrackingWindow : Window,INotifyPropertyChanged
     }
     private ObservableCollection<Tuple<DateTime?, string>> _tracking = new();
     public ObservableCollection<Tuple<DateTime?, string>> Tracking { 
+
         get { return _tracking; }
         set { _tracking = value; 
         if(PropertyChanged!=null)
@@ -81,7 +82,8 @@ public partial class OrderTrackingWindow : Window,INotifyPropertyChanged
         }
         catch
         {
-
+            OrderTracking=new();
+            Tracking = new();
         }
     }
 
