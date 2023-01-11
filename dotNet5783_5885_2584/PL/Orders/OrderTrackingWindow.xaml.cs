@@ -42,9 +42,6 @@ public partial class OrderTrackingWindow : Window,INotifyPropertyChanged
         }
     }
     
-
-
-
     private int? _orderID;
     public int?
         OrderID
@@ -72,6 +69,7 @@ public partial class OrderTrackingWindow : Window,INotifyPropertyChanged
         try
         {if (OrderID != null)
             {
+               // bl.Order.ShipOrder((int)OrderID);
                 OrderTracking = bl.Order.OrderTracking((int)OrderID);
                 Tracking = new(OrderTracking.Tracking);
 
@@ -85,5 +83,10 @@ public partial class OrderTrackingWindow : Window,INotifyPropertyChanged
         {
 
         }
+    }
+
+    private void OrderDetails_Click(object sender, RoutedEventArgs e)
+    {
+        new OrderWindow((int)OrderID).ShowDialog();
     }
 }

@@ -2,30 +2,38 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        
-        
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Pl="clr-namespace:PL"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource self }}"
         Title="OrderTrackingWindow" Height="450" Width="800">
     <Window.Resources>
+
+        <Pl:StringToSourceConvertor x:Key="StringToSourceConvertor" />
+
+       
         <DataTemplate x:Key="OrderTrackTemplate"
                   DataType="DateTime?, string">
-            <Grid Margin="100,20,100,20">
+            <Grid Margin="20,20,20,20" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+
                 </Grid.RowDefinitions>
                 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
+                    
 
                 </Grid.ColumnDefinitions>
-                 
-                <Ellipse Fill="Blue" Height="50" Width="50" Margin="0,0,10,0" Grid.Column="0" Grid.RowSpan="2"/>
-                <TextBlock Text="{Binding  Path=Item1}" Grid.Row="0" Grid.Column="1"/>
-                <TextBlock Text="{Binding  Path=Item2}" Grid.Row="1" Grid.Column="1"/>
+
+                <Ellipse Stroke="LightBlue"  StrokeDashArray="1" Height="50" Width="50" Margin="0,0,10,0" Grid.Column="0" Grid.Row="0">
+                    <Ellipse.Fill>
+                        <ImageBrush Stretch="Uniform" ImageSource="{Binding Path=Item2, Converter={StaticResource StringToSourceConvertor}}" ></ImageBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBlock Text="{Binding  Path=Item1}" Grid.Row="1" HorizontalAlignment="Center" Grid.Column="0"/>
+                <TextBlock Text="{Binding  Path=Item2}" Grid.Row="2" HorizontalAlignment="Center" Grid.Column="0"/>
             </Grid>
         </DataTemplate>
     </Window.Resources>
@@ -38,10 +46,16 @@
         <TextBox HorizontalAlignment="Left" Text="{Binding OrderID,Mode=TwoWay}"  Margin="253,50,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="87" FontSize="18" Height="34"/>
         <Button Content=" track order " Margin="347,50,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Height="34" Click="TrackOrder_Click"/>
 
-        <ListView ItemsSource="{Binding Tracking}" Margin="0,140,0,70" Grid.RowSpan="2"
+        <ItemsControl ItemsSource="{Binding Tracking}" HorizontalAlignment="Center" VerticalAlignment='Center' Grid.RowSpan="2"
                   ItemTemplate="{StaticResource OrderTrackTemplate}"
                   >
-        </ListView>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+        <Button Content="order details" HorizontalAlignment="Left" Margin="676,105,0,0" Grid.Row="1" VerticalAlignment="Top" Background="#FF0160C6" Click="OrderDetails_Click"/>
 
     </Grid>
 </Window>

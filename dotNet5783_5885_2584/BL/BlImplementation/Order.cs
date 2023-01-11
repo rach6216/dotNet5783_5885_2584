@@ -55,12 +55,12 @@ internal class Order : IOrder
                 oStatus = BO.OrderStatus.OrderIsConfirmed;
                 tracking.Add((doOrder.OrderDate, "order created").ToTuple());
             }
-            else if (doOrder.ShipDate != null)
+             if (doOrder.ShipDate != null)
             {
                 oStatus = BO.OrderStatus.OrderIsShiped;
                 tracking.Add((doOrder.ShipDate, "order shiped").ToTuple());
             }
-            else
+            if(doOrder.DeliveryDate != null)
             {
                 oStatus = BO.OrderStatus.OrderIsDelivered;
                 tracking.Add((doOrder.DeliveryDate, "order delivered").ToTuple());
