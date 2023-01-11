@@ -31,6 +31,17 @@
         <Label Content="delivery date:" HorizontalAlignment="Left" Margin="420,150,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFFFEFE" Background="#FF0160C6"/>
         <Label Content="{Binding MyOrder.DeliveryDate,Mode=TwoWay}" Margin="538,150,0,0" VerticalAlignment="Top"  FontSize="18" Height="34" HorizontalAlignment="Left" Width="180" />
         <Label Content="items:" HorizontalAlignment="Left" Margin="420,200,0,0" VerticalAlignment="Top" Foreground="#FFFFFEFE" FontSize="18" Background="#FF0160C6"/>
-        <Label Content="{Binding MyOrder.Items, Mode=TwoWay}" Margin="538,200,317,0" VerticalAlignment="Top" FontSize="18" Height="34" HorizontalAlignment="Left" Width="180" />
+        <ListView ItemsSource="{Binding MyOrder.Items, Mode=TwoWay}" Margin="420,250,66,34" Foreground="#FF0160C6" FontFamily="Yu Gothic UI Light" FontSize="18" BorderThickness="1,1,1,1" BorderBrush="#FF4681EB">
+            <ListView.View >
+                <GridView >
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ID}" />
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Category}" />
+                    <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price}" />
+                    <GridViewColumn Header="InStock" DisplayMemberBinding="{Binding InStock}" />
+                    <GridViewColumn Header="Amount" DisplayMemberBinding="{Binding Amount}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>

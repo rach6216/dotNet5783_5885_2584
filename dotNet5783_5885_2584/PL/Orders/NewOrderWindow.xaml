@@ -36,7 +36,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="cart" Grid.Row="1" HorizontalAlignment="Left" Margin="606,311,0,38" Padding="5" FontSize="18" Foreground="White" Background="#FF0160C6" Width="158" Grid.ColumnSpan="2" Click="cartButton_Click"/>
+        <Button Content="cart" Grid.Row="1" HorizontalAlignment="Left" Margin="606,311,0,38" Padding="5" FontSize="18" Foreground="White" Background="#FF0160C6" Width="158" Grid.ColumnSpan="2" Click="cartButton_Click" VerticalAlignment="Top"/>
         <Button Content="group by category" HorizontalAlignment="Left" Margin="124,11,0,0" VerticalAlignment="Top" Click="GroupByCategory_Click"/>
     </Grid>
 </Window>

@@ -7,8 +7,8 @@
         DataContext="{Binding RelativeSource={RelativeSource self }}"
         Title="OrderTrackingWindow" Height="450" Width="800">
     <Window.Resources>
-
-        <Pl:StringToSourceConvertor x:Key="StringToSourceConvertor" />
+        <Pl:NotBooleanToVisibilityConverter x:Key="notBooleanToVisibilityConverter" />
+         <Pl:StringToSourceConvertor x:Key="StringToSourceConvertor" />
 
 
         <DataTemplate x:Key="OrderTrackTemplate"
@@ -43,7 +43,17 @@
             <RowDefinition Height="15*"/>
         </Grid.RowDefinitions>
         <Label Content="Enter your order id: " HorizontalAlignment="Left" Margin="77,50,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCFBFB" Background="#FF0160C6"/>
-        <TextBox HorizontalAlignment="Left" Text="{Binding ID,Mode=TwoWay}"  Margin="253,50,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="87" FontSize="18" Height="34"/>
-        <Button x:Name="confirmId" Content=" confirm " Margin="347,50,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Height="34"/>
+        <TextBox HorizontalAlignment="Left" Text="{Binding OrderID,Mode=TwoWay}"  Margin="253,50,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="87" FontSize="18" Height="34"/>
+        <Button Content=" track order " Margin="347,50,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Height="34" Click="TrackOrder_Click"/>
+
+        <ItemsControl ItemsSource="{Binding Tracking}" HorizontalAlignment="Center" VerticalAlignment='Center' Grid.RowSpan="2" ItemTemplate="{StaticResource OrderTrackTemplate}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+        <Button Content="order details" Visibility="{Binding isOSProgress}" HorizontalAlignment="Left" Margin="676,105,0,0" Grid.Row="1" VerticalAlignment="Top" Background="#FF0160C6" Click="OrderDetails_Click" Foreground="White" FontSize="14"/>
     </Grid>
 </Window>
+

@@ -19,33 +19,37 @@ namespace PL;
 /// <summary>
 /// Interaction logic for OrderTrackingWindow.xaml
 /// </summary>
-public partial class OrderTrackingWindow : Window,INotifyPropertyChanged
+public partial class OrderTrackingWindow : Window, INotifyPropertyChanged
 {
     private BlApi.IBl? bl = BlApi.Factory.Get();
-    private BO.OrderTracking _orderTracking=new();
+    private BO.OrderTracking _orderTracking = new();
     public BO.OrderTracking OrderTracking
     {
         get { return _orderTracking; }
-        set { _orderTracking = value;
-        if(PropertyChanged != null)
+        set
+        {
+            _orderTracking = value;
+            if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(nameof(OrderTracking)));
             }
         }
     }
     private ObservableCollection<Tuple<DateTime?, string>> _tracking = new();
-    public ObservableCollection<Tuple<DateTime?, string>> Tracking { 
+    public ObservableCollection<Tuple<DateTime?, string>> Tracking
+    {
 
         get { return _tracking; }
-        set { _tracking = value; 
-        if(PropertyChanged!=null)
+        set
+        {
+            _tracking = value;
+            if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(nameof(Tracking)));
         }
     }
-    
+
     private int? _orderID;
-    public int?
-        OrderID
+    public int? OrderID
     {
         get { return _orderID; }
         set
@@ -58,9 +62,50 @@ public partial class OrderTrackingWindow : Window,INotifyPropertyChanged
         }
     }
 
+    private Visibility _isOSProgress=Visibility.Visible;
+    //private Visibility _isOSProgress = Visibility.Hidden;
+
+    public Visibility isOSProgress
+    {
+        get { return _isOSProgress; }
+        set { _isOSProgress = value; }
+    }
+
     public OrderTrackingWindow()
     {
-        
         InitializeComponent();
     }
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void TrackOrder_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            if (OrderID != null)
+            {
+                // bl.Order.ShipOrder((int)OrderID);
+                OrderTracking = bl.Order.OrderTracking((int)OrderID);
+                Tracking = new(OrderTracking.Tracking);
+                isOSProgress = Visibility.Visible;
+            }
+            else
+            {
+                MessageBox.Show("Order not exist");
+            }
+        }
+        catch
+        {
+            OrderTracking = new();
+            Tracking = new();
+        }
+    }
+
+    private void OrderDetails_Click(object sender, RoutedEventArgs e)
+    {
+        if (OrderTracking != null)
+            new OrderWindow((int)OrderID).ShowDialog();
+        else
+            MessageBox.Show("order not exist");
+    }
 }
+

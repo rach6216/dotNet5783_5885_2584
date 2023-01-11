@@ -48,8 +48,27 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
         }
     }
 
+    private Visibility _isEditMode = Visibility.Visible;
+    public Visibility IsEditMode
+    {
+        get { return _isEditMode; }
+        set
+        {
+            _isEditMode = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsEditMode)));
+        }
+    }
 
-
+    private Visibility _isDisplayMode = Visibility.Hidden;
+    public Visibility IsDisplayMode
+    {
+        get { return _isDisplayMode; }
+        set
+        {
+            _isDisplayMode = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsDisplayMode)));
+        }
+    }
     public BoProductWindow()
     {
         InitializeComponent();
@@ -59,8 +78,16 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
         }
     }
 
+    void ChangeDisplayMode()
+    {
+        Visibility temp = IsDisplayMode;
+        IsDisplayMode = IsEditMode;
+        IsEditMode = temp;
+    }
+
     public BoProductWindow(BO.ProductForList p)
     {
+        ChangeDisplayMode();
         IsUpdate = true;
         try
         {
@@ -117,9 +144,11 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
             }
         }
     }
-
+    private void Edit_Button_Click(object sender, RoutedEventArgs e)
+    {
+        ChangeDisplayMode();
+    }
     public event PropertyChangedEventHandler? PropertyChanged;
-
 }
 
 
