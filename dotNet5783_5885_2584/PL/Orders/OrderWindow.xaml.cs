@@ -18,24 +18,46 @@ namespace PL;
 /// <summary>
 /// Interaction logic for OrderWindow.xaml
 /// </summary>
-public partial class OrderWindow : Window
+public partial class OrderWindow : Window, INotifyPropertyChanged   
 {
     private BlApi.IBl? bl = BlApi.Factory.Get();
     private BO.Order _myOrder = new();
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
     public BO.Order MyOrder
     {
         get { return _myOrder; }
-        set {_myOrder = value;}
+        set {_myOrder = value;
+        if(PropertyChanged != null)
+            {
+                PropertyChanged(this,new PropertyChangedEventArgs(nameof(MyOrder)));
+            }
+        }
     }
     public OrderWindow()
     {
         InitializeComponent();
     }
+    public OrderWindow(int id)
+
+    {
+        try
+        {
+            MyOrder = bl.Order.Read(x => x?.ID == id);
+            InitializeComponent();
+        }
+        catch
+        {
+            MessageBox.Show("hhh");
+            //this.Close();
+        }
+    }
     public OrderWindow(BO.OrderForList? o)
     {
         try
         {
-            MyOrder = bl.Order.Read(x => x?.ID == o.ID);
+            MyOrder = bl.Order.Read(x => x?.ID == o?.ID);
         }
         catch
         {

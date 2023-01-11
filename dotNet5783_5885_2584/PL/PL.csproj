@@ -15,7 +15,23 @@
 
 	<ItemGroup>
 	  <None Remove="bCar.jpg" />
+	  <None Remove="orderConfirmed.png" />
+	  <None Remove="orderDelivered.jpg" />
+	  <None Remove="Orders\orderDelivered.png" />
+	  <None Remove="Orders\orderShipped.png" />
 	  <None Remove="Products\c.jpg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Orders\orderDelivered.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Orders\orderConfirmed.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Orders\orderShipped.png" />
 	</ItemGroup>
 
 	<ItemGroup>
