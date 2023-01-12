@@ -27,19 +27,19 @@
         <Label Content="order date:" HorizontalAlignment="Left" Margin="420,50,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFFFEFE" Background="#FF0160C6"/>
         <Label Content="{Binding MyOrder.OrderDate,Mode=TwoWay}" Margin="538,50,0,0" VerticalAlignment="Top"  FontSize="18" Height="34" HorizontalAlignment="Left" Width="180" />
         <Label Content="ship date:" HorizontalAlignment="Left" Margin="420,100,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFFFEFE" Background="#FF0160C6"/>
+        <Button Content=" ship " HorizontalAlignment="Left" Visibility="{Binding AdminDisplay, Mode=TwoWay}" IsEnabled="{Binding CanShip}" Margin="718,100,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFFFEFE" Background="#FF0160C6" Click="Ship_Button_Click" Height="34"/>
         <Label Content="{Binding MyOrder.ShipDate,Mode=TwoWay}" Margin="538,100,0,0" VerticalAlignment="Top"  FontSize="18" Height="34" HorizontalAlignment="Left" Width="180" />
         <Label Content="delivery date:" HorizontalAlignment="Left" Margin="420,150,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFFFEFE" Background="#FF0160C6"/>
+        <Button Content=" delivery " HorizontalAlignment="Left" Visibility="{Binding AdminDisplay, Mode=TwoWay}" IsEnabled="{Binding CanDelivery}" Margin="718,150,0,0"  VerticalAlignment="Top" FontSize="18" Foreground="#FFFFFEFE" Background="#FF0160C6" Click="Delivery_Button_Click" Height="34"/>
         <Label Content="{Binding MyOrder.DeliveryDate,Mode=TwoWay}" Margin="538,150,0,0" VerticalAlignment="Top"  FontSize="18" Height="34" HorizontalAlignment="Left" Width="180" />
         <Label Content="items:" HorizontalAlignment="Left" Margin="420,200,0,0" VerticalAlignment="Top" Foreground="#FFFFFEFE" FontSize="18" Background="#FF0160C6"/>
         <ListView ItemsSource="{Binding MyOrder.Items, Mode=TwoWay}" Margin="420,250,66,34" Foreground="#FF0160C6" FontFamily="Yu Gothic UI Light" FontSize="18" BorderThickness="1,1,1,1" BorderBrush="#FF4681EB">
             <ListView.View >
                 <GridView >
-                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ID}" />
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
-                    <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Category}" />
+                    <GridViewColumn Header="Product name" DisplayMemberBinding="{Binding ProductName}"/>
                     <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price}" />
-                    <GridViewColumn Header="InStock" DisplayMemberBinding="{Binding InStock}" />
                     <GridViewColumn Header="Amount" DisplayMemberBinding="{Binding Amount}" />
+                    <GridViewColumn Header="Total price" DisplayMemberBinding="{Binding TotalPrice}" />
                 </GridView>
             </ListView.View>
         </ListView>

@@ -35,12 +35,42 @@ public partial class OrderWindow : Window, INotifyPropertyChanged
             }
         }
     }
+
+    private Visibility _adminDisplay = Visibility.Hidden;
+    public  Visibility AdminDisplay
+    {
+        get { return _adminDisplay; }
+        set { _adminDisplay = value; }
+    }
+
+    public bool CanShip { get; set; }
+    public bool CanDelivery { get; set; }
+
+    void CheckStatus()
+    {
+        AdminDisplay=Visibility.Visible;
+
+        if (MyOrder.Status == BO.OrderStatus.OrderIsConfirmed)
+        {
+            CanShip = true;
+            CanDelivery = false;
+        }
+        else if (MyOrder.Status == BO.OrderStatus.OrderIsShiped)
+        {
+            CanShip = false;
+            CanDelivery = true;
+        }
+        else
+        {
+            CanShip = false;
+            CanDelivery = false;
+        }
+    }
     public OrderWindow()
     {
         InitializeComponent();
     }
     public OrderWindow(int id)
-
     {
         try
         {
@@ -55,6 +85,7 @@ public partial class OrderWindow : Window, INotifyPropertyChanged
     }
     public OrderWindow(BO.OrderForList? o)
     {
+        CheckStatus();
         try
         {
             MyOrder = bl.Order.Read(x => x?.ID == o?.ID);
@@ -65,5 +96,29 @@ public partial class OrderWindow : Window, INotifyPropertyChanged
             //this.Close();
         }
         InitializeComponent();
+    }
+
+    private void Ship_Button_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            bl.Order.ShipOrder(MyOrder.ID);
+        }
+        catch
+        {
+            MessageBox.Show("error");
+        }
+    }
+
+    private void Delivery_Button_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            bl.Order.DeliveryOrder(MyOrder.ID);
+        }
+        catch
+        {
+            MessageBox.Show("error");
+        }
     }
 }

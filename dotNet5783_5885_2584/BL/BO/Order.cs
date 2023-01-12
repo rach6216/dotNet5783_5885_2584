@@ -26,7 +26,8 @@ public class Order
     /// <summary>
     /// status of the order
     /// </summary>
-    public OrderStatus? Status { get; set; }
+    public OrderStatus? Status { get; set; } = BO.OrderStatus.OrderIsConfirmed;
+
     /// <summary>
     /// date of the order
     /// </summary>

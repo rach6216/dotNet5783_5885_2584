@@ -110,12 +110,12 @@ internal class Order : IOrder
                             select new { totalSum = oi?.Amount * oi?.Price })
                            .Sum(x => x.totalSum) ?? default;
 
-            if (doOrder.DeliveryDate != null)
-                oStatus = BO.OrderStatus.OrderIsDelivered;
-            else if (doOrder.ShipDate != null)
-                oStatus = BO.OrderStatus.OrderIsShiped;
-            else
+            
                 oStatus = BO.OrderStatus.OrderIsConfirmed;
+            if (doOrder.ShipDate != null&& doOrder.ShipDate!=DateTime.MinValue)
+                oStatus = BO.OrderStatus.OrderIsShiped;
+            if(doOrder.DeliveryDate!=null&&doOrder.DeliveryDate!=DateTime.MinValue)
+                oStatus = BO.OrderStatus.OrderIsDelivered;
             BO.Order order = new()
             {
                 CustomerAddress = doOrder.CustomerAddress,
@@ -263,9 +263,9 @@ internal class Order : IOrder
     BO.OrderStatus CalculateStatus(DO.Order? order)
     {
         BO.OrderStatus orderStatus = BO.OrderStatus.OrderIsConfirmed;
-        if (order?.DeliveryDate != null)
+        if (order?.DeliveryDate != null&&order?.DeliveryDate!=DateTime.MinValue)
             orderStatus = BO.OrderStatus.OrderIsDelivered;
-        else if (order?.ShipDate != null)
+        else if (order?.ShipDate != null&& order?.ShipDate != DateTime.MinValue)
             orderStatus = BO.OrderStatus.OrderIsShiped;
         return orderStatus;
     }

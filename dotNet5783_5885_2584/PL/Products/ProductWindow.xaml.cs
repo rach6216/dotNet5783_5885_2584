@@ -48,25 +48,25 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
         }
     }
 
-    private Visibility _isEditMode = Visibility.Visible;
-    public Visibility IsEditMode
+    private Visibility _editMode = Visibility.Visible;
+    public Visibility EditMode
     {
-        get { return _isEditMode; }
+        get { return _editMode; }
         set
         {
-            _isEditMode = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsEditMode)));
+            _editMode = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EditMode)));
         }
     }
 
-    private Visibility _isDisplayMode = Visibility.Hidden;
-    public Visibility IsDisplayMode
+    private Visibility _displayMode = Visibility.Hidden;
+    public Visibility DisplayMode
     {
-        get { return _isDisplayMode; }
+        get { return _displayMode; }
         set
         {
-            _isDisplayMode = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsDisplayMode)));
+            _displayMode = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayMode)));
         }
     }
     public BoProductWindow()
@@ -80,9 +80,17 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
 
     void ChangeDisplayMode()
     {
-        Visibility temp = IsDisplayMode;
-        IsDisplayMode = IsEditMode;
-        IsEditMode = temp;
+        Visibility temp = DisplayMode;
+        DisplayMode = EditMode;
+        EditMode = temp;
+    }
+
+    private String _warning = "OK";
+
+    public String Warning
+    {
+        get { return _warning; }
+        set { _warning = value; }
     }
 
     public BoProductWindow(BO.ProductForList p)
@@ -112,7 +120,7 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
             throw new BO.ExceptionNullBl();
         if (MyProduct.Name == "" || MyProduct.Price <0 || MyProduct.InStock < 0 || MyProduct.Category == null)
         {
-            MessageBox.Show("Invalid input");
+            Warning = "invalid input";
         }
         else
         {

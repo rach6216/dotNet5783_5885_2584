@@ -47,8 +47,7 @@ public partial class BoProductListWindow : Window, INotifyPropertyChanged
             }
         }
     }
-
-
+    
     public BoProductListWindow()
     {
         ProductList = new(bl.Product.ReadAll());
