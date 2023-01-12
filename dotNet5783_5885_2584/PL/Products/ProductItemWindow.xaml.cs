@@ -24,7 +24,7 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
     private BlApi.IBl? bl = BlApi.Factory.Get();
 
     private BO.ProductItem _myProductItem = new();
-    private Action<int> _addProduct;
+    private Action<int,int> _addProduct;
     public BO.ProductItem MyProductItem
     {
         get { return _myProductItem; }
@@ -41,11 +41,15 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
         get { return _numValue; }
         set
         {
-            _numValue = value;
-            if (PropertyChanged != null)
+            if (value >= 0)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(nameof(NumValue)));
+                _numValue = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs(nameof(NumValue)));
+                }
             }
+            
         }
     }
     private void cmdUp_Click(object sender, RoutedEventArgs e)
@@ -55,10 +59,9 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
 
     private void cmdDown_Click(object sender, RoutedEventArgs e)
     {
-        if(NumValue>0)
         NumValue=NumValue-1;
     }
-    public ProductItemWindow(BO.ProductItem p,Action<int>? f)
+    public ProductItemWindow(BO.ProductItem p,Action<int,int>? f)
     {
         try
         {
@@ -74,11 +77,11 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    private void addToCart_Click(object sender, RoutedEventArgs e)
+    private void AddToCart_Click(object sender, RoutedEventArgs e)
     {
         try
         {if(_addProduct != null)
-            _addProduct(MyProductItem.ID);
+            _addProduct(MyProductItem.ID,NumValue);
         }
         catch(ExceptionProductOutOfStock exp)
         {

@@ -81,7 +81,7 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
     {
         if (bl == null)
             throw new BO.ExceptionNullBl();
-        new ProductItemWindow((sender as ListView)!.SelectedItem as BO.ProductItem,x=>bl.Cart.AddProduct(MyCart,x)).ShowDialog();
+        new ProductItemWindow((sender as ListView)!.SelectedItem as BO.ProductItem,(x,y)=>bl.Cart.UpdatePAmount(MyCart,x,y)).ShowDialog();
         ProductItemList = new(bl.Product.ReadAllPI((Category as BO.Category?) != null ? x => (BO.Category?)x?.Category == (BO.Category)Category : null));
     }
 
