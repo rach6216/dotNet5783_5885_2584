@@ -90,7 +90,11 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
     public String Warning
     {
         get { return _warning; }
-        set { _warning = value; }
+        set
+        {
+            _warning = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Warning)));
+        }
     }
 
     public BoProductWindow(BO.ProductForList p)

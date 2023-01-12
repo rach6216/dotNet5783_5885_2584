@@ -103,7 +103,7 @@ internal class Order : IOrder
                 Amount = item?.Amount ?? 0,
                 ProductID = item?.ProductID ?? 0,
                 Price = item?.Price ?? 0,
-                TotalPrice = item?.Amount ?? 0 * item?.Price ?? 0,
+                TotalPrice = item?.Amount * item?.Price ?? 0,
                 ProductName = _dal.Product.Read(x => x?.ID == item?.ProductID).Name
             }).ToList<BO.OrderItem?>();
             double total = (from oi in doOrderItems
@@ -257,7 +257,7 @@ internal class Order : IOrder
             throw new BO.ExceptionNullDal();
         IEnumerable<DO.OrderItem?> l = _dal.OrderItem.ReadAll(x => x?.OrderID == oID && x != null);
         int amount=l.Count();
-        double totalPrice = l.Sum(x => x?.Amount*x?.Price) ?? default;
+        double totalPrice = l.Sum(x => x?.Amount * x?.Price) ?? default;
         return (amount, totalPrice);
     }
     BO.OrderStatus CalculateStatus(DO.Order? order)

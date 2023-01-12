@@ -109,7 +109,6 @@ public partial class OrderWindow : Window, INotifyPropertyChanged
     }
     public OrderWindow(BO.OrderForList? o)
     {
-        CheckStatus();
         try
         {
             MyOrder = bl.Order.Read(x => x?.ID == o?.ID);
@@ -120,6 +119,7 @@ public partial class OrderWindow : Window, INotifyPropertyChanged
             //this.Close();
         }
         InitializeComponent();
+        CheckStatus();
     }
 
     private void Ship_Button_Click(object sender, RoutedEventArgs e)
