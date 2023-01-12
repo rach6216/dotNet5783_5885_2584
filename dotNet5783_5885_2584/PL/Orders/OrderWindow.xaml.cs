@@ -41,6 +41,10 @@ public partial class OrderWindow : Window, INotifyPropertyChanged
     {
         get { return _adminDisplay; }
         set { _adminDisplay = value;
+            if (PropertyChanged!=null)
+            {
+                PropertyChanged (this,new PropertyChangedEventArgs(nameof(AdminDisplay)));
+            }
         }
     }
 

@@ -54,4 +54,9 @@ public partial class CartWindow : Window, INotifyPropertyChanged
     {
         this.Close();
     }
+
+    private void ConfirmOrder_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }
