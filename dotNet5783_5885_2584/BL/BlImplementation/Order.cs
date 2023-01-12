@@ -19,7 +19,7 @@ internal class Order : IOrder
         {
             DO.Order doOrder = _dal.Order.Read(x => x?.ID == id);
             BO.Order boOrder = Read(x => x?.ID == id);
-            if (doOrder.DeliveryDate == null)
+            if (doOrder.DeliveryDate == null||doOrder.DeliveryDate==DateTime.MinValue)
             {
                 doOrder.DeliveryDate = DateTime.Now;
                 boOrder.DeliveryDate = DateTime.Now;

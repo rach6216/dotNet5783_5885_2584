@@ -37,6 +37,7 @@
     </Window.Resources>
     <StackPanel>
         <TextBlock Text="Your cart is empty, do you want to buy something?"  Visibility="{Binding IsFullCart, Converter={StaticResource notBooleanToVisibilityConverter}, Mode=OneWay}"/>
+        <Button Content="AddCar" Visibility="{Binding IsFullCart, Converter={StaticResource notBooleanToVisibilityConverter}, Mode=OneWay}" Width="146" />
         <ItemsControl  ItemsSource="{Binding Items}" HorizontalAlignment="Center" VerticalAlignment='Center' ItemTemplate="{StaticResource orderItemTemplate}">
 
         </ItemsControl>
