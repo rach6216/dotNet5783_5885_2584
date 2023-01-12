@@ -38,6 +38,6 @@
         <Label  Content="{Binding MyProduct.Category,Mode=TwoWay}" Visibility="{Binding DisplayMode}" HorizontalAlignment="Left" Height="35" Margin="295,150,0,0" VerticalAlignment="Top" Width="180" FontSize="18"/>
         <Label  Content="{Binding Warning, Mode=TwoWay}" HorizontalAlignment="Left" Height="35" Margin="295,290,0,0" VerticalAlignment="Top" Width="180" Foreground="#FFF62424"/>
         <Button Content="{Binding IsUpdate, Converter={StaticResource NotBooleanToUpdateOrAddConverter}}" Visibility="{Binding EditMode}" HorizontalAlignment="Right" Margin="0,349,84,29" Padding="5" Click="AddProductButton_Click" Background="#FF0160C6" FontSize="18" Foreground="White"/>
-        <Button Content=" Edit " Visibility="{Binding DisplayMode}" HorizontalAlignment="Right" Margin="0,349,84,29" Padding="5" Click="Edit_Button_Click" Background="#FF0160C6" FontSize="18" Foreground="White"/>
+        <Button Content="Edit" Visibility="{Binding DisplayMode}" HorizontalAlignment="Right" Margin="0,349,84,29" Padding="5" Click="Edit_Button_Click" Background="#FF0160C6" FontSize="18" Foreground="White" Width="63"/>
     </Grid>
 </Window>

@@ -158,7 +158,3 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
     }
     public event PropertyChangedEventHandler? PropertyChanged;
 }
-
-
-
-

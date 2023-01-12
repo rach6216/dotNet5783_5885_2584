@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="adminWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="orderButton" Content=" orders list " Margin="511,115,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Click="orderButton_Click" />
-        <Button x:Name="productButton" Content=" products list " Margin="97,115,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Click="productButton_Click" />
+        <Button x:Name="orderButton" Content="orders list" Margin="496,115,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Click="orderButton_Click" Width="173" />
+        <Button x:Name="productButton" Content="products list" Margin="75,115,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Click="productButton_Click" Width="219" />
 
     </Grid>
 </Window>

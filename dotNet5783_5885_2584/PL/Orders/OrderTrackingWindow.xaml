@@ -44,7 +44,7 @@
         </Grid.RowDefinitions>
         <Label Content="Enter your order id: " HorizontalAlignment="Left" Margin="77,50,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCFBFB" Background="#FF0160C6"/>
         <TextBox HorizontalAlignment="Left" Text="{Binding OrderID,Mode=TwoWay}"  Margin="253,50,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="87" FontSize="18" Height="34"/>
-        <Button Content=" track order " Margin="347,50,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Height="34" Click="TrackOrder_Click"/>
+        <Button Content="track order" Margin="347,50,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Height="34" Click="TrackOrder_Click" Width="100"/>
 
         <ItemsControl ItemsSource="{Binding Tracking}" HorizontalAlignment="Center" VerticalAlignment='Center' Grid.RowSpan="2" ItemTemplate="{StaticResource OrderTrackTemplate}">
             <ItemsControl.ItemsPanel>
@@ -53,7 +53,7 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-        <Button Content="order details" Visibility="{Binding isOSProgress}" HorizontalAlignment="Left" Margin="676,105,0,0" Grid.Row="1" VerticalAlignment="Top" Background="#FF0160C6" Click="OrderDetails_Click" Foreground="White" FontSize="14"/>
+        <Button Content="order details" Visibility="{Binding isOSProgress}" HorizontalAlignment="Left" Margin="676,105,0,0" Grid.Row="1" VerticalAlignment="Top" Background="#FF0160C6" Click="OrderDetails_Click" Foreground="White" FontSize="14" Height="34" Width="96"/>
     </Grid>
 </Window>
 

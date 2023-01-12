@@ -43,8 +43,32 @@ public partial class OrderWindow : Window, INotifyPropertyChanged
         set { _adminDisplay = value; }
     }
 
-    public bool CanShip { get; set; }
-    public bool CanDelivery { get; set; }
+    private bool _canShip;
+    public bool CanShip
+    {
+        get { return _canShip; }
+        set
+        {
+            _canShip = value;
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(nameof(CanShip)));
+            }
+        }
+    }
+    private bool _canDelivery;
+    public bool CanDelivery
+    {
+        get { return _canDelivery; }
+        set
+        {
+            _canDelivery = value;
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(nameof(CanDelivery)));
+            }
+        }
+    }
 
     void CheckStatus()
     {
