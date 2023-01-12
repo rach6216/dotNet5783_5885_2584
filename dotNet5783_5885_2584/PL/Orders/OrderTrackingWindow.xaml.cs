@@ -48,8 +48,8 @@ public partial class OrderTrackingWindow : Window, INotifyPropertyChanged
         }
     }
 
-    private int? _orderID;
-    public int? OrderID
+    private int _orderID;
+    public int OrderID
     {
         get { return _orderID; }
         set
@@ -62,14 +62,7 @@ public partial class OrderTrackingWindow : Window, INotifyPropertyChanged
         }
     }
 
-    private Visibility _isOSProgress=Visibility.Visible;
-    //private Visibility _isOSProgress = Visibility.Hidden;
 
-    public Visibility isOSProgress
-    {
-        get { return _isOSProgress; }
-        set { _isOSProgress = value; }
-    }
 
     public OrderTrackingWindow()
     {
@@ -81,22 +74,23 @@ public partial class OrderTrackingWindow : Window, INotifyPropertyChanged
     {
         try
         {
-            if (OrderID != null)
+            if (OrderID != 0)
             {
-                // bl.Order.ShipOrder((int)OrderID);
                 OrderTracking = bl.Order.OrderTracking((int)OrderID);
                 Tracking = new(OrderTracking.Tracking);
-                isOSProgress = Visibility.Visible;
             }
             else
             {
                 MessageBox.Show("Order not exist");
+                Tracking = new();
+                OrderID = default;
             }
         }
         catch
         {
             OrderTracking = new();
             Tracking = new();
+            OrderID = default;
         }
     }
 

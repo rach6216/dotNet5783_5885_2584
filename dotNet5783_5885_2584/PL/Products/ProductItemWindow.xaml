@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource self }}"
         Title="ProductItemWindow" Height="450" Width="800">
@@ -23,6 +24,11 @@
         <Label Content="{Binding MyProductItem.Price,Mode=TwoWay}" Margin="303,0,316,0" VerticalAlignment="Center"  FontSize="18" Height="34" />
         <Label Content="in stock:" HorizontalAlignment="Left" Margin="195,250,0,0" VerticalAlignment="Top" Foreground="#FFFFFEFE" FontSize="18" Background="#FF0160C6"/>
         <Label Content="{Binding MyProductItem.InStock, Mode=TwoWay}" Margin="303,250,317,0" VerticalAlignment="Top" FontSize="18" Height="34" />
-        <Button x:Name="addToCart" Content=" add to cart " Margin="511,115,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Click="addToCart_Click"/>
+        <Grid  Height="23" Margin="152,63,11,0" VerticalAlignment="Top">
+            <TextBox Text="{Binding NumValue}"   Margin="334,2,247,0" />
+            <Button x:Name="jjj"  x:FieldModifier="private" FontSize="10" Padding="0,-4,0,0" Content="▲" Width="10" Click="cmdUp_Click" Margin="333,4,294,11" />
+            <Button x:Name="kkk" x:FieldModifier="private" FontSize="10" Padding="0,-4,0,0" Content="▼" Width="10" Click="cmdDown_Click" Margin="333,19,294,-4" />
+        </Grid>
+        <Button  Content=" add to cart " Margin="511,115,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="22" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Click="addToCart_Click"/>
     </Grid>
 </Window>

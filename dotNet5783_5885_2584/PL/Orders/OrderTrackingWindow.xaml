@@ -53,7 +53,7 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-        <Button Content="order details" Visibility="{Binding isOSProgress}" HorizontalAlignment="Left" Margin="676,105,0,0" Grid.Row="1" VerticalAlignment="Top" Background="#FF0160C6" Click="OrderDetails_Click" Foreground="White" FontSize="14"/>
+        <Button Content="order details" Visibility="{Binding OrderID, Converter={StaticResource notBooleanToVisibilityConverter}}" HorizontalAlignment="Left" Margin="676,105,0,0" Grid.Row="1" VerticalAlignment="Top" Background="#FF0160C6" Click="OrderDetails_Click" Foreground="White" FontSize="14"/>
     </Grid>
 </Window>
 

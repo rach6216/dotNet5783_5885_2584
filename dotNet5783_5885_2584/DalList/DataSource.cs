@@ -60,7 +60,7 @@ internal static class DataSource
         for (int i = 0; i < 9; i++)
         {
             (string, string, string) user = userDetails[rnd.Next(userDetails.Length)];
-            DateTime od = new DateTime(rnd.Next(1, DateTime.Now.Year), rnd.Next(1, DateTime.Now.Month), rnd.Next(1, DateTime.Now.Day));
+            DateTime od = new DateTime(rnd.Next(2000, DateTime.Now.Year), rnd.Next(1, DateTime.Now.Month), rnd.Next(1, DateTime.Now.Day));
             DateTime sd = od + new TimeSpan(rnd.Next(10), rnd.Next(24), rnd.Next(60), rnd.Next(60));
             DateTime dd = sd + new TimeSpan(rnd.Next(10), rnd.Next(24), rnd.Next(60));
             addOrder(new Order(user.Item1, user.Item2, user.Item3, od, sd, dd, Config.OrderID));
@@ -68,14 +68,14 @@ internal static class DataSource
         for (int i = 0; i < 7; i++)
         {
             (string, string, string) user = userDetails[rnd.Next(userDetails.Length)];
-            DateTime od = new DateTime(rnd.Next(1, DateTime.Now.Year), rnd.Next(1, DateTime.Now.Month), rnd.Next(1, DateTime.Now.Day));
+            DateTime od = new DateTime(rnd.Next(2000, DateTime.Now.Year), rnd.Next(1, DateTime.Now.Month), rnd.Next(1, DateTime.Now.Day));
             DateTime sd = od + new TimeSpan(rnd.Next(10), rnd.Next(24), rnd.Next(60), rnd.Next(60));
             addOrder(new Order(user.Item1, user.Item2, user.Item3, od, sd, Config.OrderID));
         }
         for (int i = 0; i < 4; i++)
         {
             (string, string, string) user = userDetails[rnd.Next(userDetails.Length)];
-            DateTime od = new DateTime(rnd.Next(1, DateTime.Now.Year), rnd.Next(1, DateTime.Now.Month), rnd.Next(1, DateTime.Now.Day));
+            DateTime od = new DateTime(rnd.Next(2000, DateTime.Now.Year), rnd.Next(1, DateTime.Now.Month), rnd.Next(1, DateTime.Now.Day));
             addOrder(new Order(user.Item1, user.Item2, user.Item3, od, Config.OrderID));
         }
         int k = 0;

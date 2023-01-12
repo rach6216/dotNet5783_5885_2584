@@ -31,7 +31,7 @@ public partial class BoProductListWindow : Window, INotifyPropertyChanged
             
         }
     }
-   
+
     public object Category { get; set; }
    
     private ObservableCollection<BO.ProductForList> _productList = new() { };
@@ -52,6 +52,8 @@ public partial class BoProductListWindow : Window, INotifyPropertyChanged
     {
         ProductList = new(bl.Product.ReadAll());
         Categories = new();
+        //var cat=(from c in Enum.GetValues(typeof(BO.Category))
+        //         )
         InitializeComponent();
         foreach (var category in Enum.GetValues(typeof(BO.Category)))
         {

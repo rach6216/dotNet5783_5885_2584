@@ -78,12 +78,7 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
         }
     }
 
-    void ChangeDisplayMode()
-    {
-        Visibility temp = DisplayMode;
-        DisplayMode = EditMode;
-        EditMode = temp;
-    }
+
 
     private String _warning = "OK";
 
@@ -95,7 +90,8 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
 
     public BoProductWindow(BO.ProductForList p)
     {
-        ChangeDisplayMode();
+        (EditMode, DisplayMode) = (DisplayMode, EditMode);
+
         IsUpdate = true;
         try
         {
@@ -154,7 +150,8 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
     }
     private void Edit_Button_Click(object sender, RoutedEventArgs e)
     {
-        ChangeDisplayMode();
+        (EditMode, DisplayMode) = (DisplayMode, EditMode);
+
     }
     public event PropertyChangedEventHandler? PropertyChanged;
 }
