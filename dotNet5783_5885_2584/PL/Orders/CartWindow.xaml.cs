@@ -1,5 +1,8 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,10 +20,36 @@ namespace PL;
 /// <summary>
 /// Interaction logic for CartWindow.xaml
 /// </summary>
-public partial class CartWindow : Window
+public partial class CartWindow : Window, INotifyPropertyChanged
 {
-    public CartWindow()
+    private BlApi.IBl? bl = BlApi.Factory.Get();
+    
+    private ObservableCollection<BO.OrderItem?> _items = new ObservableCollection<BO.OrderItem?>();
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    public ObservableCollection<BO.OrderItem?> Items
     {
+        get { return _items; }
+        set
+        {
+            _items = value;
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(nameof(Items)));
+            }
+        }
+    }
+
+    public CartWindow(BO.Cart cart)
+    {
+        cart.Items ??= new();
+        _items = new(cart.Items);
         InitializeComponent();
+    }
+
+    private void ConfirmOrder_Click(object sender, RoutedEventArgs e)
+    {
+        
     }
 }

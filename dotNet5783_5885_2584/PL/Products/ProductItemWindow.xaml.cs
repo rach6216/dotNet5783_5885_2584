@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -22,8 +23,9 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
 {
     private BlApi.IBl? bl = BlApi.Factory.Get();
 
-    private BO.Product _myProductItem = new();
-    public BO.Product MyProductItem
+    private BO.ProductItem _myProductItem = new();
+    private Action<int> _addProduct;
+    public BO.ProductItem MyProductItem
     {
         get { return _myProductItem; }
         set
@@ -32,11 +34,12 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MyProductItem)));
         }
     }
-    public ProductItemWindow(BO.ProductItem p)
+    public ProductItemWindow(BO.ProductItem p,Action<int>? f)
     {
         try
         {
-            MyProductItem = bl.Product.Read(x => x?.ID == p.ID);
+            MyProductItem = p;
+            _addProduct = f;
         }
         catch
         {
@@ -46,4 +49,16 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void addToCart_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {if(_addProduct != null)
+            _addProduct(MyProductItem.ID);
+        }
+        catch(ExceptionProductOutOfStock exp)
+        {
+            MessageBox.Show("product is out of stock");
+        }
+    }
 }
