@@ -40,7 +40,8 @@ public partial class OrderWindow : Window, INotifyPropertyChanged
     public  Visibility AdminDisplay
     {
         get { return _adminDisplay; }
-        set { _adminDisplay = value; }
+        set { _adminDisplay = value;
+        }
     }
 
     private bool _canShip;

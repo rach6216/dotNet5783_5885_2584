@@ -27,7 +27,7 @@ public partial class CartWindow : Window, INotifyPropertyChanged
     private ObservableCollection<BO.OrderItem?> _items = new ObservableCollection<BO.OrderItem?>();
 
     public event PropertyChangedEventHandler? PropertyChanged;
-
+    public bool IsFullCart { get; private set; }=true;
     public ObservableCollection<BO.OrderItem?> Items
     {
         get { return _items; }
@@ -45,11 +45,18 @@ public partial class CartWindow : Window, INotifyPropertyChanged
     {
         cart.Items ??= new();
         _items = new(cart.Items);
+        if(Items.Count>0)
+            IsFullCart = false;
         InitializeComponent();
     }
 
     private void ConfirmOrder_Click(object sender, RoutedEventArgs e)
     {
         
+    }
+
+    private void AddProduct_Click(object sender, RoutedEventArgs e)
+    {
+        this.Close();
     }
 }

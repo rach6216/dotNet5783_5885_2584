@@ -77,7 +77,7 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
 
     private void cartButton_Click(object sender, RoutedEventArgs e) => new CartWindow(MyCart).Show();
 
-    private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    private void ListView_Click(object sender, RoutedEventArgs e)
     {
         if (bl == null)
             throw new BO.ExceptionNullBl();

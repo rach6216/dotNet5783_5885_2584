@@ -22,8 +22,9 @@ internal class Cart : ICart
         try
         {
             int productAmount = (from orderItem in cart.Items
-                                 where orderItem.ID == id
-                                 select orderItem).FirstOrDefault()?.Amount ?? default;
+                                 where orderItem.ProductID == id
+                                 select orderItem.Amount).FirstOrDefault();
+           
             cart = UpdatePAmount(cart, id, productAmount + 1);
         }
         catch (DO.ExceptionEntityNotFound exp)
@@ -52,18 +53,23 @@ internal class Cart : ICart
         {
             throw new BO.ExceptionInvalidInput("can't get product,it doesn't exist", exp);
         }
-        if (product.InStock < amount)
-            throw new BO.ExceptionProductOutOfStock("can't update product amount, there is only " + product.InStock + " items in stock");
-        BO.OrderItem item = cart.Items.FirstOrDefault(x => x?.ID == id) ?? new BO.OrderItem() { Price = product.Price, ProductID = id, ProductName = product.Name };
+        BO.OrderItem item = cart.Items.FirstOrDefault(x => x?.ProductID == id) ?? new BO.OrderItem() { Price = product.Price, ProductID = id, ProductName = product.Name };
+
+        if (product.InStock+item.Amount < amount)
+            throw new BO.ExceptionProductOutOfStock("can't add product, there is only " + product.InStock + " items in stock");
         product.InStock += item.Amount;
         cart.TotalPrice -= item.TotalPrice;
-        cart.Items.RemoveAll(x => x?.ID == id);
+        cart.Items.RemoveAll(x => x?.ProductID == id);
         item.Amount = amount;
-        product.InStock -= amount;
         item.TotalPrice = item.Amount * item.Price;
         if (amount > 0)
+        {
+            product.InStock -= amount;
             cart.Items.Add(item);
-        cart.TotalPrice += item.TotalPrice;
+            cart.TotalPrice += item.TotalPrice;
+        }
+        _dal.Product.Update(product);
+
         return cart;
     }
     /// <summary>

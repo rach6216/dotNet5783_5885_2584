@@ -34,6 +34,25 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MyProductItem)));
         }
     }
+    private int _numValue = 0;
+
+    public int NumValue
+    {
+        get { return _numValue; }
+        set
+        {
+            _numValue = value;
+        }
+    }
+    private void cmdUp_Click(object sender, RoutedEventArgs e)
+    {
+        NumValue++;
+    }
+
+    private void cmdDown_Click(object sender, RoutedEventArgs e)
+    {
+        NumValue--;
+    }
     public ProductItemWindow(BO.ProductItem p,Action<int>? f)
     {
         try
