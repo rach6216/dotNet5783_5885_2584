@@ -41,11 +41,15 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
         get { return _numValue; }
         set
         {
-            _numValue = value;
-            if (PropertyChanged != null)
+            if (value >= 0)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(nameof(NumValue)));
+                _numValue = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs(nameof(NumValue)));
+                }
             }
+            
         }
     }
     private void cmdUp_Click(object sender, RoutedEventArgs e)
@@ -55,7 +59,6 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
 
     private void cmdDown_Click(object sender, RoutedEventArgs e)
     {
-        if(NumValue>0)
         NumValue=NumValue-1;
     }
     public ProductItemWindow(BO.ProductItem p,Action<int,int>? f)
@@ -74,7 +77,7 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    private void addToCart_Click(object sender, RoutedEventArgs e)
+    private void AddToCart_Click(object sender, RoutedEventArgs e)
     {
         try
         {
@@ -84,7 +87,7 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
                 this.Close();
             }
         }
-        catch(ExceptionProductOutOfStock exp)
+        catch(ExceptionProductOutOfStock )
         {
             MessageBox.Show("product is out of stock");
         }

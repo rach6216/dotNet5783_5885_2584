@@ -26,9 +26,9 @@
         <Label Content="{Binding MyProductItem.InStock, Mode=TwoWay}" Margin="303,250,317,0" VerticalAlignment="Top" FontSize="18" Height="34" />
 
         <TextBox Text="{Binding NumValue}"    Width="56" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="654,42,0,0" />
-        <Button FontSize="10" Padding="0,-4,0,0" Content="▲" Width="12" Click="cmdUp_Click"  Height="12" Margin="637,32,151,390" VerticalAlignment="Top" HorizontalAlignment="Left" />
-        <Button    FontSize="10" Padding="0,-4,0,0" Content="▼" Click="cmdDown_Click" Height="12" VerticalAlignment="Top" RenderTransformOrigin="0.5,1.502" Width="12" Margin="642,73,146,0" />
+        <Button FontSize="10" Padding="0,-4,0,0" Content="▲" Width="12" Click="cmdUp_Click"  Height="12" Margin="641,42,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+        <Button    FontSize="10" Padding="0,-4,0,0" Content="▼" Click="cmdDown_Click" Height="12" VerticalAlignment="Top" RenderTransformOrigin="0.5,1.502" Margin="641,56,0,0" Width="12" HorizontalAlignment="Left" />
 
-        <Button  Content=" add to cart " Margin="436,18,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="22" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Click="addToCart_Click" RenderTransformOrigin="-0.292,-1.231"/>
+        <Button  Content=" add to cart " Margin="436,18,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="22" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Click="AddToCart_Click" RenderTransformOrigin="-0.292,-1.231"/>
     </Grid>
 </Window>
