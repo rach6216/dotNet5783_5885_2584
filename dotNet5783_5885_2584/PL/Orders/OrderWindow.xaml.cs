@@ -134,8 +134,7 @@ public partial class OrderWindow : Window, INotifyPropertyChanged
             bl.Order.ShipOrder(MyOrder.ID);
             CanShip = false;
             CanDelivery = true;
-            if (MyOrder.Status==BO.OrderStatus.OrderIsDelivered)
-                CanDelivery=false;
+            MyOrder = bl.Order.Read(x => x?.ID == MyOrder?.ID);
         }
         catch
         {
@@ -149,6 +148,7 @@ public partial class OrderWindow : Window, INotifyPropertyChanged
         {
             bl.Order.DeliveryOrder(MyOrder.ID);
             CanDelivery = false;
+            MyOrder = bl.Order.Read(x => x?.ID == MyOrder?.ID);
         }
         catch
         {
