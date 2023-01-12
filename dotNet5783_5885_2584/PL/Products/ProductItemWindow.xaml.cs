@@ -83,7 +83,7 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
         {if(_addProduct != null)
             _addProduct(MyProductItem.ID,NumValue);
         }
-        catch(ExceptionProductOutOfStock exp)
+        catch(ExceptionProductOutOfStock )
         {
             MessageBox.Show("product is out of stock");
         }

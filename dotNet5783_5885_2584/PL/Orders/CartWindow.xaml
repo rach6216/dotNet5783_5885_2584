@@ -15,10 +15,22 @@
             <Grid>
 
                 <Grid.ColumnDefinitions>
-                
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Rectangle Stroke="LightBlue"  StrokeDashArray="1" Height="50" Width="50" Margin="0,0,10,0" />
-                <TextBlock Text="{Binding Path=ProductName}"></TextBlock>
+                <Rectangle Grid.Column="0" Stroke="LightBlue"  StrokeDashArray="1" Height="50" Width="50" Margin="0,0,10,0" />
+                <TextBlock Grid.Column="1" Text="{Binding Path=ProductName}"></TextBlock>
+                <Grid Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button VerticalAlignment="Center" Height="15" Width="15" Content="+" Grid.Column="0"></Button>
+                    <TextBlock Padding="10" FontSize="18" VerticalAlignment="Center"  Text="{Binding Path=Amount}" Grid.Column="1"></TextBlock>
+                    <Button VerticalAlignment="Center" Height="15" Width="15" Content="-" Grid.Column="2"></Button>
+                </Grid>
             </Grid>
 
         </DataTemplate>
