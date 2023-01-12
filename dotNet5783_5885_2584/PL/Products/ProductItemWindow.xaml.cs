@@ -42,16 +42,21 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
         set
         {
             _numValue = value;
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(nameof(NumValue)));
+            }
         }
     }
     private void cmdUp_Click(object sender, RoutedEventArgs e)
     {
-        NumValue++;
+        NumValue=NumValue+1;
     }
 
     private void cmdDown_Click(object sender, RoutedEventArgs e)
     {
-        NumValue--;
+        if(NumValue>0)
+        NumValue=NumValue-1;
     }
     public ProductItemWindow(BO.ProductItem p,Action<int>? f)
     {

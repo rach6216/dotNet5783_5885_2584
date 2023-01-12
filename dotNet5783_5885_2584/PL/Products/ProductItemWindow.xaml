@@ -24,11 +24,11 @@
         <Label Content="{Binding MyProductItem.Price,Mode=TwoWay}" Margin="303,0,316,0" VerticalAlignment="Center"  FontSize="18" Height="34" />
         <Label Content="in stock:" HorizontalAlignment="Left" Margin="195,250,0,0" VerticalAlignment="Top" Foreground="#FFFFFEFE" FontSize="18" Background="#FF0160C6"/>
         <Label Content="{Binding MyProductItem.InStock, Mode=TwoWay}" Margin="303,250,317,0" VerticalAlignment="Top" FontSize="18" Height="34" />
-        <Grid  Height="23" Margin="152,63,11,0" VerticalAlignment="Top">
-            <TextBox Text="{Binding NumValue}"   Margin="334,2,247,0" />
-            <Button x:Name="jjj"  x:FieldModifier="private" FontSize="10" Padding="0,-4,0,0" Content="▲" Width="10" Click="cmdUp_Click" Margin="333,4,294,11" />
-            <Button x:Name="kkk" x:FieldModifier="private" FontSize="10" Padding="0,-4,0,0" Content="▼" Width="10" Click="cmdDown_Click" Margin="333,19,294,-4" />
-        </Grid>
-        <Button  Content=" add to cart " Margin="511,115,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="22" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Click="addToCart_Click"/>
+
+        <TextBox Text="{Binding NumValue}"    Width="56" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="654,42,0,0" />
+        <Button FontSize="10" Padding="0,-4,0,0" Content="▲" Width="12" Click="cmdUp_Click"  Height="12" Margin="637,32,151,390" VerticalAlignment="Top" HorizontalAlignment="Left" />
+        <Button    FontSize="10" Padding="0,-4,0,0" Content="▼" Click="cmdDown_Click" Height="12" VerticalAlignment="Top" RenderTransformOrigin="0.5,1.502" Width="12" Margin="642,73,146,0" />
+
+        <Button  Content=" add to cart " Margin="436,18,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="22" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Click="addToCart_Click" RenderTransformOrigin="-0.292,-1.231"/>
     </Grid>
 </Window>
