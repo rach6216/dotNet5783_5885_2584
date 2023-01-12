@@ -50,11 +50,6 @@ public partial class CartWindow : Window, INotifyPropertyChanged
         InitializeComponent();
     }
 
-    private void ConfirmOrder_Click(object sender, RoutedEventArgs e)
-    {
-        
-    }
-
     private void AddProduct_Click(object sender, RoutedEventArgs e)
     {
         this.Close();

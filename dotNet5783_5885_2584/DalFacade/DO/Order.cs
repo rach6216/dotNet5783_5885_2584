@@ -97,9 +97,6 @@ public struct Order
         OrderDate = orderD;
         ShipDate = shipD;
         DeliveryDate = deliveryD;
-        OrderDate = orderD;
-        ShipDate = shipD;
-        DeliveryDate = deliveryD;
     }
     #endregion
     #region To string

@@ -99,7 +99,7 @@ internal class Cart : ICart
             CustomerAddress = customerAdress,
             CustomerEmail = customerEmail,
             CustomerName = customerName,
-            Status = 0,
+            Status = BO.OrderStatus.OrderIsConfirmed,
             TotalPrice = 0,
             Items = new List<BO.OrderItem?>() { },
             OrderDate = DateTime.Now

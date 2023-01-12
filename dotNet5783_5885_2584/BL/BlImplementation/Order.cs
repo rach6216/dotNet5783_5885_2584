@@ -24,6 +24,7 @@ internal class Order : IOrder
                 doOrder.DeliveryDate = DateTime.Now;
                 boOrder.DeliveryDate = DateTime.Now;
                 _dal.Order.Update(doOrder);
+                boOrder.Status = BO.OrderStatus.OrderIsDelivered;
             }
             return boOrder;
 
@@ -96,7 +97,11 @@ internal class Order : IOrder
             IEnumerable<DO.OrderItem?> doOrderItems = _dal.OrderItem.ReadAll(x => x?.OrderID == doOrder.ID);
             List<BO.OrderItem?> Items = new();
 
-            OrderStatus oStatus;
+            OrderStatus oStatus = BO.OrderStatus.OrderIsConfirmed;
+            if (doOrder.ShipDate != null && doOrder.ShipDate != DateTime.MinValue)
+                oStatus = BO.OrderStatus.OrderIsShiped;
+            if (doOrder.DeliveryDate != null && doOrder.DeliveryDate != DateTime.MinValue)
+                oStatus = BO.OrderStatus.OrderIsDelivered;
             Items = doOrderItems.Where(x => x != null).Select(item => new BO.OrderItem()
             {
                 ID = item?.ID ?? 0,
@@ -111,11 +116,7 @@ internal class Order : IOrder
                            .Sum(x => x.totalSum) ?? default;
 
             
-                oStatus = BO.OrderStatus.OrderIsConfirmed;
-            if (doOrder.ShipDate != null&& doOrder.ShipDate!=DateTime.MinValue)
-                oStatus = BO.OrderStatus.OrderIsShiped;
-            if(doOrder.DeliveryDate!=null&&doOrder.DeliveryDate!=DateTime.MinValue)
-                oStatus = BO.OrderStatus.OrderIsDelivered;
+      
             BO.Order order = new()
             {
                 CustomerAddress = doOrder.CustomerAddress,
@@ -176,11 +177,12 @@ internal class Order : IOrder
         {
             DO.Order doOrder = _dal.Order.Read(x => x?.ID == id);
             BO.Order boOrder = Read(x => doOrder.ID == x?.ID);
-            if (doOrder.ShipDate == null)
+            if (doOrder.ShipDate == null || doOrder.ShipDate ==DateTime.MinValue)
             {
                 doOrder.ShipDate = DateTime.Now;
                 boOrder.ShipDate = DateTime.Now;
                 _dal.Order.Update(doOrder);
+                boOrder.Status = BO.OrderStatus.OrderIsShiped;
             }
             return boOrder;
         }
@@ -223,6 +225,7 @@ internal class Order : IOrder
                         doOrderItem.Amount = orderItem.Amount;
                         order.Items[oiIndex]!.TotalPrice = orderItem.TotalPrice;
                         _dal.OrderItem.Update(doOrderItem);
+                        order.Status = BO.OrderStatus.OrderIsConfirmed;
                     }
                     return order;
                 }
@@ -232,6 +235,7 @@ internal class Order : IOrder
                     order.Items.Add(orderItem);
                     _dal.OrderItem.Create(new DO.OrderItem(orderItem.ProductID, orderID, orderItem.Price, orderItem.Amount));
                     order.TotalPrice += orderItem.TotalPrice;
+                    order.Status = BO.OrderStatus.OrderIsConfirmed;
                     return order;
                 }
             }
@@ -263,11 +267,10 @@ internal class Order : IOrder
     BO.OrderStatus CalculateStatus(DO.Order? order)
     {
         BO.OrderStatus orderStatus = BO.OrderStatus.OrderIsConfirmed;
-        if (order?.DeliveryDate != null&&order?.DeliveryDate!=DateTime.MinValue)
+        if (order?.DeliveryDate != null && order?.DeliveryDate!=DateTime.MinValue)
             orderStatus = BO.OrderStatus.OrderIsDelivered;
         else if (order?.ShipDate != null&& order?.ShipDate != DateTime.MinValue)
             orderStatus = BO.OrderStatus.OrderIsShiped;
         return orderStatus;
     }
-
 }

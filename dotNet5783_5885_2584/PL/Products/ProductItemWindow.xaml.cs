@@ -24,7 +24,7 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
     private BlApi.IBl? bl = BlApi.Factory.Get();
 
     private BO.ProductItem _myProductItem = new();
-    private Action<int> _addProduct;
+    private Action<int,int> _addProduct;
     public BO.ProductItem MyProductItem
     {
         get { return _myProductItem; }
@@ -58,7 +58,7 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
         if(NumValue>0)
         NumValue=NumValue-1;
     }
-    public ProductItemWindow(BO.ProductItem p,Action<int>? f)
+    public ProductItemWindow(BO.ProductItem p,Action<int,int>? f)
     {
         try
         {
@@ -77,8 +77,12 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
     private void addToCart_Click(object sender, RoutedEventArgs e)
     {
         try
-        {if(_addProduct != null)
-            _addProduct(MyProductItem.ID);
+        {
+            if (_addProduct != null)
+            {
+                _addProduct(MyProductItem.ID, NumValue);
+                this.Close();
+            }
         }
         catch(ExceptionProductOutOfStock exp)
         {

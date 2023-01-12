@@ -15,6 +15,7 @@
             <Grid>
                 <Rectangle Stroke="LightBlue"  StrokeDashArray="1" Height="50" Width="50" Margin="0,0,10,0" />
                 <TextBlock Text="{Binding Path=ProductName}"></TextBlock>
+                <Label Content="{Binding Path=Amount}"></Label>
             </Grid>
 
         </DataTemplate>
@@ -25,7 +26,7 @@
         <ItemsControl  ItemsSource="{Binding Items}" HorizontalAlignment="Center" VerticalAlignment='Center' ItemTemplate="{StaticResource orderItemTemplate}">
 
         </ItemsControl>
-        <Button Content="confirm order" Click="ConfirmOrder_Click" HorizontalAlignment="Left" Width="210" Margin="590,386,0,0"/>
+        <Button Content="confirm order" HorizontalAlignment="Left" Width="210" Margin="590,386,0,0"/>
         <Button  Content="addProduct" Margin="118,10,602,388" Click="AddProduct_Click" />
 
     </Grid>

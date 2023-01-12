@@ -119,8 +119,8 @@ public partial class OrderWindow : Window, INotifyPropertyChanged
             MessageBox.Show("hhh");
             //this.Close();
         }
-        InitializeComponent();
         CheckStatus();
+        InitializeComponent();
     }
 
     private void Ship_Button_Click(object sender, RoutedEventArgs e)
@@ -128,6 +128,10 @@ public partial class OrderWindow : Window, INotifyPropertyChanged
         try
         {
             bl.Order.ShipOrder(MyOrder.ID);
+            CanShip = false;
+            CanDelivery = true;
+            if (MyOrder.Status==BO.OrderStatus.OrderIsDelivered)
+                CanDelivery=false;
         }
         catch
         {
@@ -140,6 +144,7 @@ public partial class OrderWindow : Window, INotifyPropertyChanged
         try
         {
             bl.Order.DeliveryOrder(MyOrder.ID);
+            CanDelivery = false;
         }
         catch
         {
