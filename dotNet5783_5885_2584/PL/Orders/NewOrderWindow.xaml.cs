@@ -23,6 +23,7 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
 {
     private BlApi.IBl? bl = BlApi.Factory.Get();
     private ObservableCollection<object> _categories = new() { };
+    internal BO.Cart MyCart=new();
     public ObservableCollection<object> Categories
     {
         get { return _categories; }
@@ -74,13 +75,13 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    private void cartButton_Click(object sender, RoutedEventArgs e) => new CartWindow().Show();
+    private void cartButton_Click(object sender, RoutedEventArgs e) => new CartWindow(MyCart).Show();
 
     private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         if (bl == null)
             throw new BO.ExceptionNullBl();
-        new ProductItemWindow((sender as ListView)!.SelectedItem as BO.ProductItem).ShowDialog();
+        new ProductItemWindow((sender as ListView)!.SelectedItem as BO.ProductItem,x=>bl.Cart.AddProduct(MyCart,x)).ShowDialog();
         ProductItemList = new(bl.Product.ReadAllPI((Category as BO.Category?) != null ? x => (BO.Category?)x?.Category == (BO.Category)Category : null));
     }
 
