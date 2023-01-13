@@ -8,7 +8,7 @@
         Title="OrderTrackingWindow" Height="450" Width="800">
     <Window.Resources>
         <Pl:NotBooleanToVisibilityConverter x:Key="notBooleanToVisibilityConverter" />
-         <Pl:StringToSourceConvertor x:Key="StringToSourceConvertor" />
+        <Pl:StringToSourceConvertor x:Key="StringToSourceConvertor" />
 
 
         <DataTemplate x:Key="OrderTrackTemplate"
@@ -54,6 +54,7 @@
             </ItemsControl.ItemsPanel>
         </ItemsControl>
         <Button Content="order details" Visibility="{Binding OrderID, Converter={StaticResource notBooleanToVisibilityConverter}}" HorizontalAlignment="Left" Margin="676,105,0,0" Grid.Row="1" VerticalAlignment="Top" Background="#FF0160C6" Click="OrderDetails_Click" Foreground="White" FontSize="14"/>
+        <Label  Content="{Binding Warning, Mode=TwoWay}" HorizontalAlignment="Left" Height="35" Margin="490,50,0,0" VerticalAlignment="Top" Width="180" Foreground="#FFF62424"/>
     </Grid>
 </Window>
 

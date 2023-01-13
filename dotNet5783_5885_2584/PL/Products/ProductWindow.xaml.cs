@@ -77,12 +77,9 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
             Categories.Add(cat);
         }
     }
+    private string _warning = "";
 
-
-
-    private String _warning = "OK";
-
-    public String Warning
+    public string Warning
     {
         get { return _warning; }
         set
@@ -118,10 +115,14 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
     {
         if (bl == null)
             throw new BO.ExceptionNullBl();
-        if (MyProduct.Name == "" || MyProduct.Price <0 || MyProduct.InStock < 0 || MyProduct.Category == null)
-        {
-            Warning = "invalid input";
-        }
+        if (MyProduct.Name == "" || MyProduct.Name == null)
+            Warning = "name is not valid";
+        else if(MyProduct.Price <0)
+            Warning = "price must be positive number";
+        else if (MyProduct.InStock < 0)
+            Warning = "instock must be positive number";
+        else if (MyProduct.Category == null)
+            Warning = "category not selected ";
         else
         {
             try
@@ -136,15 +137,15 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
             }
             catch (BO.ExceptionInvalidInput exp)
             {
-                MessageBox.Show("Invalid input" + exp.Message);
+                MessageBox.Show("Invalid input");
             }
             catch (BO.ExceptionEntityNotFound exp)
             {
-                MessageBox.Show("can't find the product" + exp.Message);
+                MessageBox.Show("product not found" );
             }
             catch (BO.ExceptionCannotCreateItem exp)
             {
-                MessageBox.Show("can't create the product" + exp.Message);
+                MessageBox.Show("can't create the product");
             }
             catch
             {

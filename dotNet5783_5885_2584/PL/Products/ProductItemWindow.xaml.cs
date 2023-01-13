@@ -77,6 +77,18 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    private string _warning = "";
+
+    public string Warning
+    {
+        get { return _warning; }
+        set
+        {
+            _warning = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Warning)));
+        }
+    }
+
     private void AddToCart_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -89,7 +101,7 @@ public partial class ProductItemWindow : Window, INotifyPropertyChanged
         }
         catch(ExceptionProductOutOfStock )
         {
-            MessageBox.Show("product is out of stock");
+            Warning = "product is out of stock";
         }
     }
 }

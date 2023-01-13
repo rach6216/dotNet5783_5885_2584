@@ -62,7 +62,17 @@ public partial class OrderTrackingWindow : Window, INotifyPropertyChanged
         }
     }
 
+    private string _warning = "";
 
+    public string Warning
+    {
+        get { return _warning; }
+        set
+        {
+            _warning = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Warning)));
+        }
+    }
 
     public OrderTrackingWindow()
     {
@@ -78,10 +88,11 @@ public partial class OrderTrackingWindow : Window, INotifyPropertyChanged
             {
                 OrderTracking = bl.Order.OrderTracking((int)OrderID);
                 Tracking = new(OrderTracking.Tracking);
+                Warning = "";
             }
             else
             {
-                MessageBox.Show("Order not exist");
+                Warning= "Order not exist";
                 Tracking = new();
                 OrderID = default;
             }
@@ -99,7 +110,7 @@ public partial class OrderTrackingWindow : Window, INotifyPropertyChanged
         if (OrderTracking != null)
             new OrderWindow((int)OrderID).ShowDialog();
         else
-            MessageBox.Show("order not exist");
+            Warning= "Order not exist";
     }
 }
 
