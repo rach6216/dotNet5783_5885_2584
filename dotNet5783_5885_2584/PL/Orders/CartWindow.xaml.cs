@@ -51,6 +51,7 @@ public partial class CartWindow : Window, INotifyPropertyChanged
         }
     }
     Action<int, int> updateAmount;
+    Action<BO.Cart> cleanCart;
     public ObservableCollection<BO.OrderItem?> Items
     {
         get { return _items; }
@@ -61,8 +62,9 @@ public partial class CartWindow : Window, INotifyPropertyChanged
         }
     }
 
-    public CartWindow(BO.Cart cart,Action<int,int> upAmount)
+    public CartWindow(BO.Cart cart,Action<int,int> upAmount,Action<BO.Cart> putCart)
     {
+        cleanCart = putCart;
         MyOrder = cart;
         TotalPrice = cart.TotalPrice;
        
@@ -96,6 +98,7 @@ public partial class CartWindow : Window, INotifyPropertyChanged
         {
             updateAmount((((e.OriginalSource as Button)?.DataContext) as BO.OrderItem)?.ProductID ?? default, (((e.OriginalSource as Button)?.DataContext) as BO.OrderItem)?.Amount+1 ?? default);
             Items = new(Items);
+            TotalPrice += ((((e.OriginalSource as Button)?.DataContext) as BO.OrderItem)?.Price ?? 0);
             Warning = "";
         }
         catch
@@ -112,6 +115,7 @@ public partial class CartWindow : Window, INotifyPropertyChanged
             int amount = ((((e.OriginalSource as Button)?.DataContext) as BO.OrderItem)?.Amount ?? default) - 1;
             int productID = (((e.OriginalSource as Button)?.DataContext) as BO.OrderItem)?.ProductID ?? default;
             updateAmount(productID, amount );
+            TotalPrice -= ((((e.OriginalSource as Button)?.DataContext) as BO.OrderItem)?.Price ?? 0);
             if (amount < 1)
             {
                 IsEmptyCart = true;
@@ -132,6 +136,12 @@ public partial class CartWindow : Window, INotifyPropertyChanged
     {
         MyOrder.Items = (from item in Items
                          select item).ToList();
-        bl.Cart.ConfirmOrder(MyOrder);
+        BO.Order o=bl.Cart.ConfirmOrder(MyOrder);
+        new OrderWindow(o.ID).Show();
+        //clean cart
+        cleanCart(MyOrder);
+        this.Close();
+
+
     }
 }

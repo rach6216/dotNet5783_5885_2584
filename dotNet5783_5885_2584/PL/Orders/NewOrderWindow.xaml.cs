@@ -30,10 +30,7 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
         set
         {
             _categories = value;
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs("Categories"));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Categories"));
         }
     }
     public object Category { get; set; }
@@ -78,7 +75,7 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
     private void cartButton_Click(object sender, RoutedEventArgs e) 
     {
         this.Hide();
-        var win = new CartWindow(MyCart, (x, y) => MyCart = bl.Cart.UpdatePAmount(MyCart, x, y));
+        var win = new CartWindow(MyCart, (x, y) => MyCart = bl.Cart.UpdatePAmount(MyCart, x, y),x=>MyCart=new());
         win.ShowDialog();
         this.Show();
     }

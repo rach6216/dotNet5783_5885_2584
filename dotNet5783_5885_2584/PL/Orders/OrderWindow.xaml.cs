@@ -95,10 +95,10 @@ public partial class OrderWindow : Window, INotifyPropertyChanged
             CanDelivery = false;
         }
     }
-    public OrderWindow()
-    {
-        InitializeComponent();
-    }
+    //public OrderWindow()
+    //{
+    //    InitializeComponent();
+    //}
     public OrderWindow(int id)
     {
         try
