@@ -75,13 +75,19 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    private void cartButton_Click(object sender, RoutedEventArgs e) => new CartWindow(MyCart).Show();
+    private void cartButton_Click(object sender, RoutedEventArgs e) 
+    {
+        this.Hide();
+        var win = new CartWindow(MyCart, (x, y) => MyCart = bl.Cart.UpdatePAmount(MyCart, x, y));
+        win.ShowDialog();
+        this.Show();
+    }
 
     private void ListView_Click(object sender, RoutedEventArgs e)
     {
         if (bl == null)
             throw new BO.ExceptionNullBl();
-        new ProductItemWindow((sender as ListView)!.SelectedItem as BO.ProductItem,(x,y)=>bl.Cart.UpdatePAmount(MyCart,x,y)).ShowDialog();
+        new ProductItemWindow((sender as ListView)!.SelectedItem as BO.ProductItem,(x,y)=>bl.Cart.UpdatePAmount(MyCart,x,(MyCart.Items?.Where(z=>z?.ProductID==x).FirstOrDefault()??new BO.OrderItem() { Amount=0}).Amount+y)).ShowDialog();
         ProductItemList = new(bl.Product.ReadAllPI((Category as BO.Category?) != null ? x => (BO.Category?)x?.Category == (BO.Category)Category : null));
     }
 

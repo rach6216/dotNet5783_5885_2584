@@ -135,15 +135,15 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
                     bl.Product.AddProduct(MyProduct);
                 this.Close();
             }
-            catch (BO.ExceptionInvalidInput exp)
+            catch (BO.ExceptionInvalidInput )
             {
                 MessageBox.Show("Invalid input");
             }
-            catch (BO.ExceptionEntityNotFound exp)
+            catch (BO.ExceptionEntityNotFound )
             {
                 MessageBox.Show("product not found" );
             }
-            catch (BO.ExceptionCannotCreateItem exp)
+            catch (BO.ExceptionCannotCreateItem )
             {
                 MessageBox.Show("can't create the product");
             }

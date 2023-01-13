@@ -79,8 +79,12 @@ internal class Cart : ICart
     /// <param name="customerName">name of the customer</param>
     /// <param name="customerEmail">email of the customer</param>
     /// <param name="customerAdress">adress of the customer</param>
-    public BO.Order ConfirmOrder(BO.Cart cart, string customerName, string customerEmail, string customerAdress)
+    public BO.Order ConfirmOrder(BO.Cart cart)
     {
+        string? customerName = cart.CustomerName;
+        string? customerEmail = cart.CustomerEmail;
+        string? customerAddress = cart.CustomerAddress;
+
         if (_dal == null)
             throw new BO.ExceptionNullDal();
         cart ??= new BO.Cart();
@@ -91,12 +95,12 @@ internal class Cart : ICart
         if (customerEmail == null || !IsValid(customerEmail))
             throw new BO.ExceptionInvalidInput("invalid customer email ");
         //create order
-        DO.Order order = new(customerName ?? throw new BO.ExceptionInvalidInput("invalid customer name "), customerEmail, customerAdress ?? throw new BO.ExceptionInvalidInput("invalid customer address "), DateTime.Now);
+        DO.Order order = new(customerName ?? throw new BO.ExceptionInvalidInput("invalid customer name "), customerEmail, customerAddress ?? throw new BO.ExceptionInvalidInput("invalid customer address "), DateTime.Now);
         int orderID = _dal.Order.Create(order);
         BO.Order order2 = new()
         {
             ID = orderID,
-            CustomerAddress = customerAdress,
+            CustomerAddress = customerAddress,
             CustomerEmail = customerEmail,
             CustomerName = customerName,
             Status = BO.OrderStatus.OrderIsConfirmed,

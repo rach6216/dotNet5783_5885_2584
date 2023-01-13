@@ -27,26 +27,50 @@ public partial class CartWindow : Window, INotifyPropertyChanged
     private ObservableCollection<BO.OrderItem?> _items = new ObservableCollection<BO.OrderItem?>();
 
     public event PropertyChangedEventHandler? PropertyChanged;
-    public bool IsFullCart { get; private set; }=true;
+    public bool IsEmptyCart { get; private set; }=true;
+    private bool _isConfirm=false;
+    public bool IsConfirm { get { return _isConfirm; } set { _isConfirm = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsConfirm))); } } 
+    private BO.Cart _myOrder=new ();
+    public BO.Cart MyOrder
+    {
+        get { return _myOrder; }
+        set { _myOrder = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Order)));
+        }
+    }
+    private string _warning = "";
+    private double _totalPrice ;
+    public double TotalPrice { get { return _totalPrice; } set { _totalPrice = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalPrice))); } }
+    public string Warning
+    {
+        get { return _warning; }
+        set
+        {
+            _warning = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Warning)));
+        }
+    }
+    Action<int, int> updateAmount;
     public ObservableCollection<BO.OrderItem?> Items
     {
         get { return _items; }
         set
         {
             _items = value;
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(nameof(Items)));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Items)));
         }
     }
 
-    public CartWindow(BO.Cart cart)
+    public CartWindow(BO.Cart cart,Action<int,int> upAmount)
     {
+        MyOrder = cart;
+        TotalPrice = cart.TotalPrice;
+       
+        updateAmount = upAmount;
         cart.Items ??= new();
         _items = new(cart.Items);
         if(Items.Count>0)
-            IsFullCart = false;
+            IsEmptyCart = false;
         InitializeComponent();
     }
 
@@ -57,6 +81,57 @@ public partial class CartWindow : Window, INotifyPropertyChanged
 
     private void ConfirmOrder_Click(object sender, RoutedEventArgs e)
     {
+        if (Items.Count > 0)
+        {
+            IsConfirm = true;
+            Warning = "";
+        }
+        else
+            Warning = "No items in cart";
+    }
 
+    private void IncreaseAmount_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            updateAmount((((e.OriginalSource as Button)?.DataContext) as BO.OrderItem)?.ProductID ?? default, (((e.OriginalSource as Button)?.DataContext) as BO.OrderItem)?.Amount+1 ?? default);
+            Items = new(Items);
+            Warning = "";
+        }
+        catch
+        {
+            Warning = "Product is out of stock";
+        }
+        
+    }
+
+    private void DecreaseAmount_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            int amount = ((((e.OriginalSource as Button)?.DataContext) as BO.OrderItem)?.Amount ?? default) - 1;
+            int productID = (((e.OriginalSource as Button)?.DataContext) as BO.OrderItem)?.ProductID ?? default;
+            updateAmount(productID, amount );
+            if (amount < 1)
+            {
+                IsEmptyCart = true;
+                Items = new(Items.Where(x => x?.ProductID != productID).ToList());
+            }
+            else
+                Items = new(Items);
+            Warning = "";
+        }
+        catch
+        {
+            Warning = "Product is out of stock";
+        }
+
+    }
+
+    private void FinishOrder_Click(object sender, RoutedEventArgs e)
+    {
+        MyOrder.Items = (from item in Items
+                         select item).ToList();
+        bl.Cart.ConfirmOrder(MyOrder);
     }
 }
