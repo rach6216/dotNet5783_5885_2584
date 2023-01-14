@@ -96,4 +96,18 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
                                 select pr).ToList();
         ProductItemList = new(GropupingProducts);  
     }
+
+    private void OrderByColumn_click(object sender,RoutedEventArgs e)
+    {
+        switch((sender as GridViewColumnHeader)?.Content)
+        {
+            case "Name": ProductItemList = new(ProductItemList.OrderBy(x => x.Name)); break;
+            case "ID": ProductItemList = new(ProductItemList.OrderBy(x => x.ID)); break;
+            case "Price": ProductItemList = new(ProductItemList.OrderBy(x => x.Price)); break;
+            case "Category": ProductItemList = new(ProductItemList.OrderBy(x => x.Category)); break;
+            case "In Stock": ProductItemList = new(ProductItemList.OrderBy(x => x.InStock)); break;
+
+            default: break;
+        }
+    }
 }
