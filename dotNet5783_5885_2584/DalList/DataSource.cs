@@ -21,6 +21,7 @@ internal static class DataSource
     static internal List<Order?> s_orders=new();
     static internal List<Product?> s_products=new();
     static internal List<OrderItem?> s_orderItems = new();
+    static internal List<User?> s_users=new();
     #endregion
 
     #region Static ctor and init fuction
@@ -95,6 +96,7 @@ internal static class DataSource
                 
             }
         }
+        
     }
     #endregion
 
@@ -150,9 +152,14 @@ internal static class DataSource
         /// next order id 
         /// </summary>
         static private int s_orderID = 100000;
+        static private int s_userID = 100000;
         /// <summary>
         /// next product id
         /// </summary>
+        public static int UserID
+        {
+            get { return s_userID++; }
+        }
         public static int OrderItemID
         {
             get { return s_orderItemID++; }
