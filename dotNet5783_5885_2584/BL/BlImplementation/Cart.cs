@@ -91,9 +91,12 @@ internal class Cart : ICart
         if (cart.Items == null || cart.Items.Count == 0)
             throw new BO.ExceptionCannotCreateItem("cart is empty, can't confirm order");
         //integrity check
-        bool isEmail = Regex.IsMatch(customerEmail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
+        if(customerName == null)
+            throw new BO.ExceptionInvalidInput("invalid customer name ");
         if (customerEmail == null || !IsValid(customerEmail))
             throw new BO.ExceptionInvalidInput("invalid customer email ");
+        if (customerAddress == null)
+            throw new BO.ExceptionInvalidInput("invalid customer address ");
         //create order
         DO.Order order = new(customerName ?? throw new BO.ExceptionInvalidInput("invalid customer name "), customerEmail, customerAddress ?? throw new BO.ExceptionInvalidInput("invalid customer address "), DateTime.Now);
         int orderID = _dal.Order.Create(order);

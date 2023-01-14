@@ -9,8 +9,6 @@
     <Window.Resources>
         <Pl:NotBooleanToVisibilityConverter x:Key="notBooleanToVisibilityConverter" />
         <Pl:StringToSourceConvertor x:Key="StringToSourceConvertor" />
-
-
         <DataTemplate x:Key="OrderTrackTemplate"
                   DataType="DateTime?, string">
             <Grid Margin="20,20,20,20" HorizontalAlignment="Stretch" VerticalAlignment="Center" >

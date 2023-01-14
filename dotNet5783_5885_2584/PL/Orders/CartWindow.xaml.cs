@@ -136,12 +136,18 @@ public partial class CartWindow : Window, INotifyPropertyChanged
     {
         MyOrder.Items = (from item in Items
                          select item).ToList();
-        BO.Order o=bl.Cart.ConfirmOrder(MyOrder);
-        new OrderWindow(o.ID).Show();
-        //clean cart
-        cleanCart(MyOrder);
-        this.Close();
+        try
+        {
+            BO.Order o = bl.Cart.ConfirmOrder(MyOrder);
+            new OrderWindow(o.ID).Show();
 
-
+            //clean cart
+            cleanCart(MyOrder);
+            this.Close();
+        }
+        catch (BO.ExceptionInvalidInput exp)
+        {
+            Warning = exp.Message;
+        }
     }
 }
