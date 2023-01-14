@@ -77,6 +77,18 @@ public partial class BoProductListWindow : Window, INotifyPropertyChanged
         ProductList = new(bl.Product.ReadAll((Category as BO.Category?) != null ? x => (BO.Category?)x?.Category == (BO.Category)Category : null));
     }
 
+    private void OrderByColumn_click(object sender, RoutedEventArgs e)
+    {
+        switch ((sender as GridViewColumnHeader)?.Content)
+        {
+            case "Name": ProductList = new(ProductList.OrderBy(x => x.Name)); break;
+            case "ID": ProductList = new(ProductList.OrderBy(x => x.ID)); break;
+            case "Price": ProductList = new(ProductList.OrderBy(x => x.Price)); break;
+            case "Category": ProductList = new(ProductList.OrderBy(x => x.Category)); break;
+            default: break;
+        }
+    }
+
     private void ProductsListview_doubleClicked(object sender, MouseButtonEventArgs e)
     {
         if (bl == null)
