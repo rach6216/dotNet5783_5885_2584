@@ -23,7 +23,27 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
 {
     private BlApi.IBl? bl = BlApi.Factory.Get();
     private ObservableCollection<object> _categories = new() { };
-    internal BO.Cart MyCart=new();
+    private BO.Cart _myCart = new();
+    public BO.Cart MyCart
+    {
+        get { return _myCart; }
+        set {
+            _myCart = value;
+            MyUser.Cart = _myCart;
+            if (MyUser!=null&&MyUser?.ID!=0)
+                bl?.User.AddItemToCart(MyUser.ID, MyUser.Password, MyUser?.Cart.Items[MyUser.Cart.Items.Count-1]);
+        }
+    }
+    private BO.User _myUser = new();
+    private Action<BO.User> _updateUser;
+    public BO.User MyUser
+    {
+        get { return _myUser; }
+        set { _myUser = value; 
+        PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(nameof(MyUser)));
+        
+        }
+    }
     public ObservableCollection<object> Categories
     {
         get { return _categories; }
@@ -51,8 +71,10 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
     }
 
 
-    public NewOrderWindow()
+    public NewOrderWindow(BO.User? user=null,Action<BO.User>? updateUser=null)
     {
+        _updateUser = updateUser;
+        MyCart = user?.Cart ?? new();
         ProductItemList = new (bl.Product.ReadAllPI());
         Categories = new();
         InitializeComponent();
@@ -72,10 +94,14 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    private void cartButton_Click(object sender, RoutedEventArgs e) 
+    private void CartButton_Click(object sender, RoutedEventArgs e) 
     {
         this.Hide();
-        var win = new CartWindow(MyCart, (x, y) => MyCart = bl.Cart.UpdatePAmount(MyCart, x, y),x=>MyCart=new());
+        var win = new CartWindow(MyCart, (productID, amount) =>{ MyCart = bl.Cart.UpdatePAmount(MyCart, productID, amount) ;if (MyUser.ID != 0)
+            {
+                
+            }
+        }, x => { MyCart = new(); } );
         win.ShowDialog();
         this.Show();
     }

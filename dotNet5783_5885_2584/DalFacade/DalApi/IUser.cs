@@ -9,7 +9,4 @@ namespace DalApi;
 
 public interface IUser : ICrud<User>
 {
-    public DO.User Login(string username, string password);
-    public void AddOrder(int userID,int orderID);
-
 }

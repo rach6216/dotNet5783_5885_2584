@@ -15,5 +15,7 @@ namespace BlApi
         /// order interface
         /// </summary>
         public IOrder Order { get; }
+
+        public IUser User { get; }
     }
 }

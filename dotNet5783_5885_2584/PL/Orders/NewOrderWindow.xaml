@@ -17,7 +17,7 @@
             <RowDefinition Height="383*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="3" Margin="0,0,0,1">
+        <Grid Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="3" Margin="88,0,0,1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -43,7 +43,8 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="cart" Grid.Row="1" HorizontalAlignment="Left" Margin="606,270,0,0" Padding="5" FontSize="18" Foreground="White" Background="#FF0160C6" Width="158" Grid.ColumnSpan="2" Click="cartButton_Click" VerticalAlignment="Top"/>
-        <Button Content="group by category" HorizontalAlignment="Left" Margin="10,0,0,0"  Padding="5" FontSize="14" Foreground="White" Background="#FF0160C6" VerticalAlignment="Center" Click="GroupByCategory_Click" Height="31" Width="156"/>
+        <Button Content="cart" Grid.Row="1" HorizontalAlignment="Left" Margin="606,270,0,0" Padding="5" FontSize="18" Foreground="White" Background="#FF0160C6" Width="158" Grid.ColumnSpan="2" Click="CartButton_Click" VerticalAlignment="Top"/>
+        <Button Content="group by category" HorizontalAlignment="Left" Margin="88,0,0,0"  Padding="5" FontSize="14" Foreground="White" Background="#FF0160C6" VerticalAlignment="Center" Click="GroupByCategory_Click" Height="31" Width="156"/>
+        <Label Content="{}"  HorizontalAlignment="Left" Margin="49,10,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

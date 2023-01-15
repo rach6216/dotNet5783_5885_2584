@@ -1,0 +1,32 @@
+﻿<Window x:Class="PL.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL"
+        mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource self}}"
+        Title="Login" Height="450" Width="800">
+    <Window.Resources>
+        <local:NotBooleanToVisibilityConverter x:Key="NotBooleanToVisibilityConverter" />
+    </Window.Resources>
+    <Grid >
+        <Grid.OpacityMask>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="Black"/>
+                <GradientStop Color="White" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.OpacityMask>
+        <Label Content="user name: "  HorizontalAlignment="Left" Margin="195,50,0,0" VerticalAlignment="Top" Height="34" RenderTransformOrigin="0.496,2.07" Foreground="White" FontSize="18" Background="#FF0160C6"/>
+        <Label Content="password: " HorizontalAlignment="Left" Margin="195,100,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.056,1.502" FontSize="18" Foreground="White" Background="#FF0160C6"/>
+        <TextBox HorizontalAlignment="Left"  Text="{Binding MyUser.UserName,Mode=TwoWay}" Margin="434,54,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="180"  FontSize="18" />
+        <TextBox HorizontalAlignment="Left"  Text="{Binding Password,Mode=TwoWay}" Margin="434,104,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="180"  FontSize="18" />
+        <Button Content="Login" HorizontalAlignment="Right" Margin="0,349,84,29" Padding="5"  Background="#FF0160C6" FontSize="18" Foreground="White" Width="63" Click="Login_Click"/>
+        <Label Content="customer name: " Visibility="{Binding IsSignUp, Converter={StaticResource NotBooleanToVisibilityConverter }}" HorizontalAlignment="Left" Margin="195,150,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.056,1.502" FontSize="18" Foreground="White" Background="#FF0160C6"/>
+        <TextBox HorizontalAlignment="Left" Visibility="{Binding IsSignUp, Converter={StaticResource NotBooleanToVisibilityConverter }}"  Text="{Binding MyUser.Cart.CustomerName,Mode=TwoWay}" Margin="434,156,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="180"  FontSize="18" />
+        <Label Content="customer email: " Visibility="{Binding IsSignUp, Converter={StaticResource NotBooleanToVisibilityConverter }}" HorizontalAlignment="Left" Margin="195,200,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.056,1.502" FontSize="18" Foreground="White" Background="#FF0160C6"/>
+        <TextBox HorizontalAlignment="Left" Visibility="{Binding IsSignUp, Converter={StaticResource NotBooleanToVisibilityConverter }}" Text="{Binding MyUser.Cart.CustomerEmail,Mode=TwoWay}" Margin="432,0,0,0"  TextWrapping="Wrap" VerticalAlignment="Center" Width="180"  FontSize="18" />
+        <Label Content="customer address: " Visibility="{Binding IsSignUp, Converter={StaticResource NotBooleanToVisibilityConverter }}" HorizontalAlignment="Left" Margin="195,250,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.056,1.502" FontSize="18" Foreground="White" Background="#FF0160C6"/>
+        <TextBox HorizontalAlignment="Left" Visibility="{Binding IsSignUp, Converter={StaticResource NotBooleanToVisibilityConverter }}" Text="{Binding MyUser.Cart.CustomerAddress,Mode=TwoWay}" Margin="430,254,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="180"  FontSize="18" />
+    </Grid>
+</Window>

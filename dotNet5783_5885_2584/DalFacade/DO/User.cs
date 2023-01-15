@@ -15,8 +15,9 @@ public struct User
     public string CustomerEmail { get; set; }
     
     public string Password { get; set; }
+    public bool IsManager { get; set; } 
 
-    public List<OrderItem?> CartItems { get; set; }
+    public List<OrderItem?>? CartItems { get; set; }
 
     public List<int> Orders { get; set; }
 
