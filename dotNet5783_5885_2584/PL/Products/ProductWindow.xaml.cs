@@ -48,6 +48,19 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
         }
     }
 
+    private bool _isEditMode=false;
+    public bool IsEditMode
+    { get { return _isEditMode; } set { _isEditMode = value;PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsEditMode))); } }
+    private string _warning = "";
+    public string Warning
+    {
+        get { return _warning; }
+        set
+        {
+            _warning = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Warning)));
+        }
+    }
     private Visibility _editMode = Visibility.Visible;
     public Visibility EditMode
     {
@@ -77,17 +90,7 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
             Categories.Add(cat);
         }
     }
-    private string _warning = "";
 
-    public string Warning
-    {
-        get { return _warning; }
-        set
-        {
-            _warning = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Warning)));
-        }
-    }
 
     public BoProductWindow(BO.ProductForList p)
     {
@@ -156,7 +159,7 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
     private void Edit_Button_Click(object sender, RoutedEventArgs e)
     {
         (EditMode, DisplayMode) = (DisplayMode, EditMode);
-
+        IsEditMode = true;
     }
     public event PropertyChangedEventHandler? PropertyChanged;
 }
