@@ -29,9 +29,10 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
         get { return _myCart; }
         set {
             _myCart = value;
+            MyUser ??= new();
             MyUser.Cart = _myCart;
-            if (MyUser!=null&&MyUser?.ID!=0)
-                bl?.User.AddItemToCart(MyUser.ID, MyUser.Password, MyUser?.Cart.Items[MyUser.Cart.Items.Count-1]);
+            if (MyUser != null && MyUser?.ID != 0&&_myCart?.Items?.Count>0)
+                bl?.User.AddItemToCart(MyUser?.ID??0, MyUser?.Password??"", MyUser?.Cart?.Items);
         }
     }
     private BO.User _myUser = new();
@@ -73,6 +74,7 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
 
     public NewOrderWindow(BO.User? user=null,Action<BO.User>? updateUser=null)
     {
+        MyUser = user;
         _updateUser = updateUser;
         MyCart = user?.Cart ?? new();
         ProductItemList = new (bl.Product.ReadAllPI());
@@ -110,7 +112,7 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
     {
         if (bl == null)
             throw new BO.ExceptionNullBl();
-        new ProductItemWindow((sender as ListView)!.SelectedItem as BO.ProductItem,(x,y)=>bl.Cart.UpdatePAmount(MyCart,x,(MyCart.Items?.Where(z=>z?.ProductID==x).FirstOrDefault()??new BO.OrderItem() { Amount=0}).Amount+y)).ShowDialog();
+        new ProductItemWindow((sender as ListView)!.SelectedItem as BO.ProductItem,(x,y)=>MyCart=bl.Cart.UpdatePAmount(MyCart,x,(MyCart.Items?.Where(z=>z?.ProductID==x).FirstOrDefault()??new BO.OrderItem() { Amount=0}).Amount+y)).ShowDialog();
         ProductItemList = new(bl.Product.ReadAllPI((Category as BO.Category?) != null ? x => (BO.Category?)x?.Category == (BO.Category)Category : null));
     }
 

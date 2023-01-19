@@ -13,16 +13,19 @@ public class User:IUser
 {
     private DalApi.IDal? _dal = DalApi.Factory.Get();
 
-    public void AddItemToCart(int userID, string pass, OrderItem oi)
+    public void AddItemToCart(int userID, string pass, List<OrderItem>? oi)
     {
         
         //if (myUser != null)
         //{
         //    _dal?.User.Update(new DO.User() { ID=myUser.ID,CartItems=myUser.Cart.Items.Select(x=>new DO.OrderItem() { Amount=x.Amount,ID=x.ID,Price=x.Price,ProductID=x.ProductID}).ToList<DO.OrderItem?>(),CustomerAddress=myUser.Cart?.CustomerAddress,CustomerEmail=myUser.Cart.CustomerEmail,CustomerName=myUser.Cart.CustomerName,IsManager=myUser.IsAdmin,Orders=myUser.Orders,Password=myUser.Password,UserName=myUser.UserName};
         //}
+        if(oi == null)
+            return;
         DO.User user = _dal?.User.Read(x => x?.ID == userID)??new DO.User();
-       //user.CartItems = ordersItems.Select(oi => new DO.OrderItem() { Amount = oi.Amount, ID = oi.ID, Price = oi.Price, ProductID = oi.ProductID }).ToList<DO.OrderItem?>();
-        user.CartItems?.Add(new DO.OrderItem() { Amount=oi.Amount,ID=oi.ID,Price=oi.Price,ProductID=oi.ProductID});
+        user.CartItems ??= new();
+       user.CartItems = oi?.Select(oi => (DO.OrderItem?)(new DO.OrderItem() { Amount = oi.Amount, ID = oi.ID, Price = oi.Price, ProductID = oi.ProductID })).ToList<DO.OrderItem?>();
+       // user.CartItems?.Add(new DO.OrderItem() { Amount=oi.Amount,ID=oi.ID,Price=oi.Price,ProductID=oi.ProductID});
         _dal?.User.Update(user);
     }
 

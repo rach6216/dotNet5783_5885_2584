@@ -14,7 +14,7 @@ public interface IUser
     public BO.User Read(Func<DO.User?, bool>? f);
     public int SignUp(string username, string password, string cname, string cemail, string caddress,bool isAdmin);
 
-    public void AddItemToCart(int userID, string pass, BO.OrderItem oi);
+    public void AddItemToCart(int userID, string pass, List<BO.OrderItem> oi);
      
     
 
