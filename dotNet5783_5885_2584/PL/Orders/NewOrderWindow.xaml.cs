@@ -23,7 +23,28 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
 {
     private BlApi.IBl? bl = BlApi.Factory.Get();
     private ObservableCollection<object> _categories = new() { };
-    internal BO.Cart MyCart=new();
+    private BO.Cart _myCart = new();
+    public BO.Cart MyCart
+    {
+        get { return _myCart; }
+        set {
+            _myCart = value;
+            MyUser ??= new();
+            MyUser.Cart = _myCart;
+            if (MyUser != null && MyUser?.ID != 0&&_myCart?.Items?.Count>0)
+                bl?.User.AddItemToCart(MyUser?.ID??0, MyUser?.Password??"", MyUser?.Cart?.Items);
+        }
+    }
+    private BO.User _myUser = new();
+    private Action<BO.User> _updateUser;
+    public BO.User MyUser
+    {
+        get { return _myUser; }
+        set { _myUser = value; 
+        PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(nameof(MyUser)));
+        
+        }
+    }
     public ObservableCollection<object> Categories
     {
         get { return _categories; }
@@ -51,8 +72,11 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
     }
 
 
-    public NewOrderWindow()
+    public NewOrderWindow(BO.User? user=null,Action<BO.User>? updateUser=null)
     {
+        MyUser = user;
+        _updateUser = updateUser;
+        MyCart = user?.Cart ?? new();
         ProductItemList = new (bl.Product.ReadAllPI());
         Categories = new();
         InitializeComponent();
@@ -72,10 +96,14 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    private void cartButton_Click(object sender, RoutedEventArgs e) 
+    private void CartButton_Click(object sender, RoutedEventArgs e) 
     {
         this.Hide();
-        var win = new CartWindow(MyCart, (x, y) => MyCart = bl.Cart.UpdatePAmount(MyCart, x, y),x=>MyCart=new());
+        var win = new CartWindow(MyCart, (productID, amount) =>{ MyCart = bl.Cart.UpdatePAmount(MyCart, productID, amount) ;if (MyUser.ID != 0)
+            {
+                
+            }
+        }, x => { MyCart = new(); } );
         win.ShowDialog();
         this.Show();
     }
@@ -84,7 +112,7 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
     {
         if (bl == null)
             throw new BO.ExceptionNullBl();
-        new ProductItemWindow((sender as ListView)!.SelectedItem as BO.ProductItem,(x,y)=>bl.Cart.UpdatePAmount(MyCart,x,(MyCart.Items?.Where(z=>z?.ProductID==x).FirstOrDefault()??new BO.OrderItem() { Amount=0}).Amount+y)).ShowDialog();
+        new ProductItemWindow((sender as ListView)!.SelectedItem as BO.ProductItem,(x,y)=>MyCart=bl.Cart.UpdatePAmount(MyCart,x,(MyCart.Items?.Where(z=>z?.ProductID==x).FirstOrDefault()??new BO.OrderItem() { Amount=0}).Amount+y)).ShowDialog();
         ProductItemList = new(bl.Product.ReadAllPI((Category as BO.Category?) != null ? x => (BO.Category?)x?.Category == (BO.Category)Category : null));
     }
 

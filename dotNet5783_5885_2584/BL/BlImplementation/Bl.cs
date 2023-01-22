@@ -11,4 +11,6 @@ sealed internal class Bl : IBl
     public IProduct Product { get; } = new Product();
 
     public IOrder Order { get; } = new Order();
+    public IUser User { get; } = new User();
+
 }

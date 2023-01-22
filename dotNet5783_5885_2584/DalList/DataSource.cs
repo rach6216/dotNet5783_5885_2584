@@ -49,18 +49,19 @@ internal static class DataSource
         ("Mercedes-AMG G63 AMG 4x4²",600000,Category.SUV,3),
         ("Yamaha TRACER 9 ",75985,Category.Motorcycle,15)
         };
-        OrderItem[] orderDetails = new OrderItem[40];
-        (string, string, string)[] userDetails = {("Shira","sh3123373@gcom","zeev chaklay"),
-        ("Rachel","rf3123373@gcom","bergman 5"),
-        ("Rivka","rhano@gcom","Ramot"),
-        ("Danz","dzilbers@gmail.com","hunollolo"),
-        ("yeudisf","yeudisf@gcom","wherever")
+        List<OrderItem> orderDetails = new ();
+        List<(string, string, string,bool, string)> userDetails =new() {("Shira","sh3123373@gcom","zeev chaklay",true, "s1"),
+        ("Rachel","rf3123373@gcom","bergman 5",false, "11"),
+        ("Rivka","rhano@gcom","Ramot",false,"dz"),
+        ("Danz","dzilbers@gmail.com","hunollolo",true,"23"),
+        ("yeudisf","yeudisf@gcom","wherever",true,"90")
         };
-
+        userDetails.ForEach(x => addUser(new User() {ID=Config.UserID, CustomerAddress = x.Item3,CustomerEmail = x.Item2, CustomerName = x.Item1, UserName = x.Item1, IsManager = x.Item4, Password = x.Item5.ToString() }));
+        
         productDetails.ForEach(item => addProduct(new Product() { Name = item.Item1, Price = item.Item2, Category = item.Item3, InStock = item.Item4 }));
         for (int i = 0; i < 9; i++)
         {
-            (string, string, string) user = userDetails[rnd.Next(userDetails.Length)];
+            (string, string, string,bool,string) user = userDetails[rnd.Next(userDetails.Count)];
             DateTime od = new DateTime(rnd.Next(2000, DateTime.Now.Year), rnd.Next(1, DateTime.Now.Month), rnd.Next(1, DateTime.Now.Day));
             DateTime sd = od + new TimeSpan(rnd.Next(10), rnd.Next(24), rnd.Next(60), rnd.Next(60));
             DateTime dd = sd + new TimeSpan(rnd.Next(10), rnd.Next(24), rnd.Next(60));
@@ -68,14 +69,14 @@ internal static class DataSource
         }
         for (int i = 0; i < 7; i++)
         {
-            (string, string, string) user = userDetails[rnd.Next(userDetails.Length)];
+            (string, string, string,bool, string) user = userDetails[rnd.Next(userDetails.Count)];
             DateTime od = new DateTime(rnd.Next(2000, DateTime.Now.Year), rnd.Next(1, DateTime.Now.Month), rnd.Next(1, DateTime.Now.Day));
             DateTime sd = od + new TimeSpan(rnd.Next(10), rnd.Next(24), rnd.Next(60), rnd.Next(60));
             addOrder(new Order(user.Item1, user.Item2, user.Item3, od, sd, Config.OrderID));
         }
         for (int i = 0; i < 4; i++)
         {
-            (string, string, string) user = userDetails[rnd.Next(userDetails.Length)];
+            (string, string, string,bool, string) user = userDetails[rnd.Next(userDetails.Count)];
             DateTime od = new DateTime(rnd.Next(2000, DateTime.Now.Year), rnd.Next(1, DateTime.Now.Month), rnd.Next(1, DateTime.Now.Day));
             addOrder(new Order(user.Item1, user.Item2, user.Item3, od, Config.OrderID));
         }
@@ -126,6 +127,11 @@ internal static class DataSource
         } while (tID == 0);
         newProduct.ID = tID;
         s_products.Add(newProduct);
+    }
+
+    static private void addUser(User newOrder)
+    {
+        s_users.Add(newOrder);
     }
     /// <summary>
     /// adding order-item to the order-items array

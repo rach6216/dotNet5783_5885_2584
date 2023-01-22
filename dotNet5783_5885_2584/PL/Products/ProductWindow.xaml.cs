@@ -84,6 +84,9 @@ public partial class BoProductWindow : Window, INotifyPropertyChanged
     }
     public BoProductWindow()
     {
+        IsUpdate = false;
+        EditMode = Visibility.Visible;
+        IsEditMode=true;
         InitializeComponent();
         foreach (var cat in Enum.GetValues(typeof(BO.Category)))
         {
