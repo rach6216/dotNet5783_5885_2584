@@ -5,10 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Dal;
-using DalApi;
-using DO;
 
-internal class User:IUser
+public class User : DalApi.IUser
 {
     public int ID { get; set; }
     public string? UserName { get; set; }
@@ -19,7 +17,7 @@ internal class User:IUser
     public string? Password { get; set; }
     public bool IsManager { get; set; }
 
-    public List<OrderItem?>? CartItems { get; set; }
+    public List<DO.OrderItem?>? CartItems { get; set; }
 
     public List<int>? Orders { get; set; }
 

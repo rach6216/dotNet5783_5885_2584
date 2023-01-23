@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Dal;
-using DalApi;
-using DO;
 
-internal class OrderItem:IOrderItem
+
+
+
+public class OrderItem : DalApi.IOrderItem
 {
+    string OrderItemFile = @"OrderItem.xml";
     #region Fields& properties  of order-item
     /// <summary>
     /// id of the order item
@@ -39,17 +41,32 @@ internal class OrderItem:IOrderItem
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        List<DO.OrderItem?> orderList = XMLTools.LoadListFromXMLSerializer<DO.OrderItem?>(OrderItemFile);
+        orderList.RemoveAll(x => x == null || x?.ID == id);
+        XMLTools.SaveListToXMLSerializer(orderList, OrderItemFile);
     }
 
     public DO.OrderItem Read(Func<DO.OrderItem?, bool>? f)
     {
-        throw new NotImplementedException();
+        try
+        {
+            List<DO.OrderItem?> orderList = XMLTools.LoadListFromXMLSerializer<DO.OrderItem?>(OrderItemFile);
+            DO.OrderItem? orderItem = orderList.FirstOrDefault(x => x != null && f(x));
+            if (orderItem != null)
+                return (DO.OrderItem)orderItem;
+            throw new DO.ExceptionEntityNotFound("orderItem not found");
+        }
+        catch (DO.XMLFileLoadCreateException ex)
+        {
+            throw;
+        }
+
     }
 
     public IEnumerable<DO.OrderItem?> ReadAll(Func<DO.OrderItem?, bool>? f = null)
     {
-        throw new NotImplementedException();
+        List<DO.OrderItem?> orderList = XMLTools.LoadListFromXMLSerializer<DO.OrderItem?>(OrderItemFile);
+        return orderList.Where(x => f == null || f(x));
     }
     #endregion
 
@@ -83,7 +100,10 @@ internal class OrderItem:IOrderItem
 
     public void Update(DO.OrderItem entity)
     {
-        throw new NotImplementedException();
+        List<DO.OrderItem?> orderList = XMLTools.LoadListFromXMLSerializer<DO.OrderItem?>(OrderItemFile);
+        orderList.RemoveAll(x => x == null || x?.ID == entity.ID);
+        orderList.Add(entity);
+        XMLTools.SaveListToXMLSerializer(orderList, OrderItemFile);
     }
     #endregion
 
