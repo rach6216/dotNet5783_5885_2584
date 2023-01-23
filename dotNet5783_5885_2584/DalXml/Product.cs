@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Dal;
-using DalApi;
-using DO;
 
-internal class Product:IProduct
+
+using System.Xml.Linq;
+
+public class Product : DalApi.IProduct
 {
+    string ProductFile = @"Product.xml";
     #region Fields and Props for products
     /// <summary>
     /// unique product Id
@@ -26,7 +28,7 @@ internal class Product:IProduct
     /// <summary>
     /// product category(enum)
     /// </summary>
-    public Category? Category { get; set; }
+    public DO.Category? Category { get; set; }
     /// <summary>
     /// number of products in the stock
     /// </summary>
@@ -40,7 +42,7 @@ internal class Product:IProduct
     /// <param name="myCategory">product category(enum)</param>
     /// <param name="myInstock" >number of products in the stock</param>
     #endregion
- 
+
     /// <summary>
     /// description of the product object
     /// </summary>
@@ -54,27 +56,103 @@ internal class Product:IProduct
 
     public int Create(DO.Product entity)
     {
-        throw new NotImplementedException();
+
+        XElement Products = XMLTools.LoadListFromXMLElement(ProductFile);
+        if (entity.ID == 0)
+        {
+            Random r = new();
+            entity.ID = r.Next(10000000, 99999999);
+        }
+        XElement? per1 = (from p in Products.Elements()
+                          where int.Parse(p.Element("ID")!.Value) == entity.ID
+                          select p).FirstOrDefault();
+        if (per1 != null)
+            throw new DO.ExceptionIdAlreadyExist(entity.ID + " -Duplicate product ID");
+        XElement productElement = new XElement("Product", new XElement("ID", entity.ID),
+                              new XElement("Name", entity.Name),
+                              new XElement("Price", entity.Price.ToString()),
+                              new XElement("InStock", entity.InStock.ToString()),
+                              new XElement("Category", entity.Category.ToString()));
+
+        Products.Add(productElement);
+        XMLTools.SaveListToXMLElement(Products, ProductFile);
+        return entity.ID;
     }
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        XElement ProductData = XMLTools.LoadListFromXMLElement(ProductFile);
+        XElement? product = (from p in ProductData.Elements()
+                             where int.Parse(p.Element("ID")!.Value) == id
+                             select p).FirstOrDefault();
+        if (product != null)
+        {
+            product.Remove();
+            XMLTools.SaveListToXMLElement(ProductData, ProductFile);
+        }
     }
 
     public void Update(DO.Product entity)
     {
-        throw new NotImplementedException();
+
+        XElement ProductData = XMLTools.LoadListFromXMLElement(ProductFile);
+        XElement? product = (from p in ProductData.Elements()
+                             where int.Parse(p.Element("ID")!.Value) == entity.ID
+                             select p).FirstOrDefault();
+        if (product != null)
+        {
+            product!.Element("Name")!.Value = entity.Name ?? "";
+            product!.Element("Price")!.Value = entity.Price.ToString();
+            product!.Element("InStock")!.Value = entity.InStock.ToString();
+            product!.Element("Category")!.Value = entity.Category.ToString() ?? "Family";
+            XMLTools.SaveListToXMLElement(ProductData, ProductFile);
+        }
     }
 
     public IEnumerable<DO.Product?> ReadAll(Func<DO.Product?, bool>? f = null)
     {
-        throw new NotImplementedException();
+        try
+        {
+            XElement ProductData = XMLTools.LoadListFromXMLElement(ProductFile);
+            IEnumerable<DO.Product?>? products = (IEnumerable<DO.Product?>)ProductData.Elements().Select(x => new DO.Product()
+            {
+                ID = int.Parse(x.Element("ID")!.Value),
+                Category = (DO.Category)Enum.Parse(typeof(DO.Category), x.Element("Category")!.Value),
+                InStock = int.Parse(x.Element("InStock")!.Value),
+                Price = double.Parse(x.Element("Price")!.Value),
+                Name = x.Element("Name")!.Value
+            }).Where(x => f == null || f(x)).Select(x=>(DO.Product?)x);
+            return products;
+        }
+
+        catch (DO.XMLFileLoadCreateException e)
+        {
+            throw new DO.XMLFileLoadCreateException(e.Message, e);
+        }
     }
 
     public DO.Product Read(Func<DO.Product?, bool>? f)
     {
-        throw new NotImplementedException();
+        try
+        {
+            XElement ProductData = XMLTools.LoadListFromXMLElement(ProductFile);
+            DO.Product? product = ProductData.Elements().Where(x => x != null).Select(x => new DO.Product()
+            {
+                ID = int.Parse(x.Element("ID")!.Value),
+                Category = (DO.Category)Enum.Parse(typeof(DO.Category), x.Element("Category")!.Value),
+                InStock = int.Parse(x.Element("InStock")!.Value),
+                Price = double.Parse(x.Element("Price")!.Value),
+                Name = x.Element("Name")!.Value
+            }).FirstOrDefault(x => f(x));
+            if (product == null)
+                throw new DO.ExceptionEntityNotFound("product is not exist");
+            return (DO.Product)product;
+        }
+        catch (DO.XMLFileLoadCreateException e)
+        {
+            throw new DO.XMLFileLoadCreateException(e.Message, e);
+        }
+
     }
 }
 

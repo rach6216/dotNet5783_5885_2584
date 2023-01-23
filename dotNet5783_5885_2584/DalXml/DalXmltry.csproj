@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+
+<PropertyGroup>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+	  <OutputPath>$(SolutionDir)\bin\</OutputPath>
+	  <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	  <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+	  <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+	   <RootNamespace>Dal</RootNamespace>
+      <BaseOutputPath>$(SolutionDir)\bin\</BaseOutputPath>
+      <AssemblyName>DalXml</AssemblyName> 
+</PropertyGroup>
+	
+
+	<ItemGroup>
+	  <ProjectReference Include="..\DalFacade\DalFacade.csproj" />
+	</ItemGroup>
+
+</Project>

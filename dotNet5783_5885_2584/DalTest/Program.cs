@@ -75,7 +75,7 @@ internal class Program
                     Console.WriteLine("Enter amount in stock");
                     string? am = Console.ReadLine();
                     int instock = int.Parse(am!);
-                    Console.WriteLine("product #" + DalList!.Product.Create(new Product() { Name = name, Price = price, Category = category, InStock = instock }) + " created");
+                    Console.WriteLine("product #" + DalList!.Product.Create(new DO.Product() { Name = name, Price = price, Category = category, InStock = instock }) + " created");
                     break;
 
                 case CRUDOp.Read:
@@ -92,7 +92,7 @@ internal class Program
 
                     break;
                 case CRUDOp.ReadAll:
-                    foreach (Product p in DalList!.Product.ReadAll())
+                    foreach (var  p in DalList!.Product.ReadAll())
                     {
                         Console.WriteLine(p);
                     }
@@ -112,7 +112,7 @@ internal class Program
                 case CRUDOp.Update:
                     Console.WriteLine("Enter product ID to update");
                     id = int.Parse(Console.ReadLine());
-                    Product tempProduct = DalList!.Product.Read(x => x?.ID == id);
+                    DO.Product tempProduct = DalList!.Product.Read(x => x?.ID == id);
                     try
                     {
                         Console.WriteLine(tempProduct);
@@ -180,7 +180,7 @@ internal class Program
                     string? cAddress = Console.ReadLine();
 
                     //the ship and delivery date will update in the order ctor
-                    Console.WriteLine("order #" + DalList!.Order.Create(new Order(cName, cEmail, cAddress, DateTime.Now)) + " created");
+                    Console.WriteLine("order #" + DalList!.Order.Create(new DO.Order(cName, cEmail, cAddress, DateTime.Now)) + " created");
                     break;
 
                 case CRUDOp.Delete:
@@ -216,7 +216,7 @@ internal class Program
                     Console.WriteLine("Enter order ID to update");
                     //add condition that check if the order can updating
                     id = int.Parse(Console.ReadLine());
-                    Order tempOrder = DalList!.Order.Read(x => x?.ID == id);
+                    DO.Order tempOrder = DalList!.Order.Read(x => x?.ID == id);
                     try
                     {
                         Console.WriteLine(tempOrder);
@@ -245,7 +245,7 @@ internal class Program
                     //In the future, the user will be saved automatically and we will not have to ask for details
                     //Console.WriteLine("Enter id");
                     //cName = Console.ReadLine();
-                    foreach (Order o in DalList!.Order.ReadAll())
+                    foreach (var  o in DalList!.Order.ReadAll())
                     {
                         //if (o.CustomerName == cName)
                         Console.WriteLine(o);
@@ -289,7 +289,7 @@ internal class Program
                     double price = double.Parse(Console.ReadLine());
                     Console.WriteLine("Enter amount :");
                     int amount = int.Parse(Console.ReadLine());
-                    Console.WriteLine("order item #" + DalList.OrderItem.Create(new OrderItem(productID, orderID, price, amount)) + "created");
+                    Console.WriteLine("order item #" + DalList.OrderItem.Create(new DO.OrderItem(productID, orderID, price, amount)) + "created");
                     break;
                 case CRUDOp.Delete:
                     Console.WriteLine("Enter orderItem ID for delete");
@@ -340,7 +340,7 @@ internal class Program
                 case CRUDOp.Update:
                     Console.WriteLine("Enter order-item ID to update");
                     id = int.Parse(Console.ReadLine());
-                    OrderItem tempOrderItem = DalList!.OrderItem.Read(x => x?.ID == id);
+                    DO.OrderItem tempOrderItem = DalList!.OrderItem.Read(x => x?.ID == id);
                     try
                     {
                         Console.WriteLine(tempOrderItem);

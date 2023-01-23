@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Dal;
-using DalApi;
-using DO;
 
-internal class Order:IOrder
+
+
+public class Order : DalApi.IOrder
 {
+    string OrderFile = @"Order.xml";
     #region Fields and auto properties
     /// <summary>
     /// order id
@@ -47,17 +48,37 @@ internal class Order:IOrder
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            List<DO.Order?> orderList = XMLTools.LoadListFromXMLSerializer<DO.Order?>(OrderFile);
+            orderList.RemoveAll(x => x == null || x?.ID == id);
+            XMLTools.SaveListToXMLSerializer(orderList, OrderFile);
+        }
+        catch (DO.XMLFileLoadCreateException e)
+        {
+            throw new(e.Message);
+        }
     }
 
     public DO.Order Read(Func<DO.Order?, bool>? f)
     {
-        throw new NotImplementedException();
+        if (f != null)
+        {
+            List<DO.Order?> orderList = XMLTools.LoadListFromXMLSerializer<DO.Order?>(OrderFile);
+            DO.Order? order = orderList.FirstOrDefault(x => f(x));
+            if (order == null)
+                throw new DO.ExceptionEntityNotFound("order not found");
+            return (DO.Order)order;
+        }
+        else
+
+            throw new DO.ExceptionEntityNotFound("order not found");
     }
 
     public IEnumerable<DO.Order?> ReadAll(Func<DO.Order?, bool>? f = null)
     {
-        throw new NotImplementedException();
+        List<DO.Order?> orderList = XMLTools.LoadListFromXMLSerializer<DO.Order?>(OrderFile);
+        return orderList.Where(x => f == null || f(x));
     }
 
     #endregion
@@ -79,7 +100,10 @@ internal class Order:IOrder
 
     public void Update(DO.Order entity)
     {
-        throw new NotImplementedException();
+        List<DO.Order?> orderList = XMLTools.LoadListFromXMLSerializer<DO.Order?>(OrderFile);
+        orderList.RemoveAll(x => x == null || x?.ID == entity.ID);
+        orderList.Add(entity);
+        XMLTools.SaveListToXMLSerializer(orderList, OrderFile);
     }
     #endregion
 

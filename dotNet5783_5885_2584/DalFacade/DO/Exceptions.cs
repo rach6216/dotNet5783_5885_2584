@@ -31,3 +31,12 @@ public class DalConfigException : Exception
     public DalConfigException(string msg) : base(msg) { }
     public DalConfigException(string msg, Exception ex) : base(msg, ex) { }
 }
+
+public class XMLFileLoadCreateException : Exception
+{
+    public XMLFileLoadCreateException(string msg) : base(msg) { }
+    public XMLFileLoadCreateException(string msg, Exception ex) : base(msg, ex) { }
+    public XMLFileLoadCreateException(string dir,string msg, Exception ex) : base(dir+" "+msg, ex) { }
+}
+
+

@@ -399,7 +399,7 @@ internal class Program
 
                     try
                     {
-                        Order order = _bl.Cart.ConfirmOrder(cart, name, email, address);
+                        Order order = _bl.Cart.ConfirmOrder(cart);
                         Console.WriteLine(order);
                     }
                     catch (BO.ExceptionEntityNotFound exp)
