@@ -39,7 +39,7 @@ public struct OrderItem
     /// <param name="myID" default="000000">id of the order item</param>
     public OrderItem(int myPID, int myOID, double myPrice, int myAmount, int myID = 000000)
     {
-        ID = myPID;
+        ID = myID;
         ProductID = myPID;
         OrderID = myOID;
         Price = myPrice;
