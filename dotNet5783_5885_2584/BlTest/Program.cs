@@ -414,6 +414,10 @@ internal class Program
                     {
                         Console.WriteLine(exp.Message);
                     }
+                    catch (BO.ExceptionProductOutOfStock exp)
+                    {
+                        Console.WriteLine("Some of products ase out of stock, for more info check order details");
+                    }
                     break;
                 default:
                     break;
