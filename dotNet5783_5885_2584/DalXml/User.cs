@@ -25,7 +25,15 @@ public class User : DalApi.IUser
 
     public int Create(DO.User entity)
     {
-        throw new NotImplementedException();
+        List<DO.User> list = XMLTools.LoadListFromXMLSerializer<DO.User>(UserFile);
+        var identify = XMLTools.LoadListFromXMLElement("config.xml");
+        int id = int.Parse(identify.Elements().ToList()[0].Value);
+        identify.Elements().ToList()[0].Value = (id + 1).ToString();
+        entity.ID = id;
+        list.Add(entity);
+        XMLTools.SaveListToXMLElement(identify, "config.xml");
+        XMLTools.SaveListToXMLSerializer(list,UserFile);
+        return id;
     }
 
     public void Delete(int id)

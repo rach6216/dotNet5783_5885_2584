@@ -57,18 +57,18 @@ internal class Cart : ICart
 
         if (product.InStock+item.Amount < amount)
             throw new BO.ExceptionProductOutOfStock("can't add product, there is only " + product.InStock + " items in stock");
-        product.InStock += item.Amount;
+       // product.InStock += item.Amount;
         cart.TotalPrice -= item.TotalPrice;
         cart.Items.RemoveAll(x => x?.ProductID == id);
         item.Amount = amount;
         item.TotalPrice = item.Amount * item.Price;
         if (amount > 0)
         {
-            product.InStock -= amount;
+           // product.InStock -= amount;
             cart.Items.Add(item);
             cart.TotalPrice += item.TotalPrice;
         }
-        _dal.Product.Update(product);
+       // _dal.Product.Update(product);
 
         return cart;
     }
@@ -157,9 +157,6 @@ internal class Cart : ICart
                 {
                     throw new BO.ExceptionInvalidInput("product of order item is not exist", exp);
                 }
-
-
-
         }
         //if there was some items out of stock
 

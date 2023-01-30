@@ -31,7 +31,7 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
             _myCart = value;
             MyUser ??= new();
             MyUser.Cart = _myCart;
-            if (MyUser != null && MyUser?.ID != 0&&_myCart?.Items?.Count>0)
+            if (MyUser != null && MyUser?.ID != 0)
                 bl?.User.AddItemToCart(MyUser?.ID??0, MyUser?.Password??"", MyUser?.Cart?.Items);
         }
     }
