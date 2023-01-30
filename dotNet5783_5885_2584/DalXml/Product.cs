@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace Dal;
 
 
@@ -114,14 +113,16 @@ public class Product : DalApi.IProduct
         try
         {
             XElement ProductData = XMLTools.LoadListFromXMLElement(ProductFile);
-            IEnumerable<DO.Product?>? products = (IEnumerable<DO.Product?>)ProductData.Elements().Select(x => new DO.Product()
+            IEnumerable<DO.Product?>? products = ProductData.Elements().Select(x =>
             {
-                ID = int.Parse(x.Element("ID")!.Value),
-                Category = (DO.Category)Enum.Parse(typeof(DO.Category), x.Element("Category")!.Value),
-                InStock = int.Parse(x.Element("InStock")!.Value),
-                Price = double.Parse(x.Element("Price")!.Value),
-                Name = x.Element("Name")!.Value
-            }).Where(x => f == null || f(x)).Select(x=>(DO.Product?)x);
+                DO.Product product = new();
+                product.ID = int.Parse(x.Element("ID")!.Value);
+                product.Category = (DO.Category)Enum.Parse(typeof(DO.Category), x.Element("Category")!.Value);
+                product.InStock = int.Parse(x.Element("InStock")!.Value);
+                product.Price = double.Parse(x.Element("Price")!.Value);
+                product.Name = x.Element("Name")!.Value;
+                return (DO.Product?)product;
+            }).Where(x => f == null || f(x));
             return products;
         }
 

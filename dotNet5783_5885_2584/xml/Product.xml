@@ -1,2 +1,73 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Product.xml />
+<Product.xml>
+	<Product>
+		<ID>10375806</ID>
+		<Name>Chevrolet Spark</Name>
+		<Category>Family</Category>
+		<InStock>8</InStock>
+		<Price>81700</Price>
+	</Product>
+	<Product>
+		<ID>29926383</ID>
+		<Name>Tesla 2017 Model S</Name>
+		<Category>VIP</Category>
+		<InStock>4</InStock>
+		<Price>250000</Price>
+	</Product>
+	<Product>
+		<ID>58625985</ID>
+		<Name>Skoda Tsi Ambition Oktavia</Name>
+		<Category>Family</Category>
+		<InStock>1</InStock>
+		<Price>104600</Price>
+	</Product>
+	<Product>
+		<ID>32450024</ID>
+		<Name>Ford Mustang GT</Name>
+		<Category>Sport</Category>
+		<InStock>0</InStock>
+		<Price>80500</Price>
+	</Product>
+	<Product>
+		<ID>12825948</ID>
+		<Name>Chevrolet Camero LT</Name>
+		<Category>Sport</Category>
+		<InStock>6</InStock>
+		<Price>95650</Price>
+	</Product>
+	<Product>
+		<ID>23845903</ID>
+		<Name>Ligier JS 53 EVO 2</Name>
+		<Category>Race</Category>
+		<InStock>2</InStock>
+		<Price>178000</Price>
+	</Product>
+	<Product>
+		<ID>84623422</ID>
+		<Name>Smart Fortwo 60kW EQ Premium</Name>
+		<Category>Tiny</Category>
+		<InStock>10</InStock>
+		<Price>15000</Price>
+	</Product>
+	<Product>
+		<ID>77766735</ID>
+		<Name>Chrysler Pacifica Touring L</Name>
+		<Category>Big</Category>
+		<InStock>9</InStock>
+		<Price>91000</Price>
+	</Product>
+	<Product>
+		<ID>23903979</ID>
+		<Name>Mercedes-AMG G63 AMG 4x4²</Name>
+		<Category>SUV</Category>
+		<InStock>3</InStock>
+		<Price>600000</Price>
+	</Product>
+	<Product>
+		<ID>53780699</ID>
+		<Name>Yamaha TRACER 9 </Name>
+		<Category>Motorcycle</Category>
+		<InStock>15</InStock>
+		<Price>75985</Price>
+	</Product>
+</Product.xml>

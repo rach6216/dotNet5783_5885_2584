@@ -21,10 +21,10 @@ internal class DataRepos
     /// <summary>
     /// static arrays for storing orders,products and order-items
     /// </summary>
-    static internal List<DO.Order?> Initorders = new();
-    static internal List<DO.Product?> Initproducts = new();
-    static internal List<DO.OrderItem?> InitorderItems = new();
-    static internal List<DO.User?> Initusers = new();
+    static internal List<DO.Order> Initorders = new();
+    static internal List<DO.Product> Initproducts = new();
+    static internal List<DO.OrderItem> InitorderItems = new();
+    static internal List<DO.User> Initusers = new();
     #endregion
 
     #region Static ctor and init fuction
@@ -33,20 +33,24 @@ internal class DataRepos
     /// </summary>
     static DataRepos()
     {
-        s_Initialize();
+        //s_Initialize();
     }
     /// <summary>
     /// init the data arrays
     /// </summary>
-    static private void s_Initialize()
+    static public void s_Initialize()
     {
         XElement identify = XMLTools.LoadListFromXMLElement("config.xml");
+        var el = identify.Elements().ToList();
         //  List<object> list = XMLTools.LoadListFromXMLSerializer<object>("config.xml");
         var userID = int.Parse(identify.Elements().ToList()[0].Value);
         var orderID = int.Parse(identify.Elements().ToList()[1].Value);
         var orderItemID = int.Parse(identify.Elements().ToList()[2].Value);
+        XElement products = XMLTools.LoadListFromXMLElement("Product.xml");
+        //Initorders = XMLTools.LoadListFromXMLSerializer<DO.Order>("Order.xml");
+        //Initusers = XMLTools.LoadListFromXMLSerializer<DO.User>("User.xml");
+        //InitorderItems = XMLTools.LoadListFromXMLSerializer<DO.OrderItem>("OrderItem.xml");
 
-        Console.WriteLine("jj");
         List<(string, int, DO.Category, int)> productDetails = new() {
         ("Chevrolet Spark",81700,DO.Category.Family,8),
        ("Tesla 2017 Model S",250000,DO.Category.VIP,4),
@@ -98,16 +102,28 @@ internal class DataRepos
             {
                 k++;
                 int r = rnd.Next(10);
-                if (Initproducts[r] != null && Initorders[i] != null)
-                {
-                    int id = Initorders[i]?.ID ?? 0;
-                    DO.Product product = (DO.Product)Initproducts[r];
-                    addOrderItem(new DO.OrderItem(product.ID, id, product.Price, rnd.Next(1, 10)));
-                }
+                
+                    int id = Initorders[i].ID;
+                    DO.Product product = Initproducts[r];
+                    addOrderItem(new DO.OrderItem(product.ID, id, product.Price, rnd.Next(1, 10),orderItemID++));
+                
 
             }
         }
-
+        identify.Element("UserID").Value = userID.ToString();
+        identify.Element("OrderID").Value = orderID.ToString();
+        identify.Element("OrderItemID").Value = orderItemID.ToString();
+        Initproducts.ForEach(x => products.Add(new XElement("Product", new XElement("ID", x.ID),
+                                   new XElement("Name", x.Name),
+                                   new XElement("Category", x.Category),
+                                   new XElement("InStock", x.InStock.ToString()),
+                                   new XElement("Price", x.Price)
+                                  )));
+        XMLTools.SaveListToXMLElement(identify, "config.xml");
+        XMLTools.SaveListToXMLElement(products, "Product.xml");
+        XMLTools.SaveListToXMLSerializer(Initusers, "User.xml");
+        XMLTools.SaveListToXMLSerializer(Initorders, "Order.xml");
+        XMLTools.SaveListToXMLSerializer(InitorderItems, "OrderItem.xml");
     }
     #endregion
 
@@ -155,15 +171,15 @@ internal class DataRepos
         do
         {
             tID = r.Next(10000000, 99999999);
-            Initproducts.ForEach(x => { if (x?.ID == tID) tID = 0; });
+            Initproducts.ForEach(x => { if (x.ID == tID) tID = 0; });
         } while (tID == 0);
         newProduct.ID = tID;
         Initproducts.Add(newProduct);
     }
 
-    static private void addUser(DO.User newOrder)
+    static private void addUser(DO.User newUser)
     {
-        Initusers.Add(newOrder);
+        Initusers.Add(newUser);
     }
     /// <summary>
     /// adding order-item to the order-items array
