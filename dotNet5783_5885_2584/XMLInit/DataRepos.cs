@@ -135,29 +135,7 @@ internal class DataRepos
     static private void addOrder(DO.Order newOrder)
     {
         Initorders.Add(newOrder);
-        //XElement Orders = XMLTools.LoadListFromXMLElement(personsPath);
-
-        //Person p = (from per in personsRootElem.Elements()
-        //            where int.Parse(per.Element("ID").Value) == id
-        //            select new Person()
-        //            {
-        //                ID = Int32.Parse(per.Element("ID").Value),
-        //                Name = per.Element("Name").Value,
-        //                Street = per.Element("Street").Value,
-        //                HouseNumber = Int32.Parse(per.Element("HouseNumber").Value),
-        //                City = per.Element("City").Value,
-        //                BirthDate = DateTime.Parse(per.Element("BirthDate").Value),
-        //                PersonalStatus = (PersonalStatus)Enum.Parse(typeof(PersonalStatus), per.Element("PersonalStatus").Value),
-        //                Duration = TimeSpan.ParseExact(per.Element("Duration").Value, "hh\\:mm\\:ss", CultureInfo.InvariantCulture)
-        //            }
-        //            ).FirstOrDefault();
-
-        //if (p == null)
-        //    throw new DO.BadPersonIdException(id, $"bad person id: {id}");
-
-        //return p;
-        //s_orders.Add(newOrder);
-    }
+       }
     /// <summary>
     /// adding product to the products array,generating new random id
     /// </summary>

@@ -8,6 +8,8 @@ namespace Dal;
 
 public class User : DalApi.IUser
 {
+    string UserFile = @"User.xml";
+
     public int ID { get; set; }
     public string? UserName { get; set; }
     public string? CustomerName { get; set; }
@@ -28,21 +30,44 @@ public class User : DalApi.IUser
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            List<DO.User?> userList = XMLTools.LoadListFromXMLSerializer<DO.User?>(UserFile);
+            userList.RemoveAll(x => x == null || x?.ID == id);
+            XMLTools.SaveListToXMLSerializer(userList, UserFile);
+        }
+        catch (DO.XMLFileLoadCreateException e)
+        {
+            throw new(e.Message);
+        }
     }
 
     public DO.User Read(Func<DO.User?, bool>? f)
     {
-        throw new NotImplementedException();
+        if (f != null)
+        {
+            List<DO.User?> userList = XMLTools.LoadListFromXMLSerializer<DO.User?>(UserFile);
+            DO.User? user = userList.FirstOrDefault(x => f(x));
+            if (user == null)
+                throw new DO.ExceptionEntityNotFound("user not found");
+            return (DO.User)user;
+        }
+        else
+
+            throw new DO.ExceptionEntityNotFound("user not found");
     }
 
     public IEnumerable<DO.User?> ReadAll(Func<DO.User?, bool>? f = null)
     {
-        throw new NotImplementedException();
+        List<DO.User?> userList = XMLTools.LoadListFromXMLSerializer<DO.User?>(UserFile);
+        return userList.Where(x => f == null || f(x));
     }
 
     public void Update(DO.User entity)
     {
-        throw new NotImplementedException();
+        List<DO.User?> userList = XMLTools.LoadListFromXMLSerializer<DO.User?>(UserFile);
+        userList.RemoveAll(x => x == null || x?.ID == entity.ID);
+        userList.Add(entity);
+        XMLTools.SaveListToXMLSerializer(userList, UserFile);
     }
 }
