@@ -1,6 +1,7 @@
 ﻿using DalApi;
 using DO;
 using static Dal.DataSource;
+using System.Runtime.CompilerServices;
 
 namespace Dal;
 /// <summary>
@@ -14,6 +15,8 @@ internal struct DalOrder : IOrder
     /// </summary>
     /// <param name="o">order without id</param>
     /// <returns>the id of the new order</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
+    /// 
     public int Create(Order o)
     {
         o.ID = Config.OrderID;
@@ -30,6 +33,8 @@ internal struct DalOrder : IOrder
     /// <param name="f">lambda function bool</param>
     /// <returns>the first order that true in the condition</returns>
     /// <exception cref="ExceptionEntityNotFound"></exception>
+    [MethodImpl(MethodImplOptions.Synchronized)]
+    /// 
     public Order Read(Func<Order?, bool>? f)
     {
         try
@@ -62,6 +67,7 @@ internal struct DalOrder : IOrder
     /// update a specific order
     /// </summary>
     /// <param name="o">order to update</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Order o)
     {
         if (1 > s_orders.RemoveAll(x => o.ID == x?.ID))
@@ -75,6 +81,7 @@ internal struct DalOrder : IOrder
     /// delete order from the orders by id
     /// </summary>
     /// <param name="id">id of order to delete</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         if (1 > s_orders.RemoveAll(x => x?.ID == id))

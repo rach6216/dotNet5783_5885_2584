@@ -2,7 +2,9 @@
 using DalApi;
 using DO;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Security.Principal;
+
 
 namespace Dal;
 
@@ -12,7 +14,6 @@ sealed internal class DalList : IDal
     //the value property is initalize only in the first access to it
     private static readonly Lazy<IDal> _instance = new Lazy<IDal>(() => new DalList());
     public static IDal Instance { get { return _instance.Value; } }
-
     public IProduct Product { get; } = new DalProduct();
     public IOrder Order { get; }= new DalOrder();
     public IOrderItem OrderItem { get; } = new Dal.DalOrderItem();

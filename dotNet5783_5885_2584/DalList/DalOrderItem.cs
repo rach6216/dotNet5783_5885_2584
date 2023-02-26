@@ -1,6 +1,7 @@
 ﻿using DalApi;
 using DO;
 using static Dal.DataSource;
+using System.Runtime.CompilerServices;
 
 namespace Dal;
 /// <summary>
@@ -14,6 +15,7 @@ internal struct DalOrderItem:IOrderItem
     /// </summary>
     /// <param name="oi">order-item without id</param>
     /// <returns>the order-item id</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public int Create(OrderItem oi)
     {
         oi.ID = Config.OrderItemID;
@@ -28,6 +30,7 @@ internal struct DalOrderItem:IOrderItem
     /// get all the order-items
     /// </summary>
     /// <returns>array with all the order-items</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<OrderItem?> ReadAll(Func<OrderItem?, bool>? f = null)
     {
         List<OrderItem?> list =f!=null? s_orderItems.Where(f).ToList(): s_orderItems;
@@ -60,6 +63,7 @@ internal struct DalOrderItem:IOrderItem
     /// update details of order-item
     /// </summary>
     /// <param name="oi">order-item id to update</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(OrderItem oi)
     {
         if (1 > s_orderItems.RemoveAll(x => oi.ID == x?.ID))
@@ -73,6 +77,7 @@ internal struct DalOrderItem:IOrderItem
     /// delete order-item 
     /// </summary>
     /// <param name="id">order-item id to delete</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
       if(1> s_orderItems.RemoveAll(x=>x?.ID==id))

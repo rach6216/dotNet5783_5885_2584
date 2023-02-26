@@ -281,6 +281,6 @@ internal class Order : IOrder
             throw new BO.ExceptionNullDal();
         IEnumerable<DO.Order?> l = _dal.Order.ReadAll(x => x?.DeliveryDate == DateTime.MinValue && x != null);
         l.OrderBy(x =>  (x?.ShipDate != DateTime.MinValue) ? x?.ShipDate : x?.OrderDate);       
-        return l.First()?.ID;
+        return l.FirstOrDefault()?.ID;
     }
 }

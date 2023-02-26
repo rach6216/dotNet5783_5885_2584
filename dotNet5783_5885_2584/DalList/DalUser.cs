@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Dal.DataSource;
+using System.Runtime.CompilerServices;
 
 namespace Dal
 {
@@ -16,7 +17,7 @@ namespace Dal
         /// </summary>
         /// <param name="userID"></param>
         /// <param name="orderID"></param>
-
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public int Create(User entity)
         {
             int id = Config.UserID;
@@ -24,13 +25,13 @@ namespace Dal
             s_users.Add(entity);
             return id;
         }
-
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Delete(int id)
         {
             s_users.RemoveAll(x => x?.ID == id);
         }
 
-
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public User Read(Func<User?, bool>? f)
         {
             User? user = new();
@@ -40,12 +41,12 @@ namespace Dal
             }
               return user ?? default;
         }
-
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<User?> ReadAll(Func<User?, bool>? f = null)
         {
             return (from user in s_users select user);
         }
-
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Update(User entity)
         {
             s_users.RemoveAll(x => x?.ID == entity.ID);

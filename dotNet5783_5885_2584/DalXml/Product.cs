@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-namespace Dal;
-
-
 using System.Xml.Linq;
+using System.Runtime.CompilerServices;
+namespace Dal;
 
 public class Product : DalApi.IProduct
 {
@@ -52,7 +51,7 @@ public class Product : DalApi.IProduct
         Price: {Price}
     	Amount in stock: {InStock}
         ";
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public int Create(DO.Product entity)
     {
 
@@ -77,7 +76,7 @@ public class Product : DalApi.IProduct
         XMLTools.SaveListToXMLElement(Products, ProductFile);
         return entity.ID;
     }
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         XElement ProductData = XMLTools.LoadListFromXMLElement(ProductFile);
@@ -90,7 +89,7 @@ public class Product : DalApi.IProduct
             XMLTools.SaveListToXMLElement(ProductData, ProductFile);
         }
     }
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(DO.Product entity)
     {
 
@@ -107,7 +106,7 @@ public class Product : DalApi.IProduct
             XMLTools.SaveListToXMLElement(ProductData, ProductFile);
         }
     }
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<DO.Product?> ReadAll(Func<DO.Product?, bool>? f = null)
     {
         try
@@ -131,7 +130,7 @@ public class Product : DalApi.IProduct
             throw new DO.XMLFileLoadCreateException(e.Message, e);
         }
     }
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public DO.Product Read(Func<DO.Product?, bool>? f)
     {
         try

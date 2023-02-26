@@ -2,6 +2,7 @@
 using DalApi;
 using System.Linq;
 using static Dal.DataSource;
+using System.Runtime.CompilerServices;
 
 namespace Dal;
 /// <summary>
@@ -15,6 +16,7 @@ internal struct DalProduct : IProduct
     /// </summary>
     /// <param name="p">product to insert</param>
     /// <returns>the id of the product</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public int Create(Product p)
     {
         if (p.ID == 0)
@@ -42,6 +44,7 @@ internal struct DalProduct : IProduct
     /// <returns>requested product</returns>
     /// <exception cref="Exception">when product is not exist throw exeption: "Product is not found</exception>
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Product Read(Func<Product?, bool>? f)
     {
         if (f == null)
@@ -75,6 +78,7 @@ internal struct DalProduct : IProduct
     /// update specific product by id
     /// </summary>
     /// <param name="p">product to update</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Product p)
     {
         if (1 > s_products.RemoveAll(x => x?.ID == p.ID && x != null))
@@ -88,6 +92,7 @@ internal struct DalProduct : IProduct
     /// delete product by id
     /// </summary>
     /// <param name="id">id of product to delete</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         if (1 > s_products.RemoveAll(x => x?.ID == id))

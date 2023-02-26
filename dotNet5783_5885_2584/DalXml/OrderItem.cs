@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -35,6 +36,7 @@ public class OrderItem : DalApi.IOrderItem
     /// </summary>
     public int Amount { get; set; }
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public int Create(DO.OrderItem entity)
     {
         List<DO.OrderItem> list = XMLTools.LoadListFromXMLSerializer<DO.OrderItem>("OrderItem.xml");
@@ -48,14 +50,14 @@ public class OrderItem : DalApi.IOrderItem
         return id;
 
     }
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         List<DO.OrderItem?> orderList = XMLTools.LoadListFromXMLSerializer<DO.OrderItem?>(OrderItemFile);
         orderList.RemoveAll(x => x == null || x?.ID == id);
         XMLTools.SaveListToXMLSerializer(orderList, OrderItemFile);
     }
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public DO.OrderItem Read(Func<DO.OrderItem?, bool>? f)
     {
         try
@@ -72,7 +74,7 @@ public class OrderItem : DalApi.IOrderItem
         }
 
     }
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<DO.OrderItem?> ReadAll(Func<DO.OrderItem?, bool>? f = null)
     {
         List<DO.OrderItem?> orderList = XMLTools.LoadListFromXMLSerializer<DO.OrderItem?>(OrderItemFile);

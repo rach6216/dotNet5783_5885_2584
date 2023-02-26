@@ -56,6 +56,6 @@ public partial class MainWindow : Window,INotifyPropertyChanged
 
     private void simulatorButton_Click(object sender, RoutedEventArgs e)
     {
-        new SimulatorWindow(bl).ShowDialog();
+        new SimulatorWindow().ShowDialog();
     }
 }

@@ -1,42 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Simulator;
-using static Simulator.Simulator;
+using BlApi;
 using System.Windows.Threading;
 
-//using System;
-//using System.Collections.Generic;
-//using System.ComponentModel;
-//using System.Diagnostics;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using System.Windows;
-//using System.Windows.Controls;
-//using System.Windows.Data;
-//using System.Windows.Documents;
-//using System.Windows.Input;
-//using System.Windows.Media;
-//using System.Windows.Media.Imaging;
-//using System.Windows.Shapes;
-//using System.Windows.Threading;
-//using BlApi;
-//namespace PL;
 
 ///// <summary>
 ///// Interaction logic for SimulatorWindow.xaml
@@ -100,18 +72,7 @@ using System.Windows.Threading;
 //        Simulator.Simulator.stop();
 //        this.Close();
 //    }
-//}
 
-using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Animation;
-using System.Windows.Threading;
-using BlApi;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace PL;
 
@@ -120,7 +81,7 @@ namespace PL;
 /// </summary>
 public partial class SimulatorWindow : Window
 {
-    IBl bl;
+    private BlApi.IBl? bl = BlApi.Factory.Get();
     string nextStatus;
     string prevStatus;
     BackgroundWorker worker;
@@ -144,14 +105,31 @@ public partial class SimulatorWindow : Window
     DispatcherTimer _timer;
     TimeSpan _time;
     //=======
-    public SimulatorWindow(IBl Bl)
+    public SimulatorWindow()
     {
         InitializeComponent();
-        bl = Bl;
         Loaded += ToolWindow_Loaded;
         TimerStart();
     }
 
+    #region Timer
+
+    //play timer
+    void TimerStart()
+    {
+        stopWatch = new Stopwatch();
+        worker = new BackgroundWorker();
+        worker.DoWork += TimerDoWork!;
+        worker.ProgressChanged += TimerProgressChanged!;
+        worker.WorkerReportsProgress = true;
+        worker.WorkerSupportsCancellation = true;
+        //Simulator.Simulator.StartSimulator();
+        stopWatch.Restart();
+        isTimerRun = true;
+        worker.RunWorkerAsync();
+    }
+
+    //logic of timer
     void countDownTimer(int sec)
     {
         _time = TimeSpan.FromSeconds(sec);
@@ -165,6 +143,27 @@ public partial class SimulatorWindow : Window
 
         _timer.Start();
     }
+    void TimerDoWork(object sender, DoWorkEventArgs e)
+    {
+        Simulator.Simulator.ProgressChange += changeOrder!;
+        Simulator.Simulator.simulationCompleted += Stop!;
+        Simulator.Simulator.run();
+        while (isTimerRun)
+        {
+            worker.ReportProgress(1);
+            Thread.Sleep(1000);
+        }
+    }
+
+    void TimerProgressChanged(object sender, ProgressChangedEventArgs e)
+    {
+        string timerText = stopWatch.Elapsed.ToString();
+        timerText = timerText.Substring(0, 8);
+        SimulatorTXTB.Text = timerText;
+    }
+    #endregion
+
+    //Progress bar animation
     void ProgressBarStart(int sec)
     {
         if (ProgressBar != null)
@@ -181,38 +180,16 @@ public partial class SimulatorWindow : Window
         ProgressBar.BeginAnimation(ProgressBar.ValueProperty, doubleanimation);
         pBar.Items.Add(ProgressBar);
     }
-    void TimerStart()
-    {
-        stopWatch = new Stopwatch();
-        worker = new BackgroundWorker();
-        worker.DoWork += TimerDoWork;
-        worker.ProgressChanged += TimerProgressChanged;
-        worker.WorkerReportsProgress = true;
-        worker.WorkerSupportsCancellation = true;
-        //Simulator.Simulator.StartSimulator();
-        stopWatch.Restart();
-        isTimerRun = true;
-        worker.RunWorkerAsync();
-    }
-    void TimerDoWork(object sender, DoWorkEventArgs e)
-    {
-        Simulator.Simulator.ProgressChange += changeOrder;
-        Simulator.Simulator.simulationCompleted += Stop;
-        Simulator.Simulator.run();
-        while (isTimerRun)
-        {
-            worker.ReportProgress(1);
-            Thread.Sleep(1000);
-        }
-    }
+
+    
     private void changeOrder(object sender, EventArgs e)
     {
         if (!(e is propChange))
             return;
 
-        propChange prop = e as propChange;
-        this.prevStatus = (prop.order.ShipDate == null) ? BO.OrderStatus.OrderIsConfirmed.ToString() : BO.OrderStatus.OrderIsShiped.ToString();
-        this.nextStatus = (prop.order.ShipDate == null) ? BO.OrderStatus.OrderIsConfirmed.ToString() : BO.OrderStatus.OrderIsDelivered.ToString();
+        propChange? prop = e as propChange;
+        this.prevStatus = (prop!.order.ShipDate == DateTime.MinValue) ? BO.OrderStatus.OrderIsConfirmed.ToString() : BO.OrderStatus.OrderIsShiped.ToString();
+        this.nextStatus = (prop.order.ShipDate == DateTime.MinValue) ? BO.OrderStatus.OrderIsShiped.ToString() : BO.OrderStatus.OrderIsDelivered.ToString();
         dcT = new Tuple<BO.Order, int, string, string>(prop.order, prop.sec / 1000, prevStatus, nextStatus);
         if (!CheckAccess())
         {
@@ -226,12 +203,7 @@ public partial class SimulatorWindow : Window
             ProgressBarStart(prop.sec / 1000);
         }
     }
-    void TimerProgressChanged(object sender, ProgressChangedEventArgs e)
-    {
-        string timerText = stopWatch.Elapsed.ToString();
-        timerText = timerText.Substring(0, 8);
-        SimulatorTXTB.Text = timerText;
-    }
+    
     void ToolWindow_Loaded(object sender, RoutedEventArgs e)
     {
         // Code to remove close box from window
@@ -251,21 +223,15 @@ public partial class SimulatorWindow : Window
     }
     public void Stop(object sender, EventArgs e)
     {
-        Simulator.Simulator.ProgressChange -= changeOrder;
-        Simulator.Simulator.simulationCompleted -= Stop;
-        /*   while (!CheckAccess())
-         {
-             Dispatcher.BeginInvoke(Stop, sender, e);
-         }
-         MessageBox.Show("successfully finish updating all orders");
-         this.Close();*/
+        Simulator.Simulator.ProgressChange -= changeOrder!;
+        Simulator.Simulator.simulationCompleted -= Stop!;
         if (!CheckAccess())
         {
             Dispatcher.BeginInvoke(Stop, sender, e);
         }
         else
         {
-            MessageBox.Show("complete updating");
+            MessageBox.Show("no more orders to update");
             this.Close();
         }
     }

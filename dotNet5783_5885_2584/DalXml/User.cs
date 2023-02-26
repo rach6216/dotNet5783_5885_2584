@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,7 +23,7 @@ public class User : DalApi.IUser
     public List<DO.OrderItem?>? CartItems { get; set; }
 
     public List<int>? Orders { get; set; }
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public int Create(DO.User entity)
     {
         List<DO.User> list = XMLTools.LoadListFromXMLSerializer<DO.User>(UserFile);
@@ -35,7 +36,7 @@ public class User : DalApi.IUser
         XMLTools.SaveListToXMLSerializer(list,UserFile);
         return id;
     }
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         try
@@ -49,7 +50,7 @@ public class User : DalApi.IUser
             throw new(e.Message);
         }
     }
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public DO.User Read(Func<DO.User?, bool>? f)
     {
         if (f != null)
@@ -64,13 +65,13 @@ public class User : DalApi.IUser
 
             throw new DO.ExceptionEntityNotFound("user not found");
     }
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<DO.User?> ReadAll(Func<DO.User?, bool>? f = null)
     {
         List<DO.User?> userList = XMLTools.LoadListFromXMLSerializer<DO.User?>(UserFile);
         return userList.Where(x => f == null || f(x));
     }
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(DO.User entity)
     {
         List<DO.User?> userList = XMLTools.LoadListFromXMLSerializer<DO.User?>(UserFile);

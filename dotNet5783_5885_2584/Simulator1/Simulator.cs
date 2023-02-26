@@ -1,17 +1,17 @@
 ﻿using BlApi;
 
 namespace Simulator;
-//המתודות והמחלקה צריכות להיות פרטיות לפי ההוראות
 public static class Simulator
 {
-    private static string? previousState;
-    private static string? nextState;
+    private static BlApi.IBl? bl = BlApi.Factory.Get();
+    public static string? prevState;
+    public static string? nextState;
     volatile static bool stopThread;
     public static event EventHandler simulationCompleted;
     public static event EventHandler ProgressChange;
     public static void run()
     {
-        
+        stopThread = false;
         Thread simulatorTread = new Thread(new ThreadStart(getOrder));
         simulatorTread.Start();
         return;
@@ -24,7 +24,6 @@ public static class Simulator
     }
     public static void getOrder()
     {
-        IBl? bl = Factory.Get();
         int? id;
         while (!stopThread)
         {
@@ -33,7 +32,7 @@ public static class Simulator
             {
                 BO.Order order = bl.Order.Read(x => x?.ID == id);
                 Random rand = new Random();
-                previousState = order.Status.ToString();
+                prevState = order.Status.ToString();
                 int sec = rand.Next(1000, 5000);
                 propChange prop = new propChange(order, sec);
                 if (ProgressChange != null)
@@ -41,7 +40,7 @@ public static class Simulator
                     ProgressChange(null, prop);
                 }
                 Thread.Sleep(sec);
-                nextState = (previousState == "ConfirmOrder" ? bl.Order.ShipOrder((int)id) : bl.Order.DeliveryOrder((int)id)).Status.ToString();
+                nextState = (prevState == "ConfirmOrder" ? bl.Order.ShipOrder((int)id) : bl.Order.DeliveryOrder((int)id)).Status.ToString();
 
             }
             
