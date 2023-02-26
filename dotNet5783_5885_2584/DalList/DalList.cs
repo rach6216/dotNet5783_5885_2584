@@ -23,11 +23,6 @@ sealed internal class DalList : IDal
 
     //return the value property
     private DalList()
-    {
-        //Product = p;
-        //Order = new DalOrder();
-        //OrderItem = new DalOrderItem();
-        //Instance { get; } = new DalList();
-    }
+    { }
 }
 

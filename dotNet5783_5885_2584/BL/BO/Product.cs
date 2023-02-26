@@ -22,6 +22,11 @@ public class Product
     /// number of products in the stock
     /// </summary>
     public int InStock { get; set; }
+
+    /// <summary>
+    /// src of product image
+    /// </summary>
+    public string? ImageSrc { get; set; }
     #region To string
     /// <summary>
     /// description of the product object

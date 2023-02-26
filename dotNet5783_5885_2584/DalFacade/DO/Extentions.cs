@@ -34,22 +34,6 @@ internal static class Extentions
                     object? fromValue = fromProperty.GetValue(from, null);
                     if (toPropertyType == propertyType)
                         toProperty.SetValue(to, fromValue);
-                    //else
-                    //    try
-                    //    {
-                    //        toProperty.SetValue(to, Convert.ChangeType(fromValue, toPropertyType), null);
-
-                    //    }
-                    //    catch
-                    //    {
-
-                    //         Type t = Nullable.GetUnderlyingType(toPropertyType) ?? toPropertyType;
-                    //        toProperty.SetValue(to, Convert.ChangeType(fromValue,t), null);
-                    //        //toProperty.SetValue(to, Convert.ChangeType(fromValue, typeof(int)), null);
-
-
-
-                    //    }
                 }
             }
         }

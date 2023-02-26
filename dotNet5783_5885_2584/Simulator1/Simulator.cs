@@ -40,7 +40,7 @@ public static class Simulator
                     ProgressChange(null, prop);
                 }
                 Thread.Sleep(sec);
-                nextState = (prevState == "ConfirmOrder" ? bl.Order.ShipOrder((int)id) : bl.Order.DeliveryOrder((int)id)).Status.ToString();
+                nextState = (prevState == "OrderIsConfirmed" ? bl.Order.ShipOrder((int)id) : bl.Order.DeliveryOrder((int)id)).Status.ToString();
 
             }
             

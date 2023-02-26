@@ -228,10 +228,10 @@ public partial class SimulatorWindow : Window
         if (!CheckAccess())
         {
             Dispatcher.BeginInvoke(Stop, sender, e);
+            MessageBox.Show("no more orders to update");
         }
         else
         {
-            MessageBox.Show("no more orders to update");
             this.Close();
         }
     }

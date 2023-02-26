@@ -27,6 +27,10 @@ public struct Product
     /// </summary>
     public int InStock { get; set; }
     /// <summary>
+    /// src of product image
+    /// </summary>
+    public string ImageSrc { get; set; }
+    /// <summary>
     /// ctor for products
     /// </summary>
     /// <param name="myID" default="000000" >unique product Id</param>
@@ -37,13 +41,14 @@ public struct Product
     #endregion
 
     #region Constructor for products
-    public Product(string myName, double myPrice, Category myCategory, int myInstock, int myID = 000000)
+    public Product(string myName, double myPrice, Category myCategory, int myInstock, string myImageSrc, int myID = 000000)
     {
         ID = myID;
         Name = myName;
         Price = myPrice;
         Category = myCategory;
         InStock = myInstock;
+        ImageSrc=myImageSrc;
     }
     #endregion
 

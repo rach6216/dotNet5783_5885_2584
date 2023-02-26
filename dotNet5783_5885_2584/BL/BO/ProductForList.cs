@@ -23,6 +23,11 @@ public class ProductForList
     public Category? Category { get; set; }
 
     /// <summary>
+    /// src of product image
+    /// </summary>
+    public string? ImageSrc { get; set; }
+
+    /// <summary>
     /// description of the product object
     /// </summary>
     /// <returns>string with the description</returns>

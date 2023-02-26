@@ -33,9 +33,10 @@ public partial class MainWindow : Window,INotifyPropertyChanged
     {
         get { return _myUser; }
         set {
-            if (_myUser!=null&&_myUser.IsAdmin != IsAdmin)
-                IsAdmin = !IsAdmin;
+            
             _myUser = value;
+            if (_myUser!=null)
+                IsAdmin = _myUser.IsAdmin;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MyUser)));
         }
     }
@@ -56,6 +57,6 @@ public partial class MainWindow : Window,INotifyPropertyChanged
 
     private void simulatorButton_Click(object sender, RoutedEventArgs e)
     {
-        new SimulatorWindow().ShowDialog();
+        new SimulatorWindow().Show();
     }
 }

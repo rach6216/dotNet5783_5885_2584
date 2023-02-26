@@ -1,11 +1,5 @@
 ﻿using BlApi;
 using BO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlImplementation;
 
@@ -60,7 +54,7 @@ public class User:IUser
             DO.User u = _dal?.User.Read(x => f(x))??default;
             u.CartItems ??= new();
             List<BO.OrderItem? > orderItems = (from oi in u.CartItems
-                                              select new BO.OrderItem() { Amount = oi?.Amount ?? 0, ID = oi?.ID ?? 0, Price = oi?.Price ?? 0, ProductID = oi?.ProductID ?? 0, ProductName = _dal?.Product.Read(x => x?.ID == oi?.ProductID).Name ?? " ", TotalPrice = oi?.Price ?? 0 * oi?.Amount ?? 0 }).ToList();
+                                              select new BO.OrderItem() { Amount = oi?.Amount ?? 0, ID = oi?.ID ?? 0, Price = oi?.Price ?? 0, ProductID = oi?.ProductID ?? 0, ProductName = _dal?.Product.Read(x => x?.ID == oi?.ProductID).Name ?? " ", TotalPrice = (oi?.Price??0 )* (oi?.Amount??0) }).ToList();
             double total = orderItems.Sum(x => x.TotalPrice);
             return new BO.User() {Password=u.Password, ID = u.ID, Orders = u.Orders, UserName = u.UserName,IsAdmin=u.IsManager, Cart = new BO.Cart() { CustomerAddress = u.CustomerAddress, CustomerEmail = u.CustomerEmail, CustomerName = u.CustomerName, Items = orderItems, TotalPrice = total } };
         }

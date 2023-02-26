@@ -32,7 +32,9 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
             MyUser ??= new();
             MyUser.Cart = _myCart;
             if (MyUser != null && MyUser?.ID != 0)
-                bl?.User.AddItemToCart(MyUser?.ID??0, MyUser?.Password??"", MyUser?.Cart?.Items);
+            {
+                bl?.User.AddItemToCart(MyUser?.ID ?? 0, MyUser?.Password ?? "", MyUser?.Cart?.Items);
+            }
         }
     }
     private BO.User _myUser = new();
@@ -101,9 +103,10 @@ public partial class NewOrderWindow : Window,INotifyPropertyChanged
         this.Hide();
         var win = new CartWindow(MyCart, (productID, amount) =>{ MyCart = bl.Cart.UpdatePAmount(MyCart, productID, amount) ;if (MyUser.ID != 0)
             {
-                
+
+                bl?.User.AddItemToCart(MyUser?.ID ?? 0, MyUser?.Password ?? "", MyCart?.Items);
             }
-        }, x => { MyCart = new(); } );
+        }, x => { MyCart.Items = new(); MyCart.TotalPrice = 0; });
         win.ShowDialog();
         this.Show();
     }

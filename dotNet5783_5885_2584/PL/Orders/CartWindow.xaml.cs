@@ -96,9 +96,12 @@ public partial class CartWindow : Window, INotifyPropertyChanged
     {
         try
         {
-            updateAmount((((e.OriginalSource as Button)?.DataContext) as BO.OrderItem)?.ProductID ?? default, (((e.OriginalSource as Button)?.DataContext) as BO.OrderItem)?.Amount+1 ?? default);
+            BO.OrderItem temp = (((e.OriginalSource as Button)?.DataContext) as BO.OrderItem)??new();
+            temp.Amount += 1;
+            temp.TotalPrice = temp.Price * temp.Amount;
+            updateAmount(temp?.ProductID ?? default, temp?.Amount ?? default);
             Items = new(Items);
-            TotalPrice += ((((e.OriginalSource as Button)?.DataContext) as BO.OrderItem)?.Price ?? 0);
+            TotalPrice += (temp?.Price ?? 0);
             Warning = "";
         }
         catch
@@ -143,11 +146,16 @@ public partial class CartWindow : Window, INotifyPropertyChanged
 
             //clean cart
             cleanCart(MyOrder);
+            TotalPrice = 0;
             this.Close();
         }
         catch (BO.ExceptionInvalidInput exp)
         {
             Warning = exp.Message;
+        }
+        catch(Exception ex)
+        {
+            Warning = ex.Message;
         }
     }
 }
