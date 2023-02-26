@@ -14,7 +14,7 @@
         <Grid.Background>
             <ImageBrush ImageSource="/bCar.jpg" Stretch="Uniform"/>
         </Grid.Background>
-        <Button x:Name="productListButton" Visibility="{Binding MyUser.IsAdmin, Converter={StaticResource NotBooleanToVisibilityConverter}}" Content="admin" Margin="629,373,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36" Click="productListButton_Click" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Width="130"/>
+        <Button x:Name="productListButton" Visibility="{Binding IsAdmin, Converter={StaticResource NotBooleanToVisibilityConverter}}" Content="admin" Margin="629,373,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36" Click="productListButton_Click" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Width="130"/>
         <Button x:Name="newOrderButton" Content="new order" Margin="12,373,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36"  VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Click="NewOrderButton_Click" Width="181"/>
         <Button x:Name="orderTrackingButton" Content="order tracking" Margin="213,373,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Click="OrderTrackingButton_Click" Width="253" />
         <Button Click="Login_click" Content="login" HorizontalAlignment="Left" Margin="144,38,0,0" VerticalAlignment="Top"/>

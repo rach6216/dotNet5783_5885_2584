@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Dal;
 
@@ -36,7 +37,16 @@ public class OrderItem : DalApi.IOrderItem
 
     public int Create(DO.OrderItem entity)
     {
-        throw new NotImplementedException();
+        List<DO.OrderItem> list = XMLTools.LoadListFromXMLSerializer<DO.OrderItem>("OrderItem.xml");
+        var identify = XMLTools.LoadListFromXMLElement("config.xml");
+        int id = int.Parse(identify.Elements().ToList()[2].Value);
+        identify.Elements().ToList()[2].Value = (id+1).ToString();
+        entity.ID = id;
+        list.Add(entity);
+        XMLTools.SaveListToXMLElement(identify, "config.xml");
+        XMLTools.SaveListToXMLSerializer(list, "OrderItem.xml");
+        return id;
+
     }
 
     public void Delete(int id)

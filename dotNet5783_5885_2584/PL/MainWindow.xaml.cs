@@ -12,13 +12,14 @@ public partial class MainWindow : Window,INotifyPropertyChanged
     
     public MainWindow()
     {
+        _isAdmin = false;
         InitializeComponent();
     }
     private void productListButton_Click(object sender, RoutedEventArgs e) => new AdminWindow().Show();
 
     private BlApi.IBl? bl = BlApi.Factory.Get();
     private BO.User _myUser;
-    private bool _isAdmin;
+    private bool _isAdmin=false;
     public bool IsAdmin
     {
         get { return _isAdmin; }
@@ -31,7 +32,10 @@ public partial class MainWindow : Window,INotifyPropertyChanged
     public BO.User MyUser
     {
         get { return _myUser; }
-        set { _myUser = value;
+        set {
+            if (_myUser!=null&&_myUser.IsAdmin != IsAdmin)
+                IsAdmin = !IsAdmin;
+            _myUser = value;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MyUser)));
         }
     }

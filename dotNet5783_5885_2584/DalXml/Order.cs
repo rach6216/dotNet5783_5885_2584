@@ -43,7 +43,15 @@ public class Order : DalApi.IOrder
 
     public int Create(DO.Order entity)
     {
-        throw new NotImplementedException();
+        List<DO.Order> list = XMLTools.LoadListFromXMLSerializer<DO.Order>(OrderFile);
+        var identify = XMLTools.LoadListFromXMLElement("config.xml");
+        int id = int.Parse(identify.Elements().ToList()[1].Value);
+        identify.Elements().ToList()[1].Value = (id + 1).ToString();
+        entity.ID = id;
+        list.Add(entity);
+        XMLTools.SaveListToXMLElement(identify, "config.xml");
+        XMLTools.SaveListToXMLSerializer(list, OrderFile);
+        return id;
     }
 
     public void Delete(int id)

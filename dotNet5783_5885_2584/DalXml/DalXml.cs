@@ -20,9 +20,5 @@ sealed public class DalXml : DalApi.IDal
     public DalApi.IUser User { get; } = new Dal.User();
     private DalXml()
     {
-        //Product = p;
-        //Order = new DalOrder();
-        //OrderItem = new DalOrderItem();
-        //Instance { get; } = new DalList();
     }
 }
