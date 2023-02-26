@@ -39,14 +39,14 @@
     <ID>23845903</ID>
     <Name>Ligier JS 53 EVO 2</Name>
     <Category>Race</Category>
-    <InStock>67</InStock>
+    <InStock>65</InStock>
     <Price>178000</Price>
   </Product>
   <Product>
     <ID>84623422</ID>
     <Name>Smart Fortwo 60kW EQ Premium</Name>
     <Category>Tiny</Category>
-    <InStock>5</InStock>
+    <InStock>66</InStock>
     <Price>15000</Price>
   </Product>
   <Product>
@@ -60,14 +60,21 @@
     <ID>23903979</ID>
     <Name>Mercedes-AMG G63 AMG 4x4²</Name>
     <Category>SUV</Category>
-    <InStock>1</InStock>
+    <InStock>0</InStock>
     <Price>600000</Price>
   </Product>
   <Product>
     <ID>53780699</ID>
     <Name>Yamaha TRACER 9 </Name>
     <Category>Motorcycle</Category>
-    <InStock>15</InStock>
+    <InStock>66</InStock>
     <Price>75985</Price>
+  </Product>
+  <Product>
+    <ID>78090038</ID>
+    <Name>volvo</Name>
+    <Price>3</Price>
+    <InStock>0</InStock>
+    <Category>Sport</Category>
   </Product>
 </Product.xml>

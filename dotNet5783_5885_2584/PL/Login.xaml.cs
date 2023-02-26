@@ -47,7 +47,10 @@ namespace PL
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Password)));
             }
         }
+
+
         private Action<BO.User> _loginUser;
+
         private bool _isSignUp = false;
         public bool IsSignUp
         {

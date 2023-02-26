@@ -38,9 +38,8 @@ public partial class CartWindow : Window, INotifyPropertyChanged
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Order)));
         }
     }
+
     private string _warning = "";
-    private double _totalPrice ;
-    public double TotalPrice { get { return _totalPrice; } set { _totalPrice = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalPrice))); } }
     public string Warning
     {
         get { return _warning; }
@@ -50,6 +49,11 @@ public partial class CartWindow : Window, INotifyPropertyChanged
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Warning)));
         }
     }
+
+
+    private double _totalPrice ;
+    public double TotalPrice { get { return _totalPrice; } set { _totalPrice = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalPrice))); } }
+
     Action<int, int> updateAmount;
     Action<BO.Cart> cleanCart;
     public ObservableCollection<BO.OrderItem?> Items

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource self }}"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="550" Width="800">
     <Window.Resources>
         <local:NotBooleanToVisibilityConverter x:Key="NotBooleanToVisibilityConverter" />
     </Window.Resources>
@@ -14,13 +14,13 @@
         <Grid.Background>
             <ImageBrush ImageSource="/bCar.jpg" Stretch="Uniform"/>
         </Grid.Background>
-        <Button x:Name="productListButton" Visibility="{Binding IsAdmin, Converter={StaticResource NotBooleanToVisibilityConverter}}" Content="admin" Margin="629,373,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36" Click="productListButton_Click" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Width="130"/>
-        <Button x:Name="newOrderButton" Content="new order" Margin="12,373,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36"  VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Click="NewOrderButton_Click" Width="181"/>
-        <Button x:Name="orderTrackingButton" Content="order tracking" Margin="213,373,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Click="OrderTrackingButton_Click" Width="253" />
-        <Button Click="Login_click" Content="login" HorizontalAlignment="Left" Margin="144,38,0,0" VerticalAlignment="Top"/>
-        <Button Click="SignUp_click" Content="signup" HorizontalAlignment="Left" Margin="213,38,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="productListButton" Visibility="{Binding IsAdmin, Converter={StaticResource NotBooleanToVisibilityConverter}}" Content="admin" Margin="629,403,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36" Click="productListButton_Click" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Width="130"/>
+        <Button x:Name="newOrderButton" Content="new order" Margin="12,397,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36"  VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Click="NewOrderButton_Click" Width="181"/>
+        <Button x:Name="orderTrackingButton" Content="order tracking" Margin="269,399,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Click="OrderTrackingButton_Click" Width="253" />
+        <Button Click="Login_click" Content="login" HorizontalAlignment="Left" Margin="12,10,0,0" VerticalAlignment="Top" Height="30" Width="40"/>
+        <Button Click="SignUp_click" Content="signup" HorizontalAlignment="Left" Margin="60,10,0,0" VerticalAlignment="Top" Height="30" Width="40" RenderTransformOrigin="-4.222,0.084"/>
         <Label Content="{Binding MyUser.UserName}" HorizontalAlignment="Left" Margin="40,38,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="simulatorButton" Content="simulator" Margin="579,9,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Width="180" Click="simulatorButton_Click"/>
+        <Button Visibility="{Binding IsAdmin, Converter={StaticResource NotBooleanToVisibilityConverter}}" x:Name="simulatorButton" Content="simulator" Margin="579,9,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Width="180" Click="simulatorButton_Click"/>
 
     </Grid>
 </Window>

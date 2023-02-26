@@ -12,7 +12,13 @@ namespace BlImplementation;
 internal class Order : IOrder
 {
     private DalApi.IDal? _dal = DalApi.Factory.Get();
-
+    /// <summary>
+    /// delivery order
+    /// </summary>
+    /// <param name="id">order id</param>
+    /// <returns>the bo entity</returns>
+    /// <exception cref="BO.ExceptionNullDal"></exception>
+    /// <exception cref="BO.ExceptionEntityNotFound"></exception>
     public BO.Order DeliveryOrder(int id)
     {
         if (_dal == null)
@@ -211,21 +217,21 @@ internal class Order : IOrder
             BO.Order order = Read(x => x?.ID == orderID);
             if (order != null && order.Items != null)
             {
-                int oiIndex = order.Items.FindIndex(x => x?.ID == orderItem.ID);
-                if (oiIndex > -1 && order.Items[oiIndex] != null)
+                BO.OrderItem oiIndex = order.Items.FirstOrDefault(x => x?.ID == orderItem.ID)??new();
+                if (oiIndex!=null)
                 {
                     if (orderItem.Amount == 0)
                     {
                         _dal.OrderItem.Delete(doOrderItem.ID);
-                        order.Items.RemoveAt(oiIndex);
+                        order.Items.RemoveAll(x=>x!=null?x.ProductID==orderItem.ProductID:throw new Exception());
                     }
                     else
                     {
 
-                        order.TotalPrice = order.TotalPrice - order.Items[oiIndex]!.TotalPrice + orderItem.TotalPrice;
-                        order.Items[oiIndex]!.Amount = orderItem.Amount;
+                        order.TotalPrice = order.TotalPrice - oiIndex.TotalPrice + orderItem.TotalPrice;
+                        oiIndex.Amount = orderItem.Amount;
                         doOrderItem.Amount = orderItem.Amount;
-                        order.Items[oiIndex]!.TotalPrice = orderItem.TotalPrice;
+                        oiIndex.TotalPrice = orderItem.TotalPrice;
                         _dal.OrderItem.Update(doOrderItem);
                         order.Status = BO.OrderStatus.OrderIsConfirmed;
                     }
