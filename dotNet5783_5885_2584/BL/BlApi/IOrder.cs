@@ -39,4 +39,9 @@ public interface IOrder
     /// <param name="id">order id </param>
     /// <returns>the updated logic order</returns>
     public BO.Order UpdateOrder(int orderID,BO.OrderItem orderItem);
+    /// <summary>
+    /// choose the oldest order 
+    /// </summary>
+    /// <returns>num of order</returns>
+    public int? GetRandomOrder();
 }

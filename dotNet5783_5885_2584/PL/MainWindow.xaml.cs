@@ -1,6 +1,6 @@
-﻿using PL;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
+
 
 namespace PL;
 
@@ -48,5 +48,10 @@ public partial class MainWindow : Window,INotifyPropertyChanged
     {
         new Login(x => MyUser = x,true).ShowDialog();
 
+    }
+
+    private void simulatorButton_Click(object sender, RoutedEventArgs e)
+    {
+        new SimulatorWindow(bl).ShowDialog();
     }
 }

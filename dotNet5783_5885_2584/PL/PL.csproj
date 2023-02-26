@@ -36,6 +36,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\BL\BL.csproj" />
+	  <ProjectReference Include="..\Simulator1\Simulator.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

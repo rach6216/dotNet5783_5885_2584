@@ -20,6 +20,7 @@
         <Button Click="Login_click" Content="login" HorizontalAlignment="Left" Margin="144,38,0,0" VerticalAlignment="Top"/>
         <Button Click="SignUp_click" Content="signup" HorizontalAlignment="Left" Margin="213,38,0,0" VerticalAlignment="Top"/>
         <Label Content="{Binding MyUser.UserName}" HorizontalAlignment="Left" Margin="40,38,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="simulatorButton" Content="simulator" Margin="579,9,0,0" Background="#FF0160C6" Foreground="White" FontFamily="Segoe UI Emoji" FontSize="36" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#FF8695AF" BorderThickness="0,1,0,1" Width="180" Click="simulatorButton_Click"/>
 
     </Grid>
 </Window>

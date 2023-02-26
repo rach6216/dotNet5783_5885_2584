@@ -1,7 +1,9 @@
 ﻿
 using BlApi;
 using BO;
+using Dal;
 using DO;
+using System;
 using System.Linq;
 using System.Security.Cryptography;
 
@@ -272,5 +274,13 @@ internal class Order : IOrder
         else if (order?.ShipDate != null&& order?.ShipDate != DateTime.MinValue)
             orderStatus = BO.OrderStatus.OrderIsShiped;
         return orderStatus;
+    }
+    public int? GetRandomOrder()
+    {
+        if (_dal == null)
+            throw new BO.ExceptionNullDal();
+        IEnumerable<DO.Order?> l = _dal.Order.ReadAll(x => x?.DeliveryDate == DateTime.MinValue && x != null);
+        l.OrderBy(x =>  (x?.ShipDate != DateTime.MinValue) ? x?.ShipDate : x?.OrderDate);       
+        return l.First()?.ID;
     }
 }
